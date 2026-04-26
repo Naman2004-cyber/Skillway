@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Portal — Skillway</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/skillway-mark.svg">
+    <link rel="stylesheet" href="skillway-teacher.css">
+</head>
+<body class="sw-body">
+    <div class="sw-app">
+        <header class="sw-header">
+            <a href="#" class="sw-brand">
+                <span class="sw-brand-mark" aria-hidden="true">
+                    <img src="/assets/skillway-mark.svg" alt="">
+                </span>
+                <span class="sw-brand-text">Skillway</span>
+            </a>
+            <nav class="sw-nav">
+                <button type="button" class="active" data-view="dashboard">Dashboard</button>
+                <button type="button" data-view="classes">Activities</button>
+                <button type="button" data-view="attendance">Attendance</button>
+                <button type="button" data-view="gradebook">Gradebook</button>
+                <button type="button" data-view="timetable">Timetable</button>
+                <button type="button" data-view="courses">Courses</button>
+                <button type="button" data-view="mcq-tests">MCQ Tests</button>
+            </nav>
+            <div class="sw-header-tools">
+                <div class="sw-tool-wrapper">
+                    <button type="button" class="sw-icon-btn" id="btn-search-toggle" title="Search">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </button>
+                    <div id="search-dropdown" class="sw-dropdown sw-search-dropdown">
+                        <div class="sw-search-input-wrap">
+                            <input type="text" id="search-input" placeholder="Search students, activities, tests..." autocomplete="off">
+                        </div>
+                        <div id="search-results" class="sw-search-results">
+                            <p class="sw-search-hint">Type to search...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sw-tool-wrapper">
+                    <button type="button" class="sw-icon-btn" id="btn-notifications-toggle" title="Notifications">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                        <span id="notif-badge" class="sw-badge-dot" style="display:none;"></span>
+                    </button>
+                    <div id="notifications-dropdown" class="sw-dropdown sw-notif-dropdown">
+                        <div class="sw-notif-header">
+                            <span>Notifications</span>
+                            <button type="button" id="btn-clear-notifs">Clear all</button>
+                        </div>
+                        <div id="notifications-list" class="sw-notif-list">
+                            <p class="sw-notif-empty">No notifications yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#profile" class="sw-profile" id="btn-profile-link">
+                    <div class="sw-avatar" id="sw-avatar-initials">T</div>
+                    <div class="sw-profile-meta">
+                        <div class="sw-profile-name" id="sidebar-school">Teacher</div>
+                        <div class="sw-profile-role" id="sidebar-role">Portal</div>
+                    </div>
+                </a>
+                <button type="button" class="sw-logout" id="btn-logout">Log out</button>
+            </div>
+        </header>
+
+        <main class="sw-main">
+            <div class="sw-page-head">
+                <h1 class="sw-title" id="page-title">Dashboard</h1>
+                <p class="sw-sub" id="page-sub">Overview and quick attendance for today.</p>
+            </div>
+
+            <!-- Profile -->
+            <section id="view-profile" class="sw-page">
+                <div class="sw-panel" style="max-width: 1000px; padding: 0;">
+                    <div style="background: linear-gradient(135deg, var(--sw-accent-soft), transparent); padding: 48px; display: flex; align-items: center; gap: 40px; border-bottom: 1px solid var(--sw-border);">
+                        <div class="sw-avatar" id="profile-avatar-large" style="width: 120px; height: 120px; font-size: 2.5rem; box-shadow: 0 12px 32px rgba(0,0,0,0.4);">T</div>
+                        <div>
+                            <h2 id="profile-full-name" style="margin: 0; font-size: 2.2rem; letter-spacing: -0.02em;">Teacher Name</h2>
+                            <p id="profile-school-name" style="margin: 8px 0 0; color: var(--sw-muted); font-size: 1.1rem;">School Name</p>
+                            <span class="sw-badge present" style="margin-top: 16px; padding: 6px 16px;">Verified Staff</span>
+                        </div>
+                    </div>
+                    <div style="padding: 40px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px;">
+                            <div>
+                                <h3 class="sw-stat-label" style="margin-bottom: 20px;">Contact Information</h3>
+                                <div style="display: flex; flex-direction: column; gap: 20px;">
+                                    <div>
+                                        <label style="display: block; font-size: 0.8rem; color: var(--sw-muted2); margin-bottom: 6px; text-transform: uppercase;">Email Address</label>
+                                        <div id="profile-email" style="font-weight: 500; font-size: 1.1rem;">teacher@example.com</div>
+                                    </div>
+                                    <div>
+                                        <label style="display: block; font-size: 0.8rem; color: var(--sw-muted2); margin-bottom: 6px; text-transform: uppercase;">Role</label>
+                                        <div id="profile-role-display" style="font-weight: 500; color: var(--sw-accent);">Teacher</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="profile-admin-section" style="display: none;">
+                                <h3 class="sw-stat-label" style="margin-bottom: 20px;">School Settings</h3>
+                                <div style="background: rgba(167, 139, 250, 0.05); border: 1px solid rgba(167, 139, 250, 0.2); border-radius: 12px; padding: 20px;">
+                                    <label style="display: block; font-size: 0.8rem; color: var(--sw-muted2); margin-bottom: 8px; text-transform: uppercase;">School Registration Code</label>
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <div id="profile-reg-code" style="font-family: monospace; font-size: 1.4rem; font-weight: 700; color: var(--sw-accent); letter-spacing: 1px;">SCH-XXXXXX</div>
+                                        <button type="button" class="sw-btn-ghost" style="padding: 4px 8px; font-size: 0.7rem;" onclick="copyRegCode()">Copy</button>
+                                    </div>
+                                    <p style="margin: 12px 0 0; font-size: 0.8rem; color: var(--sw-muted);">Share this code with teachers and students so they can join your school.</p>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="sw-stat-label" style="margin-bottom: 24px;">Update Credentials</h3>
+                                <form id="profile-update-form" style="display: flex; flex-direction: column; gap: 20px;">
+                                    <div class="sw-field">
+                                        <label>New Email</label>
+                                        <input type="email" id="profile-new-email" class="sw-input" placeholder="Enter new email">
+                                    </div>
+                                    <div class="sw-field">
+                                        <label>New Password</label>
+                                        <input type="password" id="profile-new-password" class="sw-input" placeholder="Min. 6 characters">
+                                    </div>
+                                    <button type="button" class="sw-btn-primary" id="btn-update-profile" style="margin-top: 10px;">Update Profile</button>
+                                </form>
+                                <div id="profile-update-msg" style="margin-top: 16px; font-size: 0.9rem; display: none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard -->
+            <section id="view-dashboard" class="sw-page active">
+                <div class="sw-stat-grid">
+                    <div class="sw-stat-card accent">
+                        <p class="sw-stat-label">Students below 60%</p>
+                        <p class="sw-stat-value" id="stat-alerts">—</p>
+                    </div>
+                    <div class="sw-stat-card">
+                        <p class="sw-stat-label">Present today</p>
+                        <p class="sw-stat-value" id="stat-attendance">—</p>
+                    </div>
+                    <div class="sw-stat-card">
+                        <p class="sw-stat-label">Pending Grades</p>
+                        <p class="sw-stat-value" id="stat-pending">—</p>
+                    </div>
+                </div>
+                <div class="sw-panel">
+                    <div class="sw-panel-header">
+                        <h3>Today — Quick Mark</h3>
+                    </div>
+                    <div class="sw-table-wrap">
+                        <table class="sw-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dash-students-body"></tbody>
+                        </table>
+                    </div>
+                    <p class="sw-empty" id="dash-empty" style="display:none; padding: 40px; text-align: center; color: var(--sw-muted);">No students in your school yet.</p>
+                </div>
+            </section>
+
+            <!-- Activities -->
+            <section id="view-classes" class="sw-page">
+                <div class="sw-panel sw-activity-entry-panel">
+                    <div class="sw-panel-header sw-activity-entry-head">
+                        <div>
+                            <h3>Log student activity</h3>
+                            <p style="margin: 8px 0 0; color: var(--sw-muted); font-size: 0.92rem;">Record sports, clubs, competitions, and achievements for students.</p>
+                        </div>
+                        <button type="button" class="sw-btn-primary" id="btn-open-activity-modal">Log activity</button>
+                    </div>
+                    <div class="sw-activity-summary">
+                        <div class="sw-activity-summary-card">
+                            <span>Total logged</span>
+                            <strong id="activity-count">0</strong>
+                        </div>
+                        <div class="sw-activity-summary-card">
+                            <span>Latest type</span>
+                            <strong id="activity-latest-type">-</strong>
+                        </div>
+                        <div class="sw-activity-summary-card">
+                            <span>Latest date</span>
+                            <strong id="activity-latest-date">-</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="sw-toolbar">
+                    <div class="sw-field">
+                        <label for="new-class-name">New class name</label>
+                        <input id="new-class-name" class="sw-input" type="text" placeholder="e.g. Algebra II — Period 3">
+                    </div>
+                    <button type="button" class="sw-btn-primary" id="btn-create-class">Create class</button>
+                </div>
+                <div class="sw-panel">
+                    <div class="sw-panel-header">
+                        <h3>Recorded activities</h3>
+                    </div>
+                    <div id="classes-list" class="sw-activity-list"></div>
+                    <p class="sw-empty" id="classes-empty" style="display:none; padding: 40px; text-align: center; color: var(--sw-muted);">No student activities recorded yet.</p>
+                </div>
+            </section>
+
+            <!-- Attendance -->
+            <section id="view-attendance" class="sw-page">
+                <div class="sw-toolbar">
+                    <div class="sw-field">
+                        <label for="att-date">Date</label>
+                        <input id="att-date" class="sw-input" type="date">
+                    </div>
+                    <button type="button" class="sw-btn-primary" id="btn-load-attendance">Load sheet</button>
+                </div>
+                <div class="sw-panel">
+                    <div class="sw-panel-header">
+                        <h3>Attendance sheet</h3>
+                    </div>
+                    <div class="sw-table-wrap">
+                        <table class="sw-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Status</th>
+                                    <th>Mark</th>
+                                </tr>
+                            </thead>
+                            <tbody id="att-body"></tbody>
+                        </table>
+                    </div>
+                    <p class="sw-empty" id="att-empty" style="display:none; padding: 40px; text-align: center; color: var(--sw-muted);">No students to show.</p>
+                </div>
+            </section>
+
+            <!-- Gradebook -->
+            <section id="view-gradebook" class="sw-page">
+                <div class="sw-toolbar">
+                    <div class="sw-field">
+                        <label for="g-student">Student</label>
+                        <select id="g-student" class="sw-select"></select>
+                    </div>
+                    <div class="sw-field">
+                        <label for="g-subject">Subject</label>
+                        <input id="g-subject" class="sw-input" type="text" placeholder="Mathematics">
+                    </div>
+                    <div class="sw-field">
+                        <label for="g-score">Score (0–100)</label>
+                        <input id="g-score" class="sw-input" type="number" min="0" max="100" step="0.5">
+                    </div>
+                    <div class="sw-field">
+                        <label for="g-exam">Exam / label</label>
+                        <input id="g-exam" class="sw-input" type="text" placeholder="Midterm">
+                    </div>
+                    <button type="button" class="sw-btn-primary" id="btn-add-grade">Add grade</button>
+                </div>
+                <div class="sw-panel">
+                    <div class="sw-panel-header">
+                        <h3>Recent grades</h3>
+                    </div>
+                    <div class="sw-table-wrap">
+                        <table class="sw-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Subject</th>
+                                    <th>Score</th>
+                                    <th>Exam</th>
+                                    <th>Recorded</th>
+                                </tr>
+                            </thead>
+                            <tbody id="grades-body"></tbody>
+                        </table>
+                    </div>
+                    <p class="sw-empty" id="grades-empty" style="display:none; padding: 40px; text-align: center; color: var(--sw-muted);">No grades recorded yet.</p>
+                </div>
+            </section>
+
+            <!-- Timetable -->
+            <section id="view-timetable" class="sw-page">
+                <div class="sw-toolbar">
+                    <div class="sw-field">
+                        <label for="tt-day">Day</label>
+                        <select id="tt-day" class="sw-select">
+                            <option value="MONDAY">Monday</option>
+                            <option value="TUESDAY">Tuesday</option>
+                            <option value="WEDNESDAY">Wednesday</option>
+                            <option value="THURSDAY">Thursday</option>
+                            <option value="FRIDAY">Friday</option>
+                            <option value="SATURDAY">Saturday</option>
+                            <option value="SUNDAY">Sunday</option>
+                        </select>
+                    </div>
+                    <div class="sw-field">
+                        <label for="tt-subject">Subject</label>
+                        <input id="tt-subject" class="sw-input" type="text" placeholder="Mathematics">
+                    </div>
+                    <div class="sw-field">
+                        <label for="tt-start">Start time</label>
+                        <input id="tt-start" class="sw-input" type="time">
+                    </div>
+                    <div class="sw-field">
+                        <label for="tt-end">End time</label>
+                        <input id="tt-end" class="sw-input" type="time">
+                    </div>
+                    <div class="sw-field">
+                        <label for="tt-room">Room</label>
+                        <input id="tt-room" class="sw-input" type="text" placeholder="Room 204">
+                    </div>
+                    <button type="button" class="sw-btn-primary" id="btn-add-timetable">Add slot</button>
+                </div>
+                <div class="sw-panel">
+                    <div class="sw-panel-header">
+                        <h3>Class weekly timetable</h3>
+                    </div>
+                    <div class="sw-table-wrap">
+                        <table class="sw-table">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Time</th>
+                                    <th>Subject</th>
+                                    <th>Room</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tt-body"></tbody>
+                        </table>
+                    </div>
+                    <p class="sw-empty" id="tt-empty" style="display:none; padding: 40px; text-align: center; color: var(--sw-muted);">No timetable entries yet.</p>
+                </div>
+            </section>
+
+            <!-- Courses -->
+            <section id="view-courses" class="sw-page">
+                <div class="sw-toolbar">
+                    <div class="sw-field" style="flex:1;">
+                        <label for="course-title">Course title</label>
+                        <input id="course-title" class="sw-input" type="text" placeholder="e.g. Accessibility &amp; Inclusive Design">
+                    </div>
+                    <div class="sw-field" style="flex:1;">
+                        <label for="course-desc">Description</label>
+                        <input id="course-desc" class="sw-input" type="text" placeholder="Short summary…">
+                    </div>
+                    <div class="sw-field" style="flex:1;">
+                        <label for="course-playlist">YouTube playlist URL</label>
+                        <input id="course-playlist" class="sw-input" type="text" placeholder="https://youtube.com/...">
+                    </div>
+                    <div class="sw-field">
+                        <label for="course-videos-count">Videos</label>
+                        <input id="course-videos-count" class="sw-input" type="number" placeholder="12">
+                    </div>
+                    <button type="button" class="sw-btn-primary" id="btn-create-course">Publish</button>
+                </div>
+                <div class="sw-panel">
+                    <div class="sw-panel-header">
+                        <h3>School courses</h3>
+                    </div>
+                    <div class="sw-table-wrap">
+                        <table class="sw-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Playlist</th>
+                                    <th>Videos</th>
+                                    <th>Created</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="courses-body"></tbody>
+                        </table>
+                    </div>
+                    <p class="sw-empty" id="courses-empty" style="display:none; padding: 40px; text-align: center; color: var(--sw-muted);">No courses yet.</p>
+                </div>
+            </section>
+
+            <!-- MCQ Tests -->
+            <section id="view-mcq-tests" class="sw-page">
+                <div class="sw-panel" style="padding: 32px;">
+                    <div class="sw-toolbar" style="margin-bottom: 24px;">
+                        <div class="sw-field" style="flex: 2;">
+                            <label for="mcq-test-title">Test title</label>
+                            <input id="mcq-test-title" class="sw-input" type="text" placeholder="e.g. Unit 3 — Photosynthesis">
+                        </div>
+                        <div class="sw-field" style="flex: 1;">
+                            <label for="mcq-count">Number of MCQs</label>
+                            <select id="mcq-count" class="sw-select">
+                                <option value="5">5 questions</option>
+                                <option value="10">10 questions</option>
+                                <option value="15">15 questions</option>
+                                <option value="20">20 questions</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="sw-ai-banner">
+                        <div class="sw-ai-label">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                            AI Test Generator
+                        </div>
+                        <textarea id="mcq-ai-prompt" class="sw-textarea" placeholder="Describe the topics... e.g. Hard questions about Photosynthesis for 12th grade Biology."></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 12px;">
+                        <button type="button" class="sw-btn-ghost" id="btn-mcq-layout">Lay out manual questions</button>
+                        <button type="button" class="sw-btn-primary" id="btn-mcq-ai-generate" style="background: linear-gradient(135deg, #a78bfa, #8b5cf6); color: white; border: none;">✨ Generate with AI</button>
+                        <button type="button" class="sw-btn-primary" id="btn-mcq-publish" style="display:none; background: #8FDC9A;">Publish test</button>
+                    </div>
+                </div>
+                
+                <div id="mcq-build-area" style="display:none; margin-top: 32px;"></div>
+
+                <div class="sw-panel" style="margin-top: 32px;">
+                    <div class="sw-panel-header">
+                        <h3>Published tests</h3>
+                    </div>
+                    <div class="sw-table-wrap">
+                        <table class="sw-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Questions</th>
+                                    <th>Attempts</th>
+                                    <th>Created</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="mcq-tests-body"></tbody>
+                        </table>
+                    </div>
+                    <p class="sw-empty" id="mcq-tests-empty" style="display:none; padding: 40px; text-align: center; color: var(--sw-muted);">No MCQ tests yet.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="sw-modal-overlay" id="activity-modal-overlay" style="display:none;"></div>
+    <div class="sw-modal-card" id="activity-modal" style="display:none;">
+        <div class="sw-modal-head">
+            <h3>Log Activity</h3>
+            <button type="button" class="sw-modal-close" id="btn-close-activity-modal">x</button>
+        </div>
+        <div class="sw-modal-body">
+            <div class="sw-field">
+                <label for="activity-student">Student</label>
+                <select id="activity-student" class="sw-select"></select>
+            </div>
+
+            <div class="sw-field">
+                <label for="activity-name">Activity Name</label>
+                <input id="activity-name" class="sw-input" type="text" placeholder="e.g. Inter-school Chess Tournament">
+            </div>
+
+            <div class="sw-modal-grid">
+                <div class="sw-field">
+                    <label for="activity-type">Type</label>
+                    <select id="activity-type" class="sw-select">
+                        <option value="Sports">Sports</option>
+                        <option value="Academic">Academic</option>
+                        <option value="Arts">Arts</option>
+                        <option value="Cultural">Cultural</option>
+                        <option value="Leadership">Leadership</option>
+                        <option value="Community">Community</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="sw-field">
+                    <label for="activity-date">Date</label>
+                    <input id="activity-date" class="sw-input" type="date">
+                </div>
+            </div>
+
+            <div class="sw-field">
+                <label for="activity-achievement">Achievement</label>
+                <input id="activity-achievement" class="sw-input" type="text" placeholder="e.g. 1st Place">
+            </div>
+
+            <div class="sw-field">
+                <label for="activity-description">Description</label>
+                <textarea id="activity-description" class="sw-textarea" rows="4" placeholder="Add any context or details..."></textarea>
+            </div>
+        </div>
+        <div class="sw-modal-actions">
+            <button type="button" class="sw-btn-ghost" id="btn-cancel-activity-modal">Cancel</button>
+            <button type="button" class="sw-btn-primary" id="btn-save-activity">Save activity</button>
+        </div>
+    </div>
+
+    <script>
+        // —— Design System Helper: Custom Selects ——
+        function enhanceSelect(select) {
+            if (!select || select.dataset.uiSelectEnhanced === '1') return;
+            select.dataset.uiSelectEnhanced = '1';
+
+            const wrap = document.createElement('div');
+            wrap.className = 'cselect';
+            select.parentNode.insertBefore(wrap, select);
+            wrap.appendChild(select);
+            select.classList.add('cselect-native');
+
+            const trigger = document.createElement('button');
+            trigger.type = 'button';
+            trigger.className = 'cselect-trigger';
+            wrap.appendChild(trigger);
+
+            const menu = document.createElement('div');
+            menu.className = 'cselect-menu';
+            wrap.appendChild(menu);
+
+            function render() {
+                const opts = Array.from(select.options || []);
+                const selected = select.options[select.selectedIndex];
+                trigger.textContent = selected ? selected.text : 'Select';
+                menu.innerHTML = '';
+                opts.forEach((opt) => {
+                    const item = document.createElement('button');
+                    item.type = 'button';
+                    item.className = 'cselect-option' + (opt.value === select.value ? ' active' : '');
+                    item.textContent = opt.text;
+                    item.addEventListener('click', () => {
+                        if (select.value !== opt.value) {
+                            select.value = opt.value;
+                            select.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                        render();
+                        wrap.classList.remove('open');
+                    });
+                    menu.appendChild(item);
+                });
+            }
+
+            trigger.addEventListener('click', () => wrap.classList.toggle('open'));
+            select.addEventListener('change', render);
+            
+            const optionObserver = new MutationObserver(render);
+            optionObserver.observe(select, { childList: true });
+
+            document.addEventListener('click', (e) => {
+                if (!wrap.contains(e.target)) wrap.classList.remove('open');
+            });
+            render();
+        }
+
+        function initCustomSelects(root) {
+            (root || document).querySelectorAll('select').forEach(enhanceSelect);
+        }
+
+        const selectObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (!(node instanceof HTMLElement)) return;
+                    if (node.matches && node.matches('select')) enhanceSelect(node);
+                    if (node.querySelectorAll) node.querySelectorAll('select').forEach(enhanceSelect);
+                });
+            });
+        });
+
+        // —— Application Logic ——
+        const titles = {
+            dashboard: ['Dashboard', 'Overview and quick attendance for today.'],
+            classes: ['My activities', 'Create and manage activities for your school.'],
+            attendance: ['Attendance', 'Mark or update attendance by date.'],
+            gradebook: ['Gradebook', 'Record scores and review recent entries.'],
+            timetable: ['Timetable', 'Create student weekly schedules.'],
+            courses: ['Courses', 'Create and publish courses for students.'],
+            'mcq-tests': ['MCQ tests', 'Build quizzes manually or with AI.'],
+            profile: ['My Profile', 'Manage your account details and preferences.'],
+        };
+
+        function authHeaders() {
+            const token = localStorage.getItem('token');
+            return {
+                'Content-Type': 'application/json',
+                Authorization: token ? 'Bearer ' + token : '',
+            };
+        }
+
+        async function api(path, opts) {
+            const res = await fetch(path, { ...opts, headers: { ...authHeaders(), ...((opts && opts.headers) || {}) } });
+            if (res.status === 401 || res.status === 403) {
+                window.location.href = '/auth/index.html';
+                return null;
+            }
+            return res;
+        }
+
+        function badgeClass(status) {
+            if (status === 'PRESENT') return 'present';
+            if (status === 'ABSENT') return 'absent';
+            if (status === 'LATE') return 'late';
+            return 'unmarked';
+        }
+
+        function badgeLabel(status) {
+            if (!status) return 'Not marked';
+            return status.charAt(0) + status.slice(1).toLowerCase();
+        }
+
+        function navTo(view) {
+            document.querySelectorAll('.sw-nav button[data-view]').forEach((b) => {
+                b.classList.toggle('active', b.getAttribute('data-view') === view);
+            });
+            document.querySelectorAll('.sw-page').forEach((v) => v.classList.remove('active'));
+            const el = document.getElementById('view-' + view);
+            if (el) el.classList.add('active');
+            const t = titles[view] || ['', ''];
+            document.getElementById('page-title').textContent = t[0];
+            document.getElementById('page-sub').textContent = t[1];
+
+            if (view === 'dashboard') loadDashboard();
+            if (view === 'classes') {
+                loadClasses();
+                loadActivityLogs();
+            }
+            if (view === 'attendance') loadAttendancePage();
+            if (view === 'gradebook') loadGradebook();
+            if (view === 'timetable') loadTimetablePage();
+            if (view === 'courses') loadCourses();
+            if (view === 'mcq-tests') loadMcqTestsPage();
+            if (view === 'profile') loadProfilePage();
+        }
+
+        async function loadMe() {
+            const res = await api('/api/teacher/me', { method: 'GET' });
+            if (!res || !res.ok) return;
+            const me = await res.json();
+            document.getElementById('sidebar-school').textContent = me.name || 'Teacher';
+            document.getElementById('sidebar-role').textContent = me.school_name || 'Portal';
+            document.getElementById('sw-avatar-initials').textContent = (me.name || 'T').charAt(0).toUpperCase();
+        }
+
+        async function loadDashboard() {
+            const res = await api('/api/teacher/dashboard-data', { method: 'GET' });
+            if (!res || !res.ok) return;
+            const data = await res.json();
+
+            document.getElementById('stat-alerts').textContent = data.alerts ?? 0;
+            document.getElementById('stat-attendance').textContent = data.attendancePercent ?? '0%';
+            document.getElementById('stat-pending').textContent = data.pendingGrades ?? 0;
+
+            const tbody = document.getElementById('dash-students-body');
+            const empty = document.getElementById('dash-empty');
+            tbody.innerHTML = '';
+
+            const students = data.students || [];
+            if (students.length === 0) {
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            students.forEach((s) => {
+                const tr = document.createElement('tr');
+                const st = s.todayStatus;
+                const bc = badgeClass(st);
+                const bl = badgeLabel(st);
+                tr.innerHTML = `
+                    <td>${escapeHtml(s.name)}</td>
+                    <td><span class="sw-badge ${bc}">${bl}</span></td>
+                    <td class="tp-row-actions">
+                        <button type="button" class="sw-badge present" data-sid="${s.id}" data-st="PRESENT" style="cursor:pointer; border:none; margin-right:4px;">Present</button>
+                        <button type="button" class="sw-badge late" data-sid="${s.id}" data-st="LATE" style="cursor:pointer; border:none; margin-right:4px;">Late</button>
+                        <button type="button" class="sw-badge absent" data-sid="${s.id}" data-st="ABSENT" style="cursor:pointer; border:none;">Absent</button>
+                    </td>`;
+                tbody.appendChild(tr);
+            });
+
+            tbody.querySelectorAll('button[data-sid]').forEach((btn) => {
+                btn.addEventListener('click', async () => {
+                    const sid = parseInt(btn.getAttribute('data-sid'), 10);
+                    const st = btn.getAttribute('data-st');
+                    await postAttendance(sid, st, null);
+                    loadDashboard();
+                });
+            });
+        }
+
+        async function postAttendance(studentId, status, dateStr) {
+            const body = { studentId, status };
+            if (dateStr) body.date = dateStr;
+            const res = await api('/api/teacher/attendance', {
+                method: 'POST',
+                body: JSON.stringify(body),
+            });
+            if (!res) return;
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) {
+                alert(data.error || 'Could not save attendance');
+                return;
+            }
+        }
+
+        async function loadClasses() {
+            const res = await api('/api/teacher/classes', { method: 'GET' });
+            if (!res || !res.ok) return;
+            const data = await res.json();
+            const list = document.getElementById('classes-list');
+            const empty = document.getElementById('classes-empty');
+            list.innerHTML = '';
+
+            const classes = data.classes || [];
+            if (classes.length === 0) {
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            const role = localStorage.getItem('role');
+            classes.forEach((c) => {
+                const row = document.createElement('div');
+                row.className = 'sw-panel-header';
+                row.style.borderTop = '1px solid var(--sw-border)';
+                const teacherLine = c.teacher_name
+                    ? 'Teacher: ' + escapeHtml(c.teacher_name)
+                    : 'Unassigned — claim this class';
+                row.innerHTML = `
+                    <div>
+                        <strong style="font-size:1.1rem;">${escapeHtml(c.name)}</strong>
+                        <div style="font-size:0.85rem; color:var(--sw-muted); margin-top:4px;">${teacherLine}</div>
+                    </div>`;
+                if (role === 'TEACHER' && !c.teacher_id) {
+                    const b = document.createElement('button');
+                    b.type = 'button';
+                    b.className = 'sw-btn-primary';
+                    b.textContent = 'Claim';
+                    b.addEventListener('click', async () => {
+                        const r = await api('/api/teacher/classes/' + c.id + '/claim', { method: 'POST' });
+                        if (r && r.ok) loadClasses();
+                        else if (r) {
+                            const err = await r.json().catch(() => ({}));
+                            alert(err.error || 'Could not claim');
+                        }
+                    });
+                    row.appendChild(b);
+                }
+                list.appendChild(row);
+            });
+        }
+
+        document.getElementById('btn-create-class').addEventListener('click', async () => {
+            const name = document.getElementById('new-class-name').value.trim();
+            if (!name) return alert('Enter a class name');
+            const res = await api('/api/teacher/classes', {
+                method: 'POST',
+                body: JSON.stringify({ name }),
+            });
+            if (!res) return;
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                alert(err.error || 'Failed');
+                return;
+            }
+            document.getElementById('new-class-name').value = '';
+            loadClasses();
+        });
+
+        async function loadActivityStudents() {
+            const res = await api('/api/teacher/activities/students', { method: 'GET' });
+            if (!res || !res.ok) return;
+            const data = await res.json();
+            const select = document.getElementById('activity-student');
+            if (!select) return;
+            select.innerHTML = '';
+
+            (data.students || []).forEach((student) => {
+                const opt = document.createElement('option');
+                opt.value = String(student.id);
+                opt.textContent = student.name;
+                select.appendChild(opt);
+            });
+
+            if (!select.value && data.students && data.students.length) {
+                select.value = String(data.students[0].id);
+            }
+            enhanceSelect(select);
+        }
+
+        function formatActivityDate(value) {
+            if (!value) return '-';
+            const d = new Date(value);
+            if (Number.isNaN(d.getTime())) return String(value);
+            return d.toLocaleDateString();
+        }
+
+        function openActivityModal() {
+            const overlay = document.getElementById('activity-modal-overlay');
+            const modal = document.getElementById('activity-modal');
+            if (!overlay || !modal) return;
+            overlay.style.display = 'block';
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            const dateInput = document.getElementById('activity-date');
+            if (dateInput && !dateInput.value) {
+                dateInput.value = new Date().toISOString().slice(0, 10);
+            }
+        }
+
+        function closeActivityModal() {
+            const overlay = document.getElementById('activity-modal-overlay');
+            const modal = document.getElementById('activity-modal');
+            if (!overlay || !modal) return;
+            overlay.style.display = 'none';
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        async function loadActivityLogs() {
+            const res = await api('/api/teacher/activities', { method: 'GET' });
+            if (!res || !res.ok) return;
+            const data = await res.json();
+            const list = document.getElementById('classes-list');
+            const empty = document.getElementById('classes-empty');
+            const countEl = document.getElementById('activity-count');
+            const latestTypeEl = document.getElementById('activity-latest-type');
+            const latestDateEl = document.getElementById('activity-latest-date');
+            if (!list || !empty) return;
+
+            list.innerHTML = '';
+            const activities = data.activities || [];
+
+            if (countEl) countEl.textContent = String(activities.length);
+            if (latestTypeEl) latestTypeEl.textContent = activities[0] ? activities[0].activity_type : '-';
+            if (latestDateEl) latestDateEl.textContent = activities[0] ? formatActivityDate(activities[0].activity_date) : '-';
+
+            if (activities.length === 0) {
+                empty.style.display = 'block';
+            } else {
+                empty.style.display = 'none';
+                activities.forEach((activity) => {
+                    const item = document.createElement('div');
+                    item.className = 'sw-activity-item';
+                    item.innerHTML = `
+                        <div>
+                            <div class="sw-activity-title">${escapeHtml(activity.activity_name)}</div>
+                            <div class="sw-activity-meta">
+                                ${escapeHtml(activity.student_name)} · Logged by ${escapeHtml(activity.teacher_name)} · ${formatActivityDate(activity.activity_date)}
+                            </div>
+                            <div class="sw-activity-desc">${escapeHtml(activity.description || 'No description added.')}</div>
+                            ${activity.achievement ? `<div class="sw-activity-achievement">${escapeHtml(activity.achievement)}</div>` : ''}
+                        </div>
+                        <div class="sw-activity-side">
+                            <span class="sw-badge activity">${escapeHtml(activity.activity_type)}</span>
+                            <span style="color: var(--sw-muted); font-size: 0.78rem;">${new Date(activity.created_at).toLocaleString()}</span>
+                            <button type="button" class="sw-btn-ghost" style="color:#f87171; border-color:rgba(248,113,113,0.2); margin-top:8px; font-size:0.75rem; padding:4px 8px;" onclick="deleteActivity(${activity.id})">Remove</button>
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+            }
+
+            await loadActivityStudents();
+        }
+
+        async function deleteActivity(id) {
+            if (!confirm('Are you sure you want to remove this activity log?')) return;
+            const res = await api('/api/teacher/activities/' + id, { method: 'DELETE' });
+            if (res && res.ok) {
+                loadActivityLogs();
+            } else if (res) {
+                const data = await res.json().catch(() => ({}));
+                alert(data.error || 'Could not remove activity.');
+            }
+        }
+
+        async function saveActivity() {
+            const studentId = document.getElementById('activity-student').value;
+            const activityName = document.getElementById('activity-name').value.trim();
+            const activityType = document.getElementById('activity-type').value;
+            const activityDate = document.getElementById('activity-date').value;
+            const achievement = document.getElementById('activity-achievement').value.trim();
+            const description = document.getElementById('activity-description').value.trim();
+
+            if (!studentId || !activityName || !activityType || !activityDate) {
+                alert('Student, activity name, type, and date are required.');
+                return;
+            }
+
+            const btn = document.getElementById('btn-save-activity');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+
+            try {
+                const res = await api('/api/teacher/activities', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        studentId,
+                        activityName,
+                        activityType,
+                        activityDate,
+                        achievement,
+                        description,
+                    }),
+                });
+                if (!res) return;
+                const data = await res.json().catch(() => ({}));
+                if (!res.ok) {
+                    alert(data.error || 'Failed to save activity.');
+                    return;
+                }
+
+                document.getElementById('activity-name').value = '';
+                document.getElementById('activity-achievement').value = '';
+                document.getElementById('activity-description').value = '';
+                document.getElementById('activity-type').value = 'Sports';
+                document.getElementById('activity-date').value = new Date().toISOString().slice(0, 10);
+                closeActivityModal();
+                loadActivityLogs();
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Save activity';
+            }
+        }
+
+        async function loadAttendancePage() {
+            const dateInput = document.getElementById('att-date');
+            if (!dateInput.value) dateInput.value = new Date().toISOString().slice(0, 10);
+            await loadAttendanceForDate(dateInput.value);
+        }
+
+        async function loadAttendanceForDate(dateStr) {
+            const res = await api('/api/teacher/students?date=' + encodeURIComponent(dateStr), { method: 'GET' });
+            if (!res) return;
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                alert('Could not load attendance: ' + (err.error || res.statusText));
+                return;
+            }
+            const data = await res.json();
+            const tbody = document.getElementById('att-body');
+            const empty = document.getElementById('att-empty');
+            tbody.innerHTML = '';
+            const students = data.students || [];
+            if (students.length === 0) {
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+            console.log('Populating ' + students.length + ' students for date ' + dateStr);
+
+            students.forEach((s) => {
+                const tr = document.createElement('tr');
+                const st = s.attendance_status;
+                const bc = badgeClass(st);
+                const bl = badgeLabel(st);
+                tr.innerHTML = `
+                    <td>${escapeHtml(s.name)}</td>
+                    <td><span class="sw-badge ${bc}">${bl}</span></td>
+                    <td class="tp-row-actions">
+                        <button type="button" class="sw-badge present" data-sid="${s.id}" data-st="PRESENT" style="cursor:pointer; border:none; margin-right:4px;">Present</button>
+                        <button type="button" class="sw-badge late" data-sid="${s.id}" data-st="LATE" style="cursor:pointer; border:none; margin-right:4px;">Late</button>
+                        <button type="button" class="sw-badge absent" data-sid="${s.id}" data-st="ABSENT" style="cursor:pointer; border:none;">Absent</button>
+                    </td>`;
+                tbody.appendChild(tr);
+            });
+
+            const d = document.getElementById('att-date').value;
+            tbody.querySelectorAll('button[data-sid]').forEach((btn) => {
+                btn.addEventListener('click', async () => {
+                    const sid = parseInt(btn.getAttribute('data-sid'), 10);
+                    const st = btn.getAttribute('data-st');
+                    await postAttendance(sid, st, d);
+                    loadAttendanceForDate(d);
+                });
+            });
+        }
+
+        document.getElementById('btn-load-attendance').addEventListener('click', () => {
+            loadAttendanceForDate(document.getElementById('att-date').value);
+        });
+
+        async function loadGradebook() {
+            const [gres, sres] = await Promise.all([
+                api('/api/teacher/grades?limit=150', { method: 'GET' }),
+                api('/api/teacher/students', { method: 'GET' }),
+            ]);
+            if (!gres || !gres.ok || !sres || !sres.ok) return;
+
+            const gdata = await gres.json();
+            const sdata = await sres.json();
+            const grades = gdata.grades || [];
+            const students = sdata.students || [];
+
+            const sel = document.getElementById('g-student');
+            const keep = sel.value;
+            sel.innerHTML = '';
+            students.forEach((s) => {
+                const o = document.createElement('option');
+                o.value = s.id;
+                o.textContent = s.name;
+                sel.appendChild(o);
+            });
+            if (keep) sel.value = keep;
+            else if (students[0]) sel.value = String(students[0].id);
+
+            const tbody = document.getElementById('grades-body');
+            const empty = document.getElementById('grades-empty');
+            tbody.innerHTML = '';
+
+            if (grades.length === 0) {
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            grades.forEach((g) => {
+                const tr = document.createElement('tr');
+                const when = g.created_at ? new Date(g.created_at).toLocaleString() : '—';
+                tr.innerHTML = `
+                    <td>${escapeHtml(g.student_name)}</td>
+                    <td>${escapeHtml(g.subject)}</td>
+                    <td><strong>${escapeHtml(String(g.score))}</strong></td>
+                    <td>${escapeHtml(g.exam_type || '—')}</td>
+                    <td style="color:var(--sw-muted2); font-size:0.8rem;">${escapeHtml(when)}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.getElementById('btn-add-grade').addEventListener('click', async () => {
+            const studentId = document.getElementById('g-student').value;
+            const subject = document.getElementById('g-subject').value.trim();
+            const score = parseFloat(document.getElementById('g-score').value);
+            const examType = document.getElementById('g-exam').value.trim();
+
+            if (!studentId || !subject || isNaN(score)) {
+                return alert('Please fill in Student, Subject, and Score.');
+            }
+
+            const res = await api('/api/teacher/grades', {
+                method: 'POST',
+                body: JSON.stringify({ studentId, subject, score, examType: examType || undefined })
+            });
+
+            if (res && res.ok) {
+                document.getElementById('g-subject').value = '';
+                document.getElementById('g-score').value = '';
+                document.getElementById('g-exam').value = '';
+                loadGradebook();
+            } else {
+                const data = await res.json().catch(() => ({}));
+                alert('Failed to add grade: ' + (data.error || 'Unknown error'));
+            }
+        });
+
+        async function loadCourses() {
+            const res = await api('/api/teacher/courses', { method: 'GET' });
+            if (!res || !res.ok) return;
+            const data = await res.json();
+            const tbody = document.getElementById('courses-body');
+            const empty = document.getElementById('courses-empty');
+            tbody.innerHTML = '';
+            const courses = data.courses || [];
+            if (courses.length === 0) {
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+            courses.forEach((c) => {
+                const tr = document.createElement('tr');
+                const when = c.created_at ? new Date(c.created_at).toLocaleString() : '—';
+                const desc = (c.description || '').trim() || '—';
+                const playlistUrl = c.youtube_playlist_id ? 'https://youtube.com/playlist?list=' + c.youtube_playlist_id : '';
+                tr.innerHTML = `
+                    <td><strong>${escapeHtml(c.title)}</strong></td>
+                    <td style="max-width:300px; color:var(--sw-muted);">${escapeHtml(desc)}</td>
+                    <td>${playlistUrl ? `<a href="${escapeHtml(playlistUrl)}" target="_blank" style="color:var(--sw-accent-mid);">Open Link</a>` : '—'}</td>
+                    <td>${c.playlist_video_count ?? '—'}</td>
+                    <td style="color:var(--sw-muted2); font-size:0.8rem;">${escapeHtml(when)}</td>
+                    <td><button type="button" class="sw-btn-ghost" style="color:#f87171; border-color:rgba(248,113,113,0.2);" onclick="deleteCourse(${c.id})">Delete</button></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.deleteCourse = async (id) => {
+            if (!confirm('Remove this course?')) return;
+            const r = await api('/api/teacher/courses/' + id, { method: 'DELETE' });
+            if (r && r.ok) loadCourses();
+        };
+
+        document.getElementById('btn-create-course').addEventListener('click', async () => {
+            const title = document.getElementById('course-title').value.trim();
+            const description = document.getElementById('course-desc').value.trim();
+            const youtubePlaylistUrl = document.getElementById('course-playlist').value.trim();
+            const playlistVideoCountRaw = document.getElementById('course-videos-count').value.trim();
+            const playlistVideoCount = playlistVideoCountRaw === '' ? undefined : parseInt(playlistVideoCountRaw, 10);
+            if (!title) return alert('Enter a title');
+            
+            const res = await api('/api/teacher/courses', {
+                method: 'POST',
+                body: JSON.stringify({ title, description: description || undefined, youtubePlaylistUrl: youtubePlaylistUrl || undefined, playlistVideoCount }),
+            });
+            if (res && res.ok) {
+                document.getElementById('course-title').value = '';
+                document.getElementById('course-desc').value = '';
+                document.getElementById('course-playlist').value = '';
+                document.getElementById('course-videos-count').value = '';
+                loadCourses();
+            }
+        });
+
+        async function loadTimetableEntries() {
+            const tbody = document.getElementById('tt-body');
+            const empty = document.getElementById('tt-empty');
+            tbody.innerHTML = '';
+            const res = await api('/api/teacher/timetable', { method: 'GET' });
+            if (!res || !res.ok) return;
+            const data = await res.json();
+            const entries = data.entries || [];
+            if (entries.length === 0) {
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            entries.forEach((e) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${escapeHtml(e.day_of_week)}</td>
+                    <td>${String(e.start_time).slice(0, 5)} - ${String(e.end_time).slice(0, 5)}</td>
+                    <td><strong>${escapeHtml(e.subject)}</strong></td>
+                    <td>${escapeHtml(e.room || '—')}</td>
+                    <td><button type="button" class="sw-btn-ghost btn-remove-slot" data-id="${e.id}" style="color:#f87171; border-color:rgba(248,113,113,0.2);">Remove</button></td>`;
+                tbody.appendChild(tr);
+            });
+
+            tbody.querySelectorAll('.btn-remove-slot').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const id = btn.getAttribute('data-id');
+                    if (!id) return;
+                    
+                    btn.disabled = true;
+                    btn.textContent = '...';
+                    
+                    try {
+                        const r = await api('/api/teacher/timetable/' + id, { method: 'DELETE' });
+                        if (r && r.ok) {
+                            loadTimetableEntries();
+                        } else {
+                            const err = await r.json().catch(() => ({}));
+                            alert('Could not remove slot: ' + (err.error || 'Unknown error'));
+                            btn.disabled = false;
+                            btn.textContent = 'Remove';
+                        }
+                    } catch (err) {
+                        alert('Network error');
+                        btn.disabled = false;
+                        btn.textContent = 'Remove';
+                    }
+                });
+            });
+        }
+
+        // Logic moved inline to loadTimetableEntries for robustness
+
+        async function loadTimetablePage() { loadTimetableEntries(); }
+
+        document.getElementById('btn-add-timetable').addEventListener('click', async () => {
+            const dayOfWeek = document.getElementById('tt-day').value;
+            const subject = document.getElementById('tt-subject').value.trim();
+            const startTime = document.getElementById('tt-start').value;
+            const endTime = document.getElementById('tt-end').value;
+            const room = document.getElementById('tt-room').value.trim();
+            if (!subject || !startTime || !endTime) return alert('Fill required fields');
+
+            const res = await api('/api/teacher/timetable', {
+                method: 'POST',
+                body: JSON.stringify({ dayOfWeek, subject, startTime, endTime, room: room || undefined }),
+            });
+            if (res && res.ok) {
+                document.getElementById('tt-subject').value = '';
+                document.getElementById('tt-room').value = '';
+                loadTimetableEntries();
+            }
+        });
+
+        function buildMcqQuestionBlocks(n, dataArray) {
+            const area = document.getElementById('mcq-build-area');
+            area.innerHTML = '';
+            const labels = ['A', 'B', 'C', 'D'];
+            for (let i = 1; i <= n; i++) {
+                const data = (dataArray && dataArray[i - 1]) || null;
+                const wrap = document.createElement('div');
+                wrap.className = 'sw-mcq-q';
+                wrap.innerHTML = `
+                    <div class="sw-mcq-q-head">Question ${i}</div>
+                    <div class="sw-field" style="margin-bottom: 20px;">
+                        <label>Prompt</label>
+                        <textarea class="sw-textarea tp-mcq-prompt" rows="2">${escapeHtml(data ? data.prompt : '')}</textarea>
+                    </div>
+                    <div class="sw-mcq-grid">
+                        ${[0, 1, 2, 3].map(j => `
+                            <div class="sw-mcq-opt-box">
+                                <div class="sw-mcq-badge">${labels[j]}</div>
+                                <input type="text" class="sw-input sw-mcq-opt-input tp-mcq-opt${j}" value="${escapeHtml(data ? data.options[j] : '')}">
+                            </div>`).join('')}
+                    </div>
+                    <div style="display: flex; gap: 20px;">
+                        <div class="sw-field" style="flex: 1;">
+                            <label>Correct Choice</label>
+                            <select class="sw-select tp-mcq-correct">
+                                ${labels.map((l, idx) => `<option value="${idx}" ${data && data.correctIndex == idx ? 'selected' : ''}>Option ${l}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="sw-field" style="flex: 1;">
+                            <label>Points</label>
+                            <input type="number" class="sw-input tp-mcq-marks" min="1" value="${data ? data.marks : 1}">
+                        </div>
+                    </div>`;
+                area.appendChild(wrap);
+            }
+            initCustomSelects(area);
+        }
+
+        document.getElementById('btn-mcq-layout').addEventListener('click', () => {
+            const n = parseInt(document.getElementById('mcq-count').value, 10);
+            document.getElementById('mcq-build-area').style.display = 'block';
+            document.getElementById('btn-mcq-publish').style.display = 'inline-block';
+            buildMcqQuestionBlocks(n);
+        });
+
+        document.getElementById('btn-mcq-ai-generate').addEventListener('click', async () => {
+            const title = document.getElementById('mcq-test-title').value.trim();
+            const prompt = document.getElementById('mcq-ai-prompt').value.trim();
+            const count = parseInt(document.getElementById('mcq-count').value, 10);
+            if (!title || !prompt) return alert('Title and prompt required');
+
+            const btn = document.getElementById('btn-mcq-ai-generate');
+            btn.disabled = true;
+            btn.textContent = '🪄 Generating...';
+
+            try {
+                const res = await api('/api/teacher/mcq-tests/ai-generate', {
+                    method: 'POST',
+                    body: JSON.stringify({ title, prompt, count })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    document.getElementById('mcq-build-area').style.display = 'block';
+                    document.getElementById('btn-mcq-publish').style.display = 'inline-block';
+                    buildMcqQuestionBlocks(count, data.questions);
+                } else alert(data.error);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '✨ Generate with AI';
+            }
+        });
+
+        document.getElementById('btn-mcq-publish').addEventListener('click', async () => {
+            const title = document.getElementById('mcq-test-title').value.trim();
+            const questionCount = parseInt(document.getElementById('mcq-count').value, 10);
+            const blocks = document.querySelectorAll('.sw-mcq-q');
+            const questions = [];
+            for (let b = 0; b < blocks.length; b++) {
+                const el = blocks[b];
+                const prompt = el.querySelector('.tp-mcq-prompt').value.trim();
+                const options = [0, 1, 2, 3].map(j => el.querySelector('.tp-mcq-opt' + j).value.trim());
+                const correctIndex = parseInt(el.querySelector('.tp-mcq-correct').value, 10);
+                const marks = parseFloat(el.querySelector('.tp-mcq-marks').value);
+                if (!prompt || options.some(o => !o)) return alert('Fill all fields for question ' + (b+1));
+                questions.push({ prompt, options, correctIndex, marks });
+            }
+            const res = await api('/api/teacher/mcq-tests', {
+                method: 'POST',
+                body: JSON.stringify({ title, questionCount, questions }),
+            });
+            if (res && res.ok) {
+                document.getElementById('mcq-build-area').style.display = 'none';
+                document.getElementById('btn-mcq-publish').style.display = 'none';
+                loadMcqTestsPage();
+            }
+        });
+
+        async function loadMcqTestsPage() {
+            const res = await api('/api/teacher/mcq-tests', { method: 'GET' });
+            if (!res || !res.ok) return;
+            const data = await res.json();
+            const tbody = document.getElementById('mcq-tests-body');
+            const empty = document.getElementById('mcq-tests-empty');
+            tbody.innerHTML = '';
+            const tests = data.tests || [];
+            if (tests.length === 0) {
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+            tests.forEach((t) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${escapeHtml(t.title)}</strong></td>
+                    <td>${t.question_count}</td>
+                    <td>${t.attempt_count ?? 0}</td>
+                    <td style="color:var(--sw-muted2); font-size:0.8rem;">${new Date(t.created_at).toLocaleString()}</td>
+                    <td><button type="button" class="sw-btn-ghost" style="color:#f87171; border-color:rgba(248,113,113,0.2);" onclick="deleteTest(${t.id})">Delete</button></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.deleteTest = async (id) => {
+            if (!confirm('Delete test and all student results?')) return;
+            const r = await api('/api/teacher/mcq-tests/' + id, { method: 'DELETE' });
+            if (r && r.ok) loadMcqTestsPage();
+        };
+
+        function escapeHtml(s) {
+            const d = document.createElement('div');
+            d.textContent = s == null ? '' : String(s);
+            return d.innerHTML;
+        }
+
+        document.querySelectorAll('.sw-nav button[data-view]').forEach((b) => {
+            b.addEventListener('click', () => navTo(b.getAttribute('data-view')));
+        });
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            window.location.href = '/auth/index.html';
+        });
+
+        async function loadProfilePage() {
+            const res = await api('/api/teacher/me', { method: 'GET' });
+            if (!res || !res.ok) return;
+            const me = await res.json();
+            document.getElementById('profile-full-name').textContent = me.name || 'Teacher Name';
+            document.getElementById('profile-school-name').textContent = me.school_name || 'Your School';
+            document.getElementById('profile-email').textContent = me.email || '—';
+            document.getElementById('profile-role-display').textContent = me.role === 'ADMIN' ? 'Admin' : 'Teacher';
+            document.getElementById('profile-avatar-large').textContent = (me.name || 'T').charAt(0).toUpperCase();
+
+            if (me.role === 'ADMIN' && me.registration_code) {
+                document.getElementById('profile-admin-section').style.display = 'block';
+                document.getElementById('profile-reg-code').textContent = me.registration_code;
+            } else {
+                document.getElementById('profile-admin-section').style.display = 'none';
+            }
+        }
+
+        window.copyRegCode = () => {
+            const code = document.getElementById('profile-reg-code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Registration code copied to clipboard!');
+            });
+        };
+
+        document.getElementById('btn-update-profile').addEventListener('click', async () => {
+            const newEmail = document.getElementById('profile-new-email').value.trim();
+            const newPassword = document.getElementById('profile-new-password').value.trim();
+            const msgEl = document.getElementById('profile-update-msg');
+            
+            if (!newEmail && !newPassword) {
+                alert('Please enter a new email or password to update.');
+                return;
+            }
+
+            const res = await api('/api/teacher/me', {
+                method: 'PUT',
+                body: JSON.stringify({ email: newEmail || undefined, password: newPassword || undefined })
+            });
+
+            if (!res) return;
+            const data = await res.json();
+            msgEl.style.display = 'block';
+            if (res.ok) {
+                msgEl.textContent = 'Profile updated successfully!';
+                msgEl.style.color = '#8FDC9A';
+                document.getElementById('profile-new-email').value = '';
+                document.getElementById('profile-new-password').value = '';
+                loadMe();
+                loadProfilePage();
+            } else {
+                msgEl.textContent = data.error || 'Update failed';
+                msgEl.style.color = '#FF7070';
+            }
+        });
+
+        window.addEventListener('hashchange', () => {
+            const h = location.hash.slice(1);
+            if (titles[h]) navTo(h);
+        });
+
+        document.getElementById('btn-open-activity-modal').addEventListener('click', openActivityModal);
+        document.getElementById('btn-close-activity-modal').addEventListener('click', closeActivityModal);
+        document.getElementById('btn-cancel-activity-modal').addEventListener('click', closeActivityModal);
+        document.getElementById('activity-modal-overlay').addEventListener('click', closeActivityModal);
+        document.getElementById('btn-save-activity').addEventListener('click', saveActivity);
+
+        (function init() {
+            const token = localStorage.getItem('token');
+            const role = localStorage.getItem('role');
+            if (!token || (role !== 'TEACHER' && role !== 'ADMIN')) {
+                window.location.href = '/auth/index.html';
+                return;
+            }
+            initCustomSelects(document);
+            selectObserver.observe(document.body, { childList: true, subtree: true });
+            loadMe();
+            const h = location.hash.slice(1);
+            navTo(titles[h] ? h : 'dashboard');
+            
+            // Notifications & Search Logic
+            const btnNotif = document.getElementById('btn-notifications-toggle');
+            const dropNotif = document.getElementById('notifications-dropdown');
+            const listNotif = document.getElementById('notifications-list');
+            const badgeNotif = document.getElementById('notif-badge');
+            
+            const btnSearch = document.getElementById('btn-search-toggle');
+            const dropSearch = document.getElementById('search-dropdown');
+            const inputSearch = document.getElementById('search-input');
+            const resultsSearch = document.getElementById('search-results');
+
+            // Toggle Dropdowns
+            btnNotif.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropNotif.classList.toggle('active');
+                dropSearch.classList.remove('active');
+                if (dropNotif.classList.contains('active')) loadNotifications();
+            });
+
+            btnSearch.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropSearch.classList.toggle('active');
+                dropNotif.classList.remove('active');
+                if (dropSearch.classList.contains('active')) inputSearch.focus();
+            });
+
+            document.addEventListener('click', () => {
+                dropNotif.classList.remove('active');
+                dropSearch.classList.remove('active');
+            });
+
+            dropNotif.addEventListener('click', (e) => e.stopPropagation());
+            dropSearch.addEventListener('click', (e) => e.stopPropagation());
+
+            async function loadNotifications() {
+                const res = await api('/api/notifications', { method: 'GET' });
+                if (!res || !res.ok) return;
+                const data = await res.json();
+                renderNotifications(data.notifications);
+            }
+
+            function renderNotifications(notifs) {
+                if (!notifs.length) {
+                    listNotif.innerHTML = '<p class="sw-notif-empty">No notifications yet.</p>';
+                    badgeNotif.style.display = 'none';
+                    return;
+                }
+                
+                const unreadCount = notifs.filter(n => !n.is_read).length;
+                badgeNotif.style.display = unreadCount > 0 ? 'block' : 'none';
+
+                listNotif.innerHTML = notifs.map(n => `
+                    <div class="sw-notif-item ${n.is_read ? '' : 'unread'}" onclick="markAsRead(${n.id})">
+                        <div class="sw-ni-title">${escapeHtml(n.title)}</div>
+                        <div class="sw-ni-msg">${escapeHtml(n.message)}</div>
+                        <div class="sw-ni-time">${new Date(n.created_at).toLocaleString()}</div>
+                    </div>
+                `).join('');
+            }
+
+            window.markAsRead = async (id) => {
+                await api(`/api/notifications/${id}/read`, { method: 'POST' });
+                loadNotifications();
+            };
+
+            document.getElementById('btn-clear-notifs').addEventListener('click', async (e) => {
+                e.stopPropagation();
+                if (!confirm('Clear all notifications?')) return;
+                await api('/api/notifications/clear-all', { method: 'DELETE' });
+                loadNotifications();
+            });
+
+            // Search Logic
+            let searchTimeout;
+            inputSearch.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                const q = inputSearch.value.trim();
+                if (q.length < 2) {
+                    resultsSearch.innerHTML = '<p class="sw-search-hint">Type at least 2 characters...</p>';
+                    return;
+                }
+                searchTimeout = setTimeout(() => performSearch(q), 300);
+            });
+
+            async function performSearch(q) {
+                resultsSearch.innerHTML = '<p class="sw-search-hint">Searching...</p>';
+                const res = await api(`/api/teacher/search?q=${encodeURIComponent(q)}`, { method: 'GET' });
+                if (!res || !res.ok) return;
+                const data = await res.json();
+                renderSearchResults(data);
+            }
+
+            function renderSearchResults(data) {
+                let html = '';
+                
+                if (data.students.length) {
+                    html += '<div class="sw-search-section-title" style="padding:10px 20px; font-size:0.75rem; color:var(--sw-accent); font-weight:700; text-transform:uppercase;">Students</div>';
+                    html += data.students.map(s => `
+                        <div class="sw-search-item" onclick="navTo('classes')">
+                            <div class="sw-si-title">${escapeHtml(s.name)}</div>
+                            <div class="sw-si-meta">${escapeHtml(s.email)}</div>
+                        </div>
+                    `).join('');
+                }
+                
+                if (data.classes.length) {
+                    html += '<div class="sw-search-section-title" style="padding:10px 20px; font-size:0.75rem; color:var(--sw-accent); font-weight:700; text-transform:uppercase;">Activities</div>';
+                    html += data.classes.map(c => `
+                        <div class="sw-search-item" onclick="navTo('classes')">
+                            <div class="sw-si-title">${escapeHtml(c.name)}</div>
+                            <div class="sw-si-meta">Activity Record</div>
+                        </div>
+                    `).join('');
+                }
+
+                if (data.tests.length) {
+                    html += '<div class="sw-search-section-title" style="padding:10px 20px; font-size:0.75rem; color:var(--sw-accent); font-weight:700; text-transform:uppercase;">MCQ Tests</div>';
+                    html += data.tests.map(t => `
+                        <div class="sw-search-item" onclick="navTo('mcq-tests')">
+                            <div class="sw-si-title">${escapeHtml(t.title)}</div>
+                            <div class="sw-si-meta">Test Paper</div>
+                        </div>
+                    `).join('');
+                }
+
+                if (!html) {
+                    html = '<p class="sw-search-hint">No results found.</p>';
+                }
+                
+                resultsSearch.innerHTML = html;
+            }
+
+            // Auto-refresh notifications
+            setInterval(loadNotifications, 60000);
+            loadNotifications();
+        })();
+    </script>
+</body>
+</html>

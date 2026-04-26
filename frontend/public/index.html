@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillway Tracker - Academic Progress Platform</title>
+    <meta name="description" content="Track academic progress, attendance, performance, and school operations with Skillway Tracker.">
+    <link rel="icon" type="image/svg+xml" href="/assets/skillway-mark.svg">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body class="landing-page">
+    <div class="landing-shell">
+        <div class="landing-noise" aria-hidden="true"></div>
+        <div class="landing-spotlight" id="landing-spotlight" aria-hidden="true"></div>
+        <div class="landing-gridlines" aria-hidden="true"></div>
+
+        <header class="landing-header">
+            <a href="#top" class="landing-brand" aria-label="Skillway home">
+                <img src="/assets/skillway-logo.svg" alt="Skillway" class="landing-logo">
+            </a>
+
+            <nav class="landing-nav" aria-label="Primary">
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#workflow">Workflow</a>
+                <a href="#connect">Contact</a>
+            </nav>
+
+            <div class="landing-header-actions">
+                <a href="/auth/index.html" class="landing-link-btn">Login</a>
+                <a href="/auth/index.html" class="landing-btn landing-btn-primary">Open Platform</a>
+            </div>
+        </header>
+
+        <main id="top">
+            <section class="hero-section">
+                <div class="hero-copy reveal">
+                    <div class="landing-badge">
+                        <span class="landing-badge-dot"></span>
+                        Real-time school tracking
+                    </div>
+                    <h1>
+                        A sharper school dashboard for attendance,
+                        <span>performance, and daily momentum.</span>
+                    </h1>
+
+
+                    <div class="hero-actions">
+                        <a href="/auth/index.html" class="landing-btn landing-btn-primary">Launch Dashboard</a>
+                        <a href="#features" class="landing-btn landing-btn-secondary">See Features</a>
+                    </div>
+
+                    <div class="hero-stats">
+                        <article class="hero-stat reveal-delay-1">
+                            <strong>3</strong>
+                            <span>Connected roles</span>
+                        </article>
+                        <article class="hero-stat reveal-delay-2">
+                            <strong>96%</strong>
+                            <span>Attendance visibility</span>
+                        </article>
+                        <article class="hero-stat">
+                            <strong>24/7</strong>
+                            <span>Anytime access</span>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="hero-visual reveal reveal-delay-1">
+                    <div class="hero-panel hero-panel-main" data-tilt>
+                        <div class="hero-panel-head">
+                            <div>
+                                <p class="panel-kicker">Live overview</p>
+                                <h2>One glance for school operations</h2>
+                            </div>
+                            <div class="panel-status" id="status-pill">
+                                <span class="status-dot neutral" id="api-dot"></span>
+                                <span id="status-text">Checking services</span>
+                            </div>
+                        </div>
+
+                        <div class="hero-grid">
+                            <div class="hero-kpi hero-kpi-accent">
+                                <span>Academic health</span>
+                                <strong data-counter="92">0</strong>
+                                <small>Performance trends across tracked classes</small>
+                            </div>
+                            <div class="hero-kpi">
+                                <span>Attendance signal</span>
+                                <strong data-counter="96">0</strong>
+                                <small>Present trend remains comfortably on target</small>
+                            </div>
+                            <div class="hero-kpi wide">
+                                <div class="mini-chart" aria-hidden="true">
+                                    <span style="--bar: 58%"></span>
+                                    <span style="--bar: 86%"></span>
+                                    <span style="--bar: 74%"></span>
+                                    <span style="--bar: 92%"></span>
+                                    <span style="--bar: 64%"></span>
+                                    <span style="--bar: 88%"></span>
+                                </div>
+                                <div class="hero-kpi-copy">
+                                    <span>Weekly momentum</span>
+                                    <strong>Strong and stable</strong>
+                                    <small>Marks, attendance, and planning stay readable in one view.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </section>
+
+            <section class="content-section" id="features">
+                <div class="section-head reveal">
+                    <span class="section-tag">Features</span>
+                    <h2>Everything schools need, without the extra clutter.</h2>
+                    <p>
+                        The landing page now follows the same clean product story as the reference site, but the palette
+                        stays grounded in Skillway's darker, calmer brand language.
+                    </p>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="feature-card reveal" data-tilt>
+                        <div class="feature-icon feature-icon-lilac">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5Z"></path>
+                            </svg>
+                        </div>
+                        <h3>Role-based experience</h3>
+                        <p>Teacher, student, and admin journeys stay tailored while still feeling like one platform.</p>
+                    </article>
+
+                    <article class="feature-card reveal reveal-delay-1" data-tilt>
+                        <div class="feature-icon feature-icon-mint">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M4 19h16M7 16V9m5 7V5m5 11v-6"></path>
+                            </svg>
+                        </div>
+                        <h3>Performance analytics</h3>
+                        <p>Surface grades, progress, and class trends early so staff can act before issues grow.</p>
+                    </article>
+
+                    <article class="feature-card reveal reveal-delay-2" data-tilt>
+                        <div class="feature-icon feature-icon-amber">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M7 3v3M17 3v3M4 9h16M5 6h14a1 1 0 0 1 1 1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a1 1 0 0 1 1-1Z"></path>
+                            </svg>
+                        </div>
+                        <h3>Attendance tracking</h3>
+                        <p>Mark daily attendance quickly and keep consistency visible across the school day.</p>
+                    </article>
+
+                    <article class="feature-card reveal" data-tilt>
+                        <div class="feature-icon feature-icon-rose">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 17.5 6.12 20l1.12-6.06L3 9.53l6.12-.82L12 3l2.88 5.71 6.12.82-4.24 4.41L17.88 20Z"></path>
+                            </svg>
+                        </div>
+                        <h3>Student momentum</h3>
+                        <p>Learners can see goals, tests, and progress without relying on fragmented updates.</p>
+                    </article>
+
+                    <article class="feature-card reveal reveal-delay-1" data-tilt>
+                        <div class="feature-icon feature-icon-sky">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"></path>
+                            </svg>
+                        </div>
+                        <h3>Search and review</h3>
+                        <p>Jump between courses, tests, notifications, and student records with less friction.</p>
+                    </article>
+
+                    <article class="feature-card reveal reveal-delay-2" data-tilt>
+                        <div class="feature-icon feature-icon-violet">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 3 5 6v6c0 4.25 2.77 8.2 7 9 4.23-.8 7-4.75 7-9V6Zm-3 9 2 2 4-4"></path>
+                            </svg>
+                        </div>
+                        <h3>Secure onboarding</h3>
+                        <p>School registration and invite-code flows keep setup simple without losing control.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="content-section about-section" id="about">
+                <div class="section-head reveal">
+                    <span class="section-tag">About</span>
+                    <h2>Built for the real rhythm of modern schools.</h2>
+                    <p>
+                        Rather than feeling like a generic template, the page now introduces Skillway through the same
+                        operating model your product already supports.
+                    </p>
+                </div>
+
+                <div class="about-grid">
+                    <article class="about-card reveal" data-tilt>
+                        <span class="about-kicker">For administrators</span>
+                        <h3>Confident oversight</h3>
+                        <p>See school-wide signals, onboarding status, and performance trends from a calmer control surface.</p>
+                    </article>
+
+                    <article class="about-card reveal reveal-delay-1" data-tilt>
+                        <span class="about-kicker">For teachers</span>
+                        <h3>Faster daily workflows</h3>
+                        <p>Record attendance, manage classes, publish tests, and review progress without hopping between tools.</p>
+                    </article>
+
+                    <article class="about-card reveal reveal-delay-2" data-tilt>
+                        <span class="about-kicker">For students</span>
+                        <h3>Clearer progress signals</h3>
+                        <p>Give learners one place to follow plans, see results, and understand what needs attention next.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="content-section workflow-section" id="workflow">
+                <div class="section-head reveal">
+                    <span class="section-tag">Workflow</span>
+                    <h2>From school setup to daily follow-through, the product stays connected.</h2>
+                </div>
+
+                <div class="workflow-grid">
+                    <article class="workflow-step reveal">
+                        <span class="workflow-count">01</span>
+                        <h3>Register and invite</h3>
+                        <p>Create the school once and onboard staff or students with a single registration code.</p>
+                    </article>
+                    <article class="workflow-step reveal reveal-delay-1">
+                        <span class="workflow-count">02</span>
+                        <h3>Track what matters</h3>
+                        <p>Use attendance, grades, schedules, and tests as one connected system instead of separate records.</p>
+                    </article>
+                    <article class="workflow-step reveal reveal-delay-2">
+                        <span class="workflow-count">03</span>
+                        <h3>Respond earlier</h3>
+                        <p>Spot changes in consistency or performance quickly enough to support students before they drift.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="cta-section reveal" id="connect">
+                <div class="cta-card" data-tilt>
+                    <div>
+                        <span class="section-tag">Ready</span>
+                        <h2>Open the Skillway workspace and start from a cleaner first impression.</h2>
+                        <p>
+                            The landing page now speaks the same product language as the platform itself, so the transition
+                            into login and dashboard screens feels much more intentional.
+                        </p>
+                    </div>
+                    <div class="cta-actions">
+                        <a href="/auth/index.html" class="landing-btn landing-btn-primary">Login to Skillway</a>
+                        <a href="#top" class="landing-btn landing-btn-secondary">Back to Top</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="landing-footer">
+            <p>© 2026 Skillway Tracker. Built for steady school operations.</p>
+        </footer>
+    </div>
+
+    <script>
+        (function () {
+            var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var spotlight = document.getElementById('landing-spotlight');
+            var revealItems = document.querySelectorAll('.reveal');
+            var counters = document.querySelectorAll('[data-counter]');
+            var tiltItems = document.querySelectorAll('[data-tilt]');
+
+            function updateSpotlight(event) {
+                if (!spotlight || reducedMotion) return;
+                spotlight.style.setProperty('--spot-x', event.clientX + 'px');
+                spotlight.style.setProperty('--spot-y', event.clientY + 'px');
+            }
+
+            function animateCounter(el) {
+                var target = Number(el.getAttribute('data-counter')) || 0;
+                var startTime = null;
+                var duration = 1200;
+
+                function tick(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    var progress = Math.min((timestamp - startTime) / duration, 1);
+                    var eased = 1 - Math.pow(1 - progress, 3);
+                    var current = Math.round(target * eased);
+                    el.textContent = current + '%';
+                    if (progress < 1) requestAnimationFrame(tick);
+                }
+
+                requestAnimationFrame(tick);
+            }
+
+            function setupReveal() {
+                if (!('IntersectionObserver' in window) || reducedMotion) {
+                    revealItems.forEach(function (item) {
+                        item.classList.add('is-visible');
+                    });
+                    counters.forEach(animateCounter);
+                    return;
+                }
+
+                var counterDone = false;
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.16 });
+
+                revealItems.forEach(function (item) {
+                    observer.observe(item);
+                });
+
+                var counterObserver = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting && !counterDone) {
+                            counters.forEach(animateCounter);
+                            counterDone = true;
+                            counterObserver.disconnect();
+                        }
+                    });
+                }, { threshold: 0.4 });
+
+                var heroPanel = document.querySelector('.hero-panel-main');
+                if (heroPanel) counterObserver.observe(heroPanel);
+            }
+
+            function setupTilt() {
+                if (reducedMotion) return;
+
+                tiltItems.forEach(function (item) {
+                    item.addEventListener('mousemove', function (event) {
+                        var rect = item.getBoundingClientRect();
+                        var x = event.clientX - rect.left;
+                        var y = event.clientY - rect.top;
+                        var rotateX = ((y / rect.height) - 0.5) * -7;
+                        var rotateY = ((x / rect.width) - 0.5) * 8;
+
+                        item.style.transform =
+                            'perspective(1200px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-4px)';
+                    });
+
+                    item.addEventListener('mouseleave', function () {
+                        item.style.transform = '';
+                    });
+                });
+            }
+
+            async function checkStatus() {
+                var apiDot = document.getElementById('api-dot');
+                var statusText = document.getElementById('status-text');
+
+                try {
+                    var res = await fetch('/api/status');
+                    if (res.ok) {
+                        apiDot.className = 'status-dot green';
+                        statusText.textContent = 'Systems online';
+                    } else {
+                        apiDot.className = 'status-dot yellow';
+                        statusText.textContent = 'Partial response';
+                    }
+                } catch (err) {
+                    apiDot.className = 'status-dot red';
+                    statusText.textContent = 'Offline or unavailable';
+                }
+            }
+
+            document.addEventListener('mousemove', updateSpotlight);
+            setupReveal();
+            setupTilt();
+            checkStatus();
+        })();
+    </script>
+</body>
+</html>

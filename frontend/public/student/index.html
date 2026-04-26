@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillway — Student</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/skillway-mark.svg">
+    <link rel="stylesheet" href="skillway-student.css">
+</head>
+
+<body class="sw-body">
+    <div class="sw-app">
+        <header class="sw-header">
+            <a href="#home" class="sw-brand" id="sw-brand-link">
+                <span class="sw-brand-mark" aria-hidden="true">
+                    <img src="/assets/skillway-mark.svg" alt="">
+                </span>
+                <span class="sw-brand-text">Skillway</span>
+            </a>
+            <nav class="sw-nav" aria-label="Primary">
+                <button type="button" class="active" data-route="home">Home</button>
+                <button type="button" data-route="courses">My Courses</button>
+                <button type="button" data-route="tests">Tests</button>
+                <button type="button" data-route="attendance">Attendance</button>
+                <button type="button" data-route="activities">Activities</button>
+                <button type="button" data-route="plan">Learning Plan</button>
+                <button type="button" data-route="coach">Learning Coach</button>
+            </nav>
+            <div class="sw-header-tools">
+                <div class="sw-tool-wrapper">
+                    <button type="button" class="sw-icon-btn" id="btn-search-toggle" title="Search">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </button>
+                    <div id="search-dropdown" class="sw-dropdown sw-search-dropdown">
+                        <div class="sw-search-input-wrap">
+                            <input type="text" id="search-input" placeholder="Search courses, tests..." autocomplete="off">
+                        </div>
+                        <div id="search-results" class="sw-search-results">
+                            <p class="sw-search-hint">Type to search...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sw-tool-wrapper">
+                    <button type="button" class="sw-icon-btn" id="btn-notifications-toggle" title="Notifications">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                        <span id="notif-badge" class="sw-badge-dot" style="display:none;"></span>
+                    </button>
+                    <div id="notifications-dropdown" class="sw-dropdown sw-notif-dropdown">
+                        <div class="sw-notif-header">
+                            <span>Notifications</span>
+                            <button type="button" id="btn-clear-notifs">Clear all</button>
+                        </div>
+                        <div id="notifications-list" class="sw-notif-list">
+                            <p class="sw-notif-empty">No notifications yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#profile" class="sw-profile" id="btn-profile">
+                    <div class="sw-avatar" id="sw-avatar-initials">S</div>
+                    <div class="sw-profile-meta">
+                        <div class="sw-profile-name" id="sw-profile-name">Student</div>
+                        <div class="sw-profile-role" id="sw-profile-role">Learner</div>
+                    </div>
+                </a>
+                <button type="button" class="sw-logout" id="btn-logout">Log out</button>
+            </div>
+        </header>
+
+        <main class="sw-main">
+            <!-- Profile -->
+            <div id="page-profile" class="sw-page">
+                <h1 class="sw-page-title">My Profile</h1>
+                <p class="sw-page-desc">Manage your account details and school preferences.</p>
+
+                <div class="sw-panel" style="max-width: 800px; padding: 0; overflow: hidden;">
+                    <div
+                        style="background: linear-gradient(135deg, var(--sw-accent-soft), transparent); padding: 40px; display: flex; align-items: center; gap: 32px; border-bottom: 1px solid var(--sw-border);">
+                        <div class="sw-avatar" id="profile-avatar-large"
+                            style="width: 100px; height: 100px; font-size: 2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.3);">
+                            S</div>
+                        <div>
+                            <h2 id="profile-full-name" style="margin: 0; font-size: 1.75rem; letter-spacing: -0.02em;">
+                                Student Name</h2>
+                            <p id="profile-school-name"
+                                style="margin: 6px 0 0; color: var(--sw-muted); font-size: 1rem;">School Name</p>
+                            <span class="sw-tag done" style="margin-top: 14px;">Active Student</span>
+                        </div>
+                    </div>
+                    <div style="padding: 32px;">
+                        <div
+                            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 32px;">
+                            <div>
+                                <h3 class="sw-card-title"
+                                    style="color: var(--sw-muted2); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">
+                                    Contact Information</h3>
+                                <div style="display: flex; flex-direction: column; gap: 16px;">
+                                    <div>
+                                        <label
+                                            style="display: block; font-size: 0.75rem; color: var(--sw-muted); margin-bottom: 4px;">Email
+                                            Address</label>
+                                        <div id="profile-email" style="font-weight: 500;">student@example.com</div>
+                                    </div>
+                                    <div>
+                                        <label
+                                            style="display: block; font-size: 0.75rem; color: var(--sw-muted); margin-bottom: 4px;">Account
+                                            ID</label>
+                                        <div id="profile-id"
+                                            style="font-weight: 500; font-family: monospace; color: var(--sw-muted);">
+                                            #000000</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="sw-card-title"
+                                    style="color: var(--sw-muted2); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">
+                                    Academic Info</h3>
+                                <div style="display: flex; flex-direction: column; gap: 16px;">
+                                    <div>
+                                        <label
+                                            style="display: block; font-size: 0.75rem; color: var(--sw-muted); margin-bottom: 4px;">Current
+                                            Plan</label>
+                                        <div style="font-weight: 500;">Standard Curriculum</div>
+                                    </div>
+                                    <div>
+                                        <label
+                                            style="display: block; font-size: 0.75rem; color: var(--sw-muted); margin-bottom: 4px;">Role</label>
+                                        <div style="font-weight: 500; color: var(--sw-accent);">Verified Student</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Update Profile Form -->
+                        <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--sw-border);">
+                            <h3 class="sw-card-title"
+                                style="color: var(--sw-muted2); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 20px;">
+                                Account Settings</h3>
+                            <form id="profile-update-form"
+                                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                                <div>
+                                    <label class="sw-stat-label" style="display: block; margin-bottom: 8px;">Update
+                                        Email</label>
+                                    <input type="email" id="profile-new-email" class="sw-plan-input"
+                                        placeholder="Enter new email" autocomplete="email">
+                                </div>
+                                <div>
+                                    <label class="sw-stat-label" style="display: block; margin-bottom: 8px;">New
+                                        Password</label>
+                                    <input type="password" id="profile-new-password" class="sw-plan-input"
+                                        placeholder="Min. 6 characters" autocomplete="new-password">
+                                </div>
+                            </form>
+                            <div id="profile-update-msg" style="margin-top: 16px; font-size: 0.85rem; display: none;">
+                            </div>
+                            <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
+                                <button type="button" class="sw-btn-dark" id="btn-update-profile">Update
+                                    Credentials</button>
+                            </div>
+                        </div>
+
+                        <div
+                            style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--sw-border); display: flex; justify-content: flex-end; gap: 12px; display: none;">
+                            <button type="button" class="sw-share" style="padding: 10px 20px;">Request Data
+                                Correction</button>
+                            <button type="button" class="sw-btn-dark" style="padding: 10px 24px;">Security
+                                Settings</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Home -->
+            <div id="page-home" class="sw-page active">
+                <div class="sw-home-top">
+                    <div class="sw-stat-grid">
+                        <div class="sw-stat highlight sw-stat--link" onclick="location.hash='#courses'">
+                            <div class="sw-stat-link-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M7 17l9.2-9.2M17 17V7H7" />
+                                </svg>
+                            </div>
+                            <p class="sw-stat-label">Courses on track</p>
+                            <p class="sw-stat-value" id="stat-courses">0</p>
+                            <p class="sw-stat-trend" id="stat-courses-trend">Active this term</p>
+                        </div>
+                        <div class="sw-stat sw-stat--link" onclick="location.hash='#tests'">
+                            <div class="sw-stat-link-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M7 17l9.2-9.2M17 17V7H7" />
+                                </svg>
+                            </div>
+                            <p class="sw-stat-label">Avg test score</p>
+                            <p class="sw-stat-value" id="stat-avg">—</p>
+                            <p class="sw-stat-trend" id="stat-avg-trend">Across graded work</p>
+                        </div>
+                        <div class="sw-stat sw-stat--link" onclick="location.hash='#attendance'">
+                            <div class="sw-stat-link-icon">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M7 17l9.2-9.2M17 17V7H7" />
+                                </svg>
+                            </div>
+                            <p class="sw-stat-label">Attendance Rate</p>
+                            <p class="sw-stat-value" id="stat-attendance-rate">0%</p>
+                            <p class="sw-stat-trend" id="stat-attendance-trend">Overall consistency</p>
+                        </div>
+                        <div class="sw-todo-card">
+                            <div class="sw-card-header-row" style="margin-bottom:10px;">
+                                <p class="sw-stat-label" style="margin-bottom:0;">My Goals</p>
+                                <span id="todo-dashboard-count"
+                                    style="font-size:0.65rem; color:var(--sw-accent-mid); font-weight:700;"></span>
+                            </div>
+                            <div class="sw-todo-quick-add">
+                                <input type="text" id="todo-dashboard-input" class="sw-todo-input"
+                                    placeholder="Quick add goal..." maxlength="100">
+                            </div>
+                            <ul class="sw-todo-list-mini" id="todo-dashboard-list"></ul>
+                        </div>
+                    </div>
+                    <div class="sw-progress-card">
+                        <div class="sw-card-header-row">
+                            <h3 class="sw-card-title">Momentum</h3>
+                            <div class="sw-info-wrapper">
+                                <svg class="sw-info-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 16v-4M12 8h.01" />
+                                </svg>
+                                <div class="sw-info-tooltip">
+                                    <strong>What is Momentum?</strong><br>
+                                    A daily score (0–100%) tracking your activity:<br>
+                                    • 60% Attendance consistency<br>
+                                    • 30% Test submissions<br>
+                                    • 10% Goal completion
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sw-chart-wrap" id="sw-momentum-chart" aria-label="7-day activity momentum"></div>
+                    </div>
+                    <div class="sw-schedule-card">
+                        <h3 class="sw-card-title">My schedule</h3>
+                        <div class="sw-cal-strip" id="sw-cal-strip"></div>
+                        <ul class="sw-schedule-list" id="sw-schedule-list"></ul>
+                    </div>
+                </div>
+                <div class="sw-home-learning-grid">
+                    <section class="sw-home-column">
+                        <div class="sw-section-head">
+                            <h2>My courses</h2>
+                            <div class="sw-filters" id="home-course-filters">
+                                <button type="button" class="sw-filter active" data-cf="all">All</button>
+                                <button type="button" class="sw-filter" data-cf="mandatory">Mandatory</button>
+                                <button type="button" class="sw-filter" data-cf="recommended">Recommended</button>
+                                <button type="button" class="sw-filter" data-cf="completed">Completed</button>
+                            </div>
+                        </div>
+                        <div class="sw-courses-grid" id="home-courses-grid"></div>
+                        <div id="home-courses-empty" class="sw-empty-box" style="display:none;">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--sw-accent)"
+                                stroke-opacity="0.3" stroke-width="1.5">
+                                <path d="M12 2v20M2 12h20" />
+                                <circle cx="12" cy="12" r="10" />
+                            </svg>
+                            <p>No courses yet — your school will publish them here.</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Courses (full list) -->
+            <div id="page-courses" class="sw-page">
+                <h1 class="sw-page-title">My courses</h1>
+                <p class="sw-page-desc">Continue where you left off. Tap a course to open the lesson space.</p>
+                <div class="sw-section-head" style="margin-bottom:12px;">
+                    <div></div>
+                    <div class="sw-filters" id="page-course-filters">
+                        <button type="button" class="sw-filter active" data-pcf="all">All</button>
+                        <button type="button" class="sw-filter" data-pcf="mandatory">Mandatory</button>
+                        <button type="button" class="sw-filter" data-pcf="recommended">Recommended</button>
+                        <button type="button" class="sw-filter" data-pcf="completed">Completed</button>
+                    </div>
+                </div>
+                <div class="sw-courses-grid" id="page-courses-grid"></div>
+                <div id="page-courses-empty" class="sw-empty-box" style="display:none;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--sw-muted2)"
+                        stroke-width="1.5">
+                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5z" />
+                        <path d="M8 7h6M8 11h8" />
+                    </svg>
+                    <p>No courses match your active filters.</p>
+                </div>
+            </div>
+
+            <!-- Tests -->
+            <div id="page-tests" class="sw-page">
+                <div id="tests-landing">
+                    <h1 class="sw-page-title">Tests</h1>
+                    <p class="sw-page-desc">Take teacher MCQ quizzes and review every graded item.</p>
+
+                    <div id="mcq-tests-student-grid" class="sw-quiz-grid"></div>
+                    <div id="mcq-tests-student-empty" class="sw-empty-box" style="display:none;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--sw-muted2)"
+                            stroke-width="1.5">
+                            <path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2 2V5a2 2 0 0 1 2-2h11" />
+                        </svg>
+                        <p>No quizzes have been assigned to you yet.</p>
+                    </div>
+
+                    <h2 class="sw-page-title sw-tests-subtitle">Performance Analysis</h2>
+                    <p class="sw-page-desc" style="margin-top:-6px;margin-bottom:14px;">Subject averages — Strengths by
+                        subject snapshot based on your tests.</p>
+                    <div id="results-grid" class="sw-results-grid"></div>
+                    <p class="sw-empty" id="results-empty" style="display:none;">Subject averages appear once you have
+                        grades.</p>
+                </div>
+                <div id="tests-mcq-take" class="sw-mcq-take" style="display:none;" aria-hidden="true">
+                    <button type="button" class="sw-mcq-back" id="btn-mcq-back">← Back to tests</button>
+                    <h1 class="sw-page-title" id="mcq-take-heading" style="margin-top:14px;">Quiz</h1>
+                    <p class="sw-page-desc" id="mcq-take-meta"></p>
+                    <div id="mcq-take-already" class="sw-panel sw-mcq-result" style="display:none;"></div>
+                    <form id="mcq-take-form" class="sw-mcq-form" style="display:none;"></form>
+                    <div id="mcq-take-actions" style="display:none;margin-top:22px;">
+                        <button type="button" class="sw-mcq-submit" id="btn-mcq-submit">Submit answers</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance -->
+            <div id="page-attendance" class="sw-page">
+                <h1 class="sw-page-title">Attendance</h1>
+                <p class="sw-page-desc">Your attendance record over the last 90 days.</p>
+                <div class="sw-stat-grid" style="margin-bottom: 28px;">
+                    <div class="sw-stat highlight">
+                        <p class="sw-stat-label">Attendance Rate</p>
+                        <p class="sw-stat-value" id="att-stat-rate">0%</p>
+                        <p class="sw-stat-trend" id="att-stat-rate-label">Overall consistency</p>
+                    </div>
+                    <div class="sw-stat">
+                        <p class="sw-stat-label">Days Present</p>
+                        <p class="sw-stat-value" id="att-stat-present">0</p>
+                        <p class="sw-stat-trend">Total recorded present</p>
+                    </div>
+                    <div class="sw-stat">
+                        <p class="sw-stat-label">Late Entries</p>
+                        <p class="sw-stat-value" id="att-stat-late">0</p>
+                        <p class="sw-stat-trend">Times marked late</p>
+                    </div>
+                    <div class="sw-stat">
+                        <p class="sw-stat-label">Absences</p>
+                        <p class="sw-stat-value" id="att-stat-absent">0</p>
+                        <p class="sw-stat-trend">Total days missed</p>
+                    </div>
+                </div>
+
+                <div class="sw-panel" style="padding: 0; overflow: hidden;">
+                    <table class="sw-table-sleek">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Recorded At</th>
+                            </tr>
+                        </thead>
+                        <tbody id="att-body"></tbody>
+                    </table>
+                    <div id="att-empty" class="sw-empty-box" style="display:none; padding: 60px;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--sw-muted2)"
+                            stroke-width="1.5">
+                            <path
+                                d="M8 2v3M16 2v3M3.5 9.09h17M21 8.5V17c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V8.5c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2z" />
+                        </svg>
+                        <p>Your attendance history hasn't started yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activities -->
+            <div id="page-activities" class="sw-page">
+                <h1 class="sw-page-title">Activities</h1>
+                <p class="sw-page-desc">See every school activity, competition, club, and achievement logged for you.</p>
+                <div id="page-activities-list" class="sw-student-activities-grid"></div>
+                <div id="page-activities-empty" class="sw-empty-box" style="display:none;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--sw-muted2)"
+                        stroke-width="1.5">
+                        <path d="M12 3l2.7 5.47L21 9.4l-4.5 4.38 1.06 6.22L12 17.1 6.44 20l1.06-6.22L3 9.4l6.3-.93L12 3z" />
+                    </svg>
+                    <p>Your activity history will appear here once teachers log activities for you.</p>
+                </div>
+            </div>
+
+            <!-- Learning plan -->
+            <div id="page-plan" class="sw-page">
+                <h1 class="sw-page-title">Learning plan</h1>
+                <p class="sw-page-desc">Build your weekly list — add tasks, remove what you do not need, and check them
+                    off. Everything stays on this device.</p>
+                <div class="sw-plan-layout">
+                    <div class="sw-plan-main-col">
+                        <div class="sw-panel sw-plan-panel">
+                            <div class="sw-panel-head sw-plan-panel-head">
+                                <h2 class="sw-plan-week-heading">This week</h2>
+                                <span class="sw-plan-progress-label" id="plan-progress-text">0 of 0 done</span>
+                            </div>
+                            <div class="sw-plan-progress-track" aria-hidden="true">
+                                <div class="sw-plan-progress-fill" id="plan-progress-bar" style="width:0%"></div>
+                            </div>
+                            <ul class="sw-plan-list" id="plan-list"></ul>
+                            <div class="sw-plan-add">
+                                <h3 class="sw-plan-add-title">Add a task</h3>
+                                <div class="sw-plan-add-fields">
+                                    <input type="text" id="plan-new-title" class="sw-plan-input"
+                                        placeholder="What do you want to do?" maxlength="200" autocomplete="off">
+                                    <div class="sw-plan-add-row">
+                                        <select id="plan-new-tag" class="sw-plan-select" aria-label="Task type">
+                                            <option value="daily">Daily</option>
+                                            <option value="weekly" selected>Weekly</option>
+                                        </select>
+                                        <input type="text" id="plan-new-est" class="sw-plan-input sw-plan-input--sm"
+                                            placeholder="e.g. 20 min" maxlength="24" autocomplete="off">
+                                    </div>
+                                </div>
+                                <button type="button" class="sw-btn-dark sw-plan-add-btn-full" id="plan-add-task">Add
+                                    task</button>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="sw-plan-side">
+                        <div class="sw-panel sw-plan-side-card">
+                            <h3 class="sw-card-title">Need a nudge?</h3>
+                            <p class="sw-plan-card-text">Ask <strong>Learning Coach</strong> to turn these habits into a
+                                day-by-day schedule or to reflect on what to prioritize.</p>
+                            <button type="button" class="sw-btn-dark" id="plan-goto-coach">Open Learning Coach</button>
+                        </div>
+                        <div class="sw-panel sw-plan-side-card sw-plan-side-card--muted">
+                            <h3 class="sw-card-title">Ideas for later</h3>
+                            <ul class="sw-plan-ideas">
+                                <li>Teacher-set goals &amp; due dates</li>
+                                <li>Plans tied to your courses</li>
+                                <li>Reminders &amp; calendar sync</li>
+                                <li>AI summary of your week</li>
+                            </ul>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+            <!-- Learning Coach -->
+            <div id="page-coach" class="sw-page">
+                <h1 class="sw-page-title">Learning Coach</h1>
+                <p class="sw-page-desc">Private chat with your AI study partner — habits, goals, stress, and planning
+                    next steps. Replies use your school’s Skillway assistant.</p>
+                <div class="sw-coach-grid">
+                    <aside class="sw-panel sw-coach-aside">
+                        <h2 class="sw-card-title">Try asking</h2>
+                        <p class="sw-coach-aside-hint">Tap a prompt to fill the message box — edit if you like, then
+                            send.</p>
+                        <div class="sw-filters sw-coach-prompts" id="coach-prompts">
+                            <button type="button" class="sw-filter"
+                                data-prompt="How can I build a realistic study schedule for this week?">Weekly
+                                schedule</button>
+                            <button type="button" class="sw-filter"
+                                data-prompt="I feel overwhelmed before exams. What are 3 small steps I can take today?">Exam
+                                stress</button>
+                            <button type="button" class="sw-filter"
+                                data-prompt="Help me set one clear academic goal for the next month and how to track it.">Goals
+                                &amp; tracking</button>
+                            <button type="button" class="sw-filter"
+                                data-prompt="How should I review after a bad test score without losing motivation?">Bouncing
+                                back</button>
+                            <button type="button" class="sw-filter"
+                                data-prompt="Give me tips for deep focus and avoiding phone distraction while studying.">Focus
+                                &amp; distractions</button>
+                        </div>
+                        <div class="sw-coach-note">
+                            <strong>Note:</strong> This is guidance, not a substitute for professional counseling or
+                            medical advice.
+                        </div>
+                    </aside>
+                    <div class="sw-coach-main">
+                        <div class="sw-panel sw-coach-panel">
+                            <div class="sw-panel-head sw-chat-toolbar">
+                                <span class="sw-panel-head-title">Conversation</span>
+                                <button type="button" class="sw-chat-clear" id="coach-clear"
+                                    title="Clear messages">Clear</button>
+                            </div>
+                            <div class="sw-chat" id="coach-chat">
+                                <div class="sw-chat-log" id="chat-log">
+                                    <div class="sw-bubble bot">Hi — I’m your Learning Coach. Ask anything about
+                                        studying, habits, or planning — what would help you most right now?</div>
+                                </div>
+                                <div class="sw-chat-input-row">
+                                    <textarea id="chat-input" rows="2" placeholder="Message your Learning Coach…"
+                                        autocomplete="off"></textarea>
+                                    <button type="button" class="sw-send" id="chat-send">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lesson -->
+            <div id="page-lesson" class="sw-page">
+                <p class="sw-breadcrumb" id="lesson-crumb"></p>
+                <div class="sw-lesson-head">
+                    <div>
+                        <button type="button" class="sw-back" id="lesson-back">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M19 12H5M12 19l-7-7 7-7" />
+                            </svg>
+                            Back
+                        </button>
+                        <h1 class="sw-lesson-title" id="lesson-title">Course</h1>
+                        <div class="sw-meta-pills" id="lesson-meta"></div>
+                    </div>
+                </div>
+                <div class="sw-lesson-layout">
+                    <div>
+                        <div class="sw-video-box" id="lesson-video-box">
+                            <div class="sw-video-poster"></div>
+                            <button type="button" class="sw-play-btn" id="lesson-play" aria-label="Play lesson">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                                    <polygon points="10 8 16 12 10 16 10 8" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="sw-tabs-row">
+                            <div class="sw-tabs">
+                                <button type="button" class="sw-tab active" data-ltab="desc">Description</button>
+                                <button type="button" class="sw-tab" data-ltab="mat">Materials</button>
+                                <button type="button" class="sw-tab" data-ltab="test">Test</button>
+                            </div>
+                            <button type="button" class="sw-share" id="lesson-share">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="18" cy="5" r="3" />
+                                    <circle cx="6" cy="12" r="3" />
+                                    <circle cx="18" cy="19" r="3" />
+                                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+                                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
+                                </svg>
+                                Share lesson
+                            </button>
+                        </div>
+                        <div class="sw-lesson-body" id="lesson-tab-desc"></div>
+                        <div class="sw-lesson-body" id="lesson-tab-mat" style="display:none;"></div>
+                        <div class="sw-lesson-body" id="lesson-tab-test" style="display:none;"></div>
+                    </div>
+                    <aside>
+                        <h3 class="sw-sidebar-title">Lesson overview</h3>
+                        <div id="lesson-accordion"></div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Custom Modal -->
+    <div id="sw-confirm-modal" class="sw-modal-overlay">
+        <div class="sw-modal-box">
+            <h3 class="sw-modal-title" id="sw-modal-title">Confirm Action</h3>
+            <p class="sw-modal-msg" id="sw-modal-msg">Are you sure you want to proceed?</p>
+            <div class="sw-modal-actions">
+                <button type="button" class="sw-btn-modal sw-btn-modal--cancel" id="sw-modal-cancel">Cancel</button>
+                <button type="button" class="sw-btn-modal sw-btn-modal--confirm" id="sw-modal-confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            function authHeaders() {
+                const token = localStorage.getItem('token');
+                return {
+                    'Content-Type': 'application/json',
+                    Authorization: token ? 'Bearer ' + token : '',
+                };
+            }
+
+            async function api(path, opts) {
+                const res = await fetch(path, { ...opts, headers: { ...authHeaders(), ...((opts && opts.headers) || {}) } });
+                if (res.status === 401 || res.status === 403) {
+                    window.location.href = '/auth/index.html';
+                    return null;
+                }
+                return res;
+            }
+
+            function escapeHtml(s) {
+                const d = document.createElement('div');
+                d.textContent = s == null ? '' : String(s);
+                return d.innerHTML;
+            }
+
+            function hashInt(seed) {
+                let h = 0;
+                const str = String(seed);
+                for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+                return Math.abs(h);
+            }
+
+            function enrichCourse(c) {
+                const id = c.id;
+                const h = hashInt('c' + id);
+                const totalVideos = c.playlist_video_count != null ? Math.max(0, parseInt(String(c.playlist_video_count), 10) || 0) : 0;
+                const completedVideos = Math.max(0, parseInt(String(c.completed_count || 0), 10) || 0);
+                const progress = totalVideos > 0 ? Math.min(100, Math.round((completedVideos / totalVideos) * 100)) : 0;
+                let category = 'recommended';
+                if (progress >= 100 && totalVideos > 0) category = 'completed';
+                else if (c.youtube_playlist_id) category = 'mandatory';
+                return {
+                    ...c,
+                    _progress: progress,
+                    _category: category,
+                    _lessons: totalVideos,
+                    _completedVideos: completedVideos,
+                    _playlistUrl: c.youtube_playlist_id ? 'https://www.youtube.com/watch?v=&list=' + c.youtube_playlist_id : '',
+                };
+            }
+
+            let dashboard = null;
+            let gradesList = [];
+            var currentMcqTakeTestId = null;
+            let videosList = [];
+            let homeFilter = 'all';
+            let pageCourseFilter = 'all';
+            let currentLessonCourse = null;
+            let lessonVideoUrl = '';
+            let currentLessonProgress = null;
+            let lessonPlayer = null;
+            let youtubeApiPromise = null;
+            let lessonProgressPoller = null;
+            let lessonLastPlaylistIdx = null;
+            let lessonProgressSyncing = false;
+            let selectedScheduleDayKey = null;
+            var currentPlanTasks = [];
+            var PLAN_STORAGE_KEY = 'skillway_plan_v2';
+
+            function getPlanState() {
+                try {
+                    var raw = localStorage.getItem(PLAN_STORAGE_KEY);
+                    var state = { done: {}, doneAt: {}, tasks: null };
+                    if (raw) {
+                        var s = JSON.parse(raw);
+                        if (s && typeof s === 'object') {
+                            state.done = s.done || {};
+                            state.doneAt = s.doneAt || {};
+                            state.tasks = s.tasks || null;
+                        }
+                    }
+
+                    // Aggressive filtering of legacy sample tasks
+                    if (state.tasks && Array.isArray(state.tasks)) {
+                        state.tasks = state.tasks.filter(function (tk) {
+                            var title = String(tk.t || '').toLowerCase();
+                            return !title.includes('extra review') && !title.includes('momentum');
+                        });
+                    }
+                    return state;
+                } catch (e) {
+                    return { done: {}, doneAt: {}, tasks: null };
+                }
+            }
+
+            function migratePlanFromV1() {
+                try {
+                    var legacy = localStorage.getItem('skillway_plan_v1');
+                    if (!legacy || localStorage.getItem(PLAN_STORAGE_KEY)) return;
+                    var old = JSON.parse(legacy);
+                    if (!old || typeof old !== 'object') return;
+                    var next = { done: old.done || {}, tasks: null };
+                    localStorage.setItem(PLAN_STORAGE_KEY, JSON.stringify(next));
+                } catch (e) { }
+            }
+
+            function ensurePlanTasks(state) {
+                if (state.tasks === null || state.tasks === undefined) {
+                    state.tasks = PLAN_TASK_DEFAULTS.map(function (x) {
+                        return { id: x.id, t: x.t, tag: x.tag, est: x.est };
+                    });
+                    setPlanState(state);
+                }
+            }
+
+            function setPlanState(state) {
+                try {
+                    localStorage.setItem(PLAN_STORAGE_KEY, JSON.stringify(state));
+                } catch (e) { }
+            }
+
+            function updatePlanProgressUI() {
+                var state = getPlanState();
+                var tasks = currentPlanTasks;
+                var total = tasks.length;
+                var done = 0;
+                for (var i = 0; i < tasks.length; i++) {
+                    if (state.done[tasks[i].id]) done++;
+                }
+                var pct = total ? Math.round((done / total) * 100) : 0;
+                var el = document.getElementById('plan-progress-text');
+                var bar = document.getElementById('plan-progress-bar');
+                if (el) el.textContent = done + ' of ' + total + ' done';
+                if (bar) bar.style.width = pct + '%';
+            }
+
+            function parseHash() {
+                const h = (location.hash || '#home').slice(1);
+                if (h.startsWith('lesson/')) {
+                    const id = parseInt(h.split('/')[1], 10);
+                    return { name: 'lesson', lessonId: isNaN(id) ? null : id };
+                }
+                const allowed = ['home', 'courses', 'tests', 'attendance', 'activities', 'plan', 'coach', 'profile'];
+                if (h === 'counselor') return { name: 'coach' };
+                if (allowed.indexOf(h) >= 0) return { name: h };
+                return { name: 'home' };
+            }
+
+            function setHash(route, lessonId) {
+                if (route === 'lesson' && lessonId != null) location.hash = 'lesson/' + lessonId;
+                else location.hash = route;
+            }
+
+            function navSync(route) {
+                document.querySelectorAll('.sw-nav button[data-route]').forEach(function (b) {
+                    b.classList.toggle('active', b.getAttribute('data-route') === route);
+                });
+            }
+
+            function showPage(name) {
+                document.querySelectorAll('.sw-page').forEach(function (p) {
+                    p.classList.remove('active');
+                });
+                const map = {
+                    home: 'page-home',
+                    courses: 'page-courses',
+                    tests: 'page-tests',
+                    attendance: 'page-attendance',
+                    activities: 'page-activities',
+                    plan: 'page-plan',
+                    coach: 'page-coach',
+                    lesson: 'page-lesson',
+                    profile: 'page-profile',
+                };
+                const id = map[name];
+                if (id) {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('active');
+                }
+                navSync(name === 'lesson' ? 'courses' : name);
+            }
+
+            function route() {
+                const r = parseHash();
+                if (r.name === 'lesson' && r.lessonId != null) {
+                    openLesson(r.lessonId);
+                    return;
+                }
+                showPage(r.name);
+                if (r.name === 'tests') loadTestsPage();
+                if (r.name === 'attendance') loadAttendancePage();
+                if (r.name === 'activities') loadActivitiesPage();
+                if (r.name === 'plan') loadPlanPage();
+                if (r.name === 'profile') loadProfilePage();
+            }
+
+            function initials(name) {
+                if (!name) return 'S';
+                const p = name.trim().split(/\s+/);
+                return (p[0][0] + (p[1] ? p[1][0] : '')).toUpperCase();
+            }
+
+            async function loadProfile() {
+                const res = await api('/api/student/me', { method: 'GET' });
+                if (!res || !res.ok) return;
+                const me = await res.json();
+                document.getElementById('sw-profile-name').textContent = me.name || 'Student';
+                document.getElementById('sw-profile-role').textContent = me.school_name || 'Learner';
+                document.getElementById('sw-avatar-initials').textContent = initials(me.name);
+            }
+
+            function renderDashboardTodo() {
+                const state = getPlanState();
+                const list = document.getElementById('todo-dashboard-list');
+                const count = document.getElementById('todo-dashboard-count');
+                if (!list) return;
+
+                const tasks = (state.tasks || []).filter(t => !t._deleted);
+                const uncompleted = tasks.filter(t => !state.done[t.id]);
+                const completed = tasks.filter(t => state.done[t.id]);
+
+                count.textContent = tasks.length ? `${completed.length}/${tasks.length}` : '';
+                list.innerHTML = '';
+
+                if (tasks.length === 0) {
+                    list.innerHTML = '<li class="sw-todo-empty-mini">No goals yet.</li>';
+                    return;
+                }
+
+                const sorted = [...uncompleted, ...completed];
+                sorted.slice(0, 6).forEach(t => {
+                    const isDone = state.done[t.id];
+                    const li = document.createElement('li');
+                    li.className = 'sw-todo-item-mini' + (isDone ? ' done' : '');
+                    li.innerHTML = `
+                <div class="sw-todo-check-mini" data-id="${t.id}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <span class="sw-todo-text-mini">${escapeHtml(t.t)}</span>
+                <button type="button" class="sw-todo-remove-mini" title="Remove goal" aria-label="Remove goal">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            `;
+
+                    li.querySelector('.sw-todo-check-mini').addEventListener('click', function () {
+                        togglePlanTask(t.id);
+                        renderDashboardTodo();
+                        if (dashboard && dashboard.attendanceTrend) buildMomentumChart(dashboard.attendanceTrend);
+                    });
+
+                    li.querySelector('.sw-todo-remove-mini').addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        planRemoveTask(t.id);
+                        renderDashboardTodo();
+                        if (dashboard && dashboard.attendanceTrend) buildMomentumChart(dashboard.attendanceTrend);
+                    });
+
+                    list.appendChild(li);
+                });
+            }
+
+            function formatActivityDate(value) {
+                if (!value) return '-';
+                var d = new Date(value);
+                if (isNaN(d.getTime())) return String(value);
+                return d.toLocaleDateString();
+            }
+
+            function getActivityIcon(type) {
+                const t = String(type || '').toLowerCase();
+                if (t.includes('sport')) return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17M14 14.66V17M18 10V4M6 10V4M12 14.66v-3.33M12 7.33V4M12 14.66c-3.31 0-6-2.69-6-6V10h12V8.66c0 3.31-2.69 6-6 6z"/></svg>';
+                if (t.includes('competition') || t.includes('award')) return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>';
+                if (t.includes('club') || t.includes('society')) return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+                return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+            }
+
+            function renderActivities(containerId, emptyId, activities, limit) {
+                var list = document.getElementById(containerId);
+                var empty = document.getElementById(emptyId);
+                if (!list || !empty) return;
+
+                var items = Array.isArray(activities) ? activities.slice(0, limit || activities.length) : [];
+                list.innerHTML = '';
+
+                if (!items.length) {
+                    empty.style.display = 'flex';
+                    return;
+                }
+
+                empty.style.display = 'none';
+
+                items.forEach(function (activity, idx) {
+                    var card = document.createElement('article');
+                    card.className = 'sw-student-activity-card';
+                    card.style.animationDelay = (idx * 0.1) + 's';
+                    card.innerHTML = `
+                        <div class="sw-activity-timeline-line"></div>
+                        <div class="sw-activity-timeline-dot"></div>
+                        <div class="sw-student-activity-icon-wrap">
+                            ${getActivityIcon(activity.activity_type)}
+                        </div>
+                        <div class="sw-student-activity-content">
+                            <div class="sw-student-activity-top">
+                                <span class="sw-student-activity-type">${escapeHtml(activity.activity_type)}</span>
+                                <span class="sw-student-activity-date">${formatActivityDate(activity.activity_date)}</span>
+                            </div>
+                            <h3 class="sw-student-activity-title">${escapeHtml(activity.activity_name)}</h3>
+                            <p class="sw-student-activity-meta">Logged by <strong>${escapeHtml(activity.teacher_name || 'Teacher')}</strong></p>
+                            <p class="sw-student-activity-desc">${escapeHtml(activity.description || 'No additional details were added.')}</p>
+                            ${activity.achievement ? `<div class="sw-student-activity-achievement"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>${escapeHtml(activity.achievement)}</div>` : ''}
+                        </div>
+                    `;
+                    list.appendChild(card);
+                });
+            }
+
+            async function loadActivitiesPage() {
+                var res = await api('/api/student/activities', { method: 'GET' });
+                if (!res || !res.ok) return;
+                var data = await res.json();
+                renderActivities('page-activities-list', 'page-activities-empty', data.activities || [], 100);
+            }
+
+            function buildMomentumChart(trendRows) {
+                const wrap = document.getElementById('sw-momentum-chart');
+                if (!wrap) return;
+                wrap.innerHTML = '';
+
+                const planState = getPlanState();
+                const now = new Date();
+                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+                (trendRows || []).forEach(function (r, idx) {
+                    const d = new Date(r.day);
+                    const isToday = d.toDateString() === now.toDateString();
+
+                    let score = 0;
+                    let breakdown = [];
+
+                    // 1. Attendance (max 60)
+                    if (r.attendance_status === 'PRESENT') { score += 60; breakdown.push('Present'); }
+                    else if (r.attendance_status === 'LATE') { score += 45; breakdown.push('Late'); }
+
+                    // 2. Tests (max 30)
+                    if (r.tests_count > 0) {
+                        const testPoints = Math.min(30, r.tests_count * 15);
+                        score += testPoints;
+                        breakdown.push(r.tests_count + ' test' + (r.tests_count > 1 ? 's' : ''));
+                    }
+
+                    // 3. Tasks (max 10)
+                    const completedCount = Object.keys(planState.doneAt || {}).filter(function (id) {
+                        const doneD = new Date(planState.doneAt[id]);
+                        return doneD.toDateString() === d.toDateString() && planState.done[id];
+                    }).length;
+
+                    if (completedCount > 0) {
+                        const taskPoints = Math.min(10, completedCount * 5);
+                        score += taskPoints;
+                        breakdown.push(completedCount + ' task' + (completedCount > 1 ? 's' : ''));
+                    } else if (isToday) {
+                        // For today, if no tasks done yet, show current "to do" list context if any
+                        const totalTasks = (planState.tasks || []).length;
+                        if (totalTasks > 0) {
+                            const currentDone = Object.keys(planState.done || {}).filter(k => planState.done[k]).length;
+                            if (currentDone > 0) {
+                                const bonus = Math.min(10, Math.round((currentDone / totalTasks) * 10));
+                                score += bonus;
+                                breakdown.push('Progress focus');
+                            }
+                        }
+                    }
+
+                    const h = Math.max(12, score);
+                    const col = document.createElement('div');
+                    col.className = 'sw-chart-col';
+                    const bar = document.createElement('div');
+                    bar.className = 'sw-chart-bar' + (h < 25 ? ' dim' : '') + (isToday ? ' active' : '');
+                    bar.style.height = h + '%';
+
+                    const tip = document.createElement('div');
+                    tip.className = 'sw-tooltip';
+                    tip.innerHTML = `<strong>Momentum: ${Math.round(score)}%</strong><br>${breakdown.join(' · ') || 'No recorded activity'}`;
+
+                    const lab = document.createElement('label');
+                    lab.textContent = dayNames[d.getDay()];
+
+                    col.appendChild(tip);
+                    col.appendChild(bar);
+                    col.appendChild(lab);
+                    wrap.appendChild(col);
+                });
+            }
+
+            function buildCalStrip(timetableEntries) {
+                const strip = document.getElementById('sw-cal-strip');
+                strip.innerHTML = '';
+                const today = new Date();
+                const start = new Date(today);
+                start.setDate(today.getDate() - today.getDay() + 1);
+                const weekdayKeys = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
+                if (!selectedScheduleDayKey) {
+                    selectedScheduleDayKey = weekdayKeys[Math.max(0, Math.min(6, today.getDay() - 1))] || 'MONDAY';
+                }
+                for (let i = 0; i < 7; i++) {
+                    const d = new Date(start);
+                    d.setDate(start.getDate() + i);
+                    const dayKey = weekdayKeys[i];
+                    const div = document.createElement('div');
+                    const isToday = d.toDateString() === today.toDateString();
+                    const isSelected = selectedScheduleDayKey === dayKey;
+                    div.className = 'sw-cal-day' + (isToday ? ' today' : '') + (isSelected ? ' active' : '');
+                    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                    div.innerHTML = days[i] + '<strong>' + d.getDate() + '</strong>';
+                    div.style.cursor = 'pointer';
+                    div.addEventListener('click', function () {
+                        selectedScheduleDayKey = dayKey;
+                        buildCalStrip(timetableEntries || []);
+                        buildSchedule((dashboard && dashboard.courses ? dashboard.courses.map(enrichCourse) : []), timetableEntries || []);
+                    });
+                    strip.appendChild(div);
+                }
+            }
+
+            function buildSchedule(coursesEnriched, timetableEntries) {
+                const ul = document.getElementById('sw-schedule-list');
+                ul.innerHTML = '';
+                const today = new Date();
+                const weekdayByJsDay = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+                const fallbackDayKey = weekdayByJsDay[today.getDay()];
+                const activeDayKey = selectedScheduleDayKey || fallbackDayKey;
+                const todaysEntries = (timetableEntries || []).filter(function (e) {
+                    return String(e.day_of_week || '').toUpperCase() === activeDayKey;
+                });
+                const list =
+                    todaysEntries.length > 0
+                        ? todaysEntries.map(function (e) {
+                            var start = String(e.start_time || '').slice(0, 5);
+                            var end = String(e.end_time || '').slice(0, 5);
+                            var line = start + ' - ' + end + (e.room ? ' · ' + String(e.room) : '');
+                            return {
+                                title: e.subject || 'Class',
+                                tag: 'mandatory',
+                                time: line,
+                                dur: '',
+                            };
+                        })
+                        : [
+                            { title: 'No classes scheduled for this day', tag: 'done', time: '—', dur: 'Pick another day from above' },
+                        ];
+
+                list.slice(0, 4).forEach(function (s) {
+                    const li = document.createElement('li');
+                    li.className = 'sw-schedule-item';
+                    const tagClass = s.tag === 'mandatory' ? 'mandatory' : s.tag === 'recommended' ? 'recommended' : 'done';
+                    const tagText = s.tag === 'done' ? 'Completed' : s.tag.charAt(0).toUpperCase() + s.tag.slice(1);
+                    li.innerHTML =
+                        '<div class="sw-schedule-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4M14 4v4M2 10h20"/></svg></div>' +
+                        '<div class="sw-schedule-body"><div class="sw-schedule-title">' +
+                        escapeHtml(s.title) +
+                        '<span class="sw-tag ' +
+                        tagClass +
+                        '">' +
+                        escapeHtml(tagText) +
+                        '</span></div><div class="sw-schedule-meta">' +
+                        escapeHtml(s.dur ? s.time + ' · ' + s.dur : s.time) +
+                        '</div></div>';
+                    ul.appendChild(li);
+                });
+            }
+
+            function scorePillClass(score) {
+                const n = parseFloat(score);
+                if (n >= 80) return 'high';
+                if (n >= 60) return 'mid';
+                return 'low';
+            }
+
+            function renderCourseGrid(containerId, emptyId, courses, filter) {
+                const grid = document.getElementById(containerId);
+                const empty = document.getElementById(emptyId);
+                grid.innerHTML = '';
+                const list = (courses || []).map(enrichCourse);
+                const filtered =
+                    filter === 'all'
+                        ? list
+                        : list.filter(function (c) {
+                            return c._category === filter;
+                        });
+                if (filtered.length === 0) {
+                    grid.classList.remove('sw-courses-grid--dense');
+                    empty.style.display = 'block';
+                    return;
+                }
+                empty.style.display = 'none';
+
+                function regularCard(c) {
+                    const wrap = document.createElement('div');
+                    wrap.innerHTML =
+                        '<button type="button" class="sw-course-card" data-course-id="' +
+                        c.id +
+                        '"><h3>' +
+                        escapeHtml(c.title) +
+                        '</h3><p>' +
+                        escapeHtml(c.description || 'Open the lesson space for materials and context.') +
+                        '</p><div class="sw-progress-row"><div class="sw-progress-track"><div class="sw-progress-fill" style="width:' +
+                        c._progress +
+                        '%"></div></div></div></button>';
+                    return wrap.firstElementChild;
+                }
+
+                if (containerId === 'page-courses-grid') {
+                    grid.classList.add('sw-courses-grid--dense');
+                    filtered.forEach(function (c) {
+                        grid.appendChild(regularCard(c));
+                    });
+                } else {
+                    grid.classList.remove('sw-courses-grid--dense');
+                    filtered.forEach(function (c) {
+                        grid.appendChild(regularCard(c));
+                    });
+                }
+
+                grid.querySelectorAll('[data-course-id]').forEach(function (btn) {
+                    btn.addEventListener('click', function () {
+                        setHash('lesson', parseInt(btn.getAttribute('data-course-id'), 10));
+                    });
+                });
+            }
+
+            function wireFilters(container, key) {
+                container.querySelectorAll('.sw-filter').forEach(function (b) {
+                    b.addEventListener('click', function () {
+                        container.querySelectorAll('.sw-filter').forEach(function (x) {
+                            x.classList.remove('active');
+                        });
+                        b.classList.add('active');
+                        const f = b.getAttribute(key === 'home' ? 'data-cf' : 'data-pcf');
+                        if (key === 'home') {
+                            homeFilter = f;
+                            renderCourseGrid('home-courses-grid', 'home-courses-empty', (dashboard && dashboard.courses) || [], homeFilter);
+                        } else {
+                            pageCourseFilter = f;
+                            renderCourseGrid('page-courses-grid', 'page-courses-empty', (dashboard && dashboard.courses) || [], pageCourseFilter);
+                        }
+                    });
+                });
+            }
+
+            function toggleSkeletons(containerIds, active) {
+                containerIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        if (active) {
+                            el.classList.add('sw-skeleton');
+                            if (el.tagName === 'P' || el.tagName === 'SPAN') el.style.minWidth = '40px';
+                        } else {
+                            el.classList.remove('sw-skeleton');
+                        }
+                    }
+                });
+            }
+
+            async function loadDashboard() {
+                const stats = ['stat-courses', 'stat-avg', 'stat-attendance-rate', 'stat-tests'];
+                toggleSkeletons(stats, true);
+
+                const res = await api('/api/student/dashboard', { method: 'GET' });
+                toggleSkeletons(stats, false);
+
+                if (!res || !res.ok) return;
+                dashboard = await res.json();
+                const m = dashboard.metrics || {};
+                const courses = dashboard.courses || [];
+                const activities = dashboard.activities || [];
+
+                document.getElementById('stat-courses').textContent = String(courses.length);
+                document.getElementById('stat-courses-trend').textContent =
+                    courses.length ? courses.length + ' published at your school' : 'Nothing assigned yet';
+
+                renderDashboardTodo();
+
+                const avg = m.avgScore;
+                document.getElementById('stat-avg').textContent =
+                    m.gradeCount > 0 && avg != null ? Math.round(avg * 10) / 10 + '%' : '—';
+                document.getElementById('stat-avg-trend').textContent =
+                    m.gradeCount > 0 ? 'Across ' + m.gradeCount + ' item(s)' : 'Scores will land here';
+
+                const attRate = m.attendanceRate || 0;
+                document.getElementById('stat-attendance-rate').textContent = attRate + '%';
+                let attTrend = 'Overall consistency';
+                if (attRate >= 90) attTrend = 'Excellent streak';
+                else if (attRate < 75) attTrend = 'Room for growth';
+                document.getElementById('stat-attendance-trend').textContent = attTrend;
+
+                // Graded items stat was replaced by My Goals card, so we don't update stat-tests anymore.
+
+
+                buildMomentumChart(dashboard.attendanceTrend);
+                buildCalStrip(dashboard.timetable || []);
+                buildSchedule(courses.map(enrichCourse), dashboard.timetable || []);
+
+                renderCourseGrid('home-courses-grid', 'home-courses-empty', courses, homeFilter);
+                renderCourseGrid('page-courses-grid', 'page-courses-empty', courses, pageCourseFilter);
+            }
+
+            async function loadGradesIfNeeded() {
+                if (gradesList.length) return;
+                const res = await api('/api/student/grades', { method: 'GET' });
+                if (!res || !res.ok) return;
+                const d = await res.json();
+                gradesList = d.grades || [];
+            }
+
+            async function loadVideosIfNeeded() {
+                if (videosList.length) return;
+                const res = await api('/api/student/videos', { method: 'GET' });
+                if (!res || !res.ok) return;
+                videosList = await res.json();
+            }
+
+            async function loadCourseProgress(courseId) {
+                const res = await api('/api/student/courses/' + courseId + '/progress', { method: 'GET' });
+                if (!res || !res.ok) return null;
+                return res.json();
+            }
+
+            async function markCourseVideoComplete(courseId) {
+                const res = await api('/api/student/courses/' + courseId + '/progress/complete', { method: 'POST' });
+                if (!res || !res.ok) {
+                    const err = res ? await res.json().catch(function () { return {}; }) : {};
+                    alert((err && err.error) || 'Could not update progress');
+                    return null;
+                }
+                return res.json();
+            }
+
+            async function resetCourseProgress(courseId) {
+                const res = await api('/api/student/courses/' + courseId + '/progress/reset', { method: 'POST' });
+                if (!res || !res.ok) {
+                    const err = res ? await res.json().catch(function () { return {}; }) : {};
+                    alert((err && err.error) || 'Could not reset progress');
+                    return null;
+                }
+                return res.json();
+            }
+
+            function getLessonSeenState(courseId) {
+                try {
+                    var raw = localStorage.getItem('skillway_seen_playlist_idx_v1');
+                    var parsed = raw ? JSON.parse(raw) : {};
+                    var key = String(courseId);
+                    if (!parsed[key] || !Array.isArray(parsed[key])) parsed[key] = [];
+                    return { all: parsed, key: key };
+                } catch (e) {
+                    return { all: {}, key: String(courseId) };
+                }
+            }
+
+            function hasSeenPlaylistIndex(courseId, idx) {
+                var state = getLessonSeenState(courseId);
+                return state.all[state.key].indexOf(idx) >= 0;
+            }
+
+            function setSeenPlaylistIndex(courseId, idx) {
+                var state = getLessonSeenState(courseId);
+                if (state.all[state.key].indexOf(idx) < 0) state.all[state.key].push(idx);
+                try {
+                    localStorage.setItem('skillway_seen_playlist_idx_v1', JSON.stringify(state.all));
+                } catch (e) { }
+            }
+
+            function clearSeenPlaylistIndexes(courseId) {
+                var state = getLessonSeenState(courseId);
+                state.all[state.key] = [];
+                try {
+                    localStorage.setItem('skillway_seen_playlist_idx_v1', JSON.stringify(state.all));
+                } catch (e) { }
+            }
+
+            function stopLessonProgressPoller() {
+                if (lessonProgressPoller) {
+                    clearInterval(lessonProgressPoller);
+                    lessonProgressPoller = null;
+                }
+            }
+
+            async function recordPlaylistIndexCompletion(courseId, idx) {
+                if (idx == null || idx < 0) return;
+                if (hasSeenPlaylistIndex(courseId, idx)) return;
+                if (lessonProgressSyncing) return;
+                lessonProgressSyncing = true;
+                try {
+                    var next = await markCourseVideoComplete(courseId);
+                    if (!next) return;
+                    setSeenPlaylistIndex(courseId, idx);
+                    var done = next.completedVideos || 0;
+                    var total = next.totalVideos == null ? (typeof currentLessonCourse !== 'undefined' && currentLessonCourse ? currentLessonCourse._lessons : null) : next.totalVideos;
+                    updateLessonProgressPanel(done, total);
+                    await loadDashboard();
+                } finally {
+                    lessonProgressSyncing = false;
+                }
+            }
+
+            function renderLessonProgressPanel(progressDone, progressTotal) {
+                var rightTitle = document.querySelector('.sw-sidebar-title');
+                if (rightTitle) rightTitle.textContent = 'Progress';
+                var acc = document.getElementById('lesson-accordion');
+                var pct = progressTotal && progressTotal > 0 ? Math.min(100, Math.round((progressDone / progressTotal) * 100)) : 0;
+                var completed = progressTotal && progressTotal > 0 && progressDone >= progressTotal;
+                acc.innerHTML =
+                    '<div class="sw-panel" style="padding:16px;border:1px solid var(--sw-border);border-radius:12px;background:var(--sw-card);">' +
+                    '<p style="margin:0 0 10px;font-size:0.82rem;color:var(--sw-muted);">Playlist completion</p>' +
+                    '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px;">' +
+                    '<strong id="lesson-progress-label">' +
+                    escapeHtml(String(progressDone)) +
+                    ' / ' +
+                    escapeHtml(String(progressTotal == null ? '—' : progressTotal)) +
+                    ' videos</strong>' +
+                    '<span id="lesson-progress-state" style="font-size:0.8rem;color:' +
+                    (completed ? '#6ee7b7' : 'var(--sw-muted)') +
+                    ';">' +
+                    (completed ? 'Completed' : pct + '%') +
+                    '</span></div>' +
+                    '<div class="sw-progress-row"><div class="sw-progress-track"><div id="lesson-progress-fill" class="sw-progress-fill" style="width:' +
+                    pct +
+                    '%"></div></div></div>' +
+                    '<p style="margin:10px 0 0;font-size:0.75rem;color:var(--sw-muted);">Progress updates when each playlist video finishes.</p>' +
+                    '<button type="button" class="sw-share" id="lesson-progress-reset" style="margin-top:12px;">Reset progress</button>' +
+                    '</div>';
+            }
+
+            function updateLessonProgressPanel(progressDone, progressTotal) {
+                var pct = progressTotal && progressTotal > 0 ? Math.min(100, Math.round((progressDone / progressTotal) * 100)) : 0;
+                var completed = progressTotal && progressTotal > 0 && progressDone >= progressTotal;
+                var fill = document.getElementById('lesson-progress-fill');
+                var lbl = document.getElementById('lesson-progress-label');
+                var state = document.getElementById('lesson-progress-state');
+                if (fill) fill.style.width = pct + '%';
+                if (lbl) lbl.textContent = progressDone + ' / ' + (progressTotal == null ? '—' : progressTotal) + ' videos';
+                if (state) {
+                    state.textContent = completed ? 'Completed' : pct + '%';
+                    state.style.color = completed ? '#6ee7b7' : 'var(--sw-muted)';
+                }
+            }
+
+            function ensureYouTubeApi() {
+                if (window.YT && window.YT.Player) return Promise.resolve(window.YT);
+                if (youtubeApiPromise) return youtubeApiPromise;
+                youtubeApiPromise = new Promise(function (resolve) {
+                    var prev = window.onYouTubeIframeAPIReady;
+                    window.onYouTubeIframeAPIReady = function () {
+                        if (typeof prev === 'function') prev();
+                        resolve(window.YT);
+                    };
+                    var script = document.createElement('script');
+                    script.src = 'https://www.youtube.com/iframe_api';
+                    document.body.appendChild(script);
+                });
+                return youtubeApiPromise;
+            }
+
+            function showTestsMcqListView() {
+                var land = document.getElementById('tests-landing');
+                var take = document.getElementById('tests-mcq-take');
+                if (land) land.style.display = 'block';
+                if (take) {
+                    take.style.display = 'none';
+                    take.setAttribute('aria-hidden', 'true');
+                }
+                currentMcqTakeTestId = null;
+            }
+
+            function showTestsMcqTakeView() {
+                var land = document.getElementById('tests-landing');
+                var take = document.getElementById('tests-mcq-take');
+                if (land) land.style.display = 'none';
+                if (take) {
+                    take.style.display = 'block';
+                    take.setAttribute('aria-hidden', 'false');
+                }
+            }
+
+            function mcqOptionsArray(q) {
+                var o = q.options;
+                if (Array.isArray(o)) return o;
+                if (o && typeof o === 'object') return Object.keys(o).sort().map(function (k) { return o[k]; });
+                return [];
+            }
+
+            async function openMcqTest(testId) {
+                var res = await api('/api/student/mcq-tests/' + testId, { method: 'GET' });
+                if (!res || !res.ok) return;
+                var data = await res.json();
+                currentMcqTakeTestId = testId;
+                showTestsMcqTakeView();
+                var heading = document.getElementById('mcq-take-heading');
+                var meta = document.getElementById('mcq-take-meta');
+                var already = document.getElementById('mcq-take-already');
+                var form = document.getElementById('mcq-take-form');
+                var actions = document.getElementById('mcq-take-actions');
+                var test = data.test || {};
+                heading.textContent = test.title || 'Quiz';
+                meta.textContent = (test.question_count || 0) + ' multiple-choice question(s).';
+
+                if (data.alreadySubmitted) {
+                    already.style.display = 'block';
+                    form.style.display = 'none';
+                    actions.style.display = 'none';
+                    var att = data.attempt || {};
+                    var earned = parseFloat(String(att.score_earned != null ? att.score_earned : 0));
+                    var max = parseFloat(String(att.max_score != null ? att.max_score : 0));
+                    var pct = max > 0 ? Math.round((earned / max) * 1000) / 10 : 0;
+                    var when = att.created_at ? new Date(att.created_at).toLocaleString() : '—';
+                    already.innerHTML =
+                        '<p class="sw-mcq-result-lead">You already submitted this quiz.</p>' +
+                        '<p class="sw-mcq-result-score"><strong>' +
+                        escapeHtml(String(earned)) +
+                        '</strong> / ' +
+                        escapeHtml(String(max)) +
+                        ' marks · <strong>' +
+                        escapeHtml(String(pct)) +
+                        '%</strong></p>' +
+                        '<p class="sw-mcq-result-when">Submitted ' +
+                        escapeHtml(when) +
+                        '</p>';
+                    return;
+                }
+
+                already.style.display = 'none';
+                form.style.display = 'block';
+                actions.style.display = 'block';
+                form.innerHTML = '';
+                var questions = data.questions || [];
+                var letters = ['A', 'B', 'C', 'D'];
+                questions.forEach(function (q, idx) {
+                    var opts = mcqOptionsArray(q);
+                    var block = document.createElement('div');
+                    block.className = 'sw-mcq-qblock';
+                    block.setAttribute('data-qid', String(q.id));
+                    var radios = '';
+                    for (var j = 0; j < 4; j++) {
+                        var lab = letters[j];
+                        var txt = opts[j] != null ? String(opts[j]) : '';
+                        radios +=
+                            '<label class="sw-mcq-opt"><input type="radio" name="mcq_q_' +
+                            q.id +
+                            '" value="' +
+                            j +
+                            '"' +
+                            (j === 0 ? ' required' : '') +
+                            '><span class="sw-mcq-opt-letter">' +
+                            lab +
+                            '</span><span class="sw-mcq-opt-text">' +
+                            escapeHtml(txt) +
+                            '</span></label>';
+                    }
+                    block.innerHTML =
+                        '<div class="sw-mcq-qhead"><span class="sw-mcq-qnum">Q' +
+                        (idx + 1) +
+                        '</span><span class="sw-mcq-qmarks">' +
+                        escapeHtml(String(q.marks)) +
+                        ' mark(s)</span></div><p class="sw-mcq-prompt">' +
+                        escapeHtml(q.prompt) +
+                        '</p><div class="sw-mcq-opts">' +
+                        radios +
+                        '</div>';
+                    form.appendChild(block);
+                });
+            }
+
+            async function submitMcqTest() {
+                if (currentMcqTakeTestId == null) return;
+                var form = document.getElementById('mcq-take-form');
+                if (!form) return;
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+                var blocks = form.querySelectorAll('.sw-mcq-qblock');
+                var answers = {};
+                for (var i = 0; i < blocks.length; i++) {
+                    var qid = blocks[i].getAttribute('data-qid');
+                    var sel = blocks[i].querySelector('input[type="radio"]:checked');
+                    if (!qid || !sel) {
+                        alert('Answer every question before submitting.');
+                        return;
+                    }
+                    answers[qid] = parseInt(sel.value, 10);
+                }
+                var res = await api('/api/student/mcq-tests/' + currentMcqTakeTestId + '/submit', {
+                    method: 'POST',
+                    body: JSON.stringify({ answers: answers }),
+                });
+                if (!res) return;
+                var body = await res.json().catch(function () { return {}; });
+                if (!res.ok) {
+                    alert(body.error || 'Submit failed');
+                    return;
+                }
+                gradesList = [];
+                alert(
+                    'Submitted. You scored ' +
+                    body.scoreEarned +
+                    ' / ' +
+                    body.maxScore +
+                    ' marks (' +
+                    body.percent +
+                    '%).'
+                );
+                showTestsMcqListView();
+                loadTestsPage();
+            }
+
+            async function loadTestsPage() {
+                showTestsMcqListView();
+                var mcqRes = await api('/api/student/mcq-tests', { method: 'GET' });
+                var gRes = await api('/api/student/grades', { method: 'GET' });
+                if (gRes && gRes.ok) {
+                    var gd = await gRes.json();
+                    gradesList = gd.grades || [];
+                }
+                var mcqGrid = document.getElementById('mcq-tests-student-grid');
+                var mcqEmpty = document.getElementById('mcq-tests-student-empty');
+                if (mcqGrid) {
+                    mcqGrid.innerHTML = '';
+                    if (!mcqRes || !mcqRes.ok) {
+                        mcqEmpty.style.display = 'block';
+                    } else {
+                        var md = await mcqRes.json();
+                        var tests = md.tests || [];
+                        if (tests.length === 0) {
+                            mcqEmpty.style.display = 'block';
+                        } else {
+                            mcqEmpty.style.display = 'none';
+                            tests.forEach(function (t) {
+                                var done = t.submitted_at != null;
+                                var resultText = '—';
+                                if (done) {
+                                    var e = parseFloat(String(t.score_earned != null ? t.score_earned : 0));
+                                    var m = parseFloat(String(t.max_score != null ? t.max_score : 0));
+                                    var p = m > 0 ? Math.round((e / m) * 1000) / 10 : 0;
+                                    resultText = p + '%';
+                                }
+
+                                var card = document.createElement('div');
+                                card.className = 'sw-quiz-card' + (done ? ' done' : '');
+                                card.innerHTML = `
+                            <div class="sw-quiz-title">${escapeHtml(t.title)}</div>
+                            <div class="sw-quiz-meta">
+                                <div class="sw-quiz-meta-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                    ${escapeHtml(String(t.question_count))} questions
+                                </div>
+                                <div class="sw-quiz-meta-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    Teacher: ${escapeHtml(t.teacher_name || '—')}
+                                </div>
+                            </div>
+                            <div style="margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:12px; padding-top:12px; border-top:1px solid var(--sw-border);">
+                                ${done
+                                        ? `<span class="sw-mcq-done">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                                        Completed (${resultText})
+                                       </span>`
+                                        : `<button type="button" class="sw-mcq-start" data-mcq-test-id="${t.id}">Start Quiz</button>`
+                                    }
+                            </div>
+                        `;
+                                if (!done) {
+                                    card.querySelector('.sw-mcq-start').addEventListener('click', function () {
+                                        openMcqTest(t.id);
+                                    });
+                                }
+                                mcqGrid.appendChild(card);
+                            });
+                        }
+                    }
+                }
+
+                const dRes = await api('/api/student/dashboard', { method: 'GET' });
+                if (dRes && dRes.ok) {
+                    const d = await dRes.json();
+                    const subs = d.gradesBySubject || [];
+                    const wrap = document.getElementById('results-grid');
+                    const rempty = document.getElementById('results-empty');
+                    if (wrap) {
+                        wrap.innerHTML = '';
+                        if (subs.length === 0) {
+                            rempty.style.display = 'block';
+                        } else {
+                            rempty.style.display = 'none';
+                            subs.forEach(function (s) {
+                                const avg = parseFloat(s.avg) || 0;
+                                const w = Math.min(100, Math.max(0, avg));
+                                let statusText = 'On Track';
+                                let statusClass = 'ontrack';
+                                if (avg >= 90) { statusText = 'Mastery'; statusClass = 'mastery'; }
+                                else if (avg >= 75) { statusText = 'Excellence'; statusClass = 'excellence'; }
+                                const card = document.createElement('div');
+                                card.className = 'sw-result-card';
+                                card.innerHTML = `
+                            <div class="sw-result-subject">${escapeHtml(s.subject)}</div>
+                            <div class="sw-result-score-block">
+                                <span class="sw-result-avg">${Math.round(avg * 10) / 10}</span>
+                                <span class="sw-result-pct-symbol">%</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+                                <div class="sw-result-status ${statusClass}">${statusText}</div>
+                                <div style="font-size:0.7rem; color:var(--sw-muted2); text-transform:uppercase; font-weight:600; letter-spacing:0.02em; padding:4px 10px; border-radius:6px; background:rgba(255,255,255,0.03); border:1px solid var(--sw-border);">
+                                    ${escapeHtml(s.last_exam_type || 'General')}
+                                </div>
+                            </div>
+                            <div class="sw-result-progress-wrap">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:0.75rem; color:var(--sw-muted);">
+                                    <span>Average performance</span>
+                                    <span>${Math.round(w)}%</span>
+                                </div>
+                                <div class="sw-result-progress-track">
+                                    <div class="sw-result-progress-fill" style="width: ${w}%"></div>
+                                </div>
+                            </div>
+                        `;
+                                wrap.appendChild(card);
+                            });
+                        }
+                    }
+                }
+            }
+
+
+
+            async function loadAttendancePage() {
+                const dRes = await api('/api/student/dashboard', { method: 'GET' });
+                if (dRes && dRes.ok) {
+                    const d = await dRes.json();
+                    const m = d.metrics || {};
+                    const a30 = m.attendanceLast30 || {};
+                    document.getElementById('att-stat-rate').textContent = (m.attendanceRate || 0) + '%';
+                    document.getElementById('att-stat-present').textContent = m.daysPresent || 0;
+                    document.getElementById('att-stat-late').textContent = a30.late || 0;
+                    document.getElementById('att-stat-absent').textContent = a30.absent || 0;
+                }
+
+                const res = await api('/api/student/attendance', { method: 'GET' });
+                if (!res || !res.ok) return;
+                const data = await res.json();
+                const entries = data.entries || [];
+                const tbody = document.getElementById('att-body');
+                const empty = document.getElementById('att-empty');
+                if (!tbody) return;
+
+                tbody.innerHTML = '';
+                if (entries.length === 0) {
+                    empty.style.display = 'block';
+                    return;
+                }
+                empty.style.display = 'none';
+
+                entries.forEach(function (e) {
+                    const tr = document.createElement('tr');
+                    const dt = e.created_at ? new Date(e.created_at).toLocaleString() : '—';
+
+                    let statusColor = '#6ee7b7'; // Green
+                    if (e.status === 'LATE') statusColor = '#fde047'; // Yellow
+                    if (e.status === 'ABSENT') statusColor = '#fca5a5'; // Red
+
+                    tr.innerHTML = `
+                <td>${escapeHtml(e.date)}</td>
+                <td>
+                    <span class="sw-tag" style="background: ${statusColor}22; color: ${statusColor}; margin: 0;">
+                        ${escapeHtml(e.status)}
+                    </span>
+                </td>
+                <td style="color:var(--sw-muted);font-size:0.85rem">${escapeHtml(dt)}</td>
+            `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            async function handleProfileUpdate() {
+                const email = document.getElementById('profile-new-email').value.trim();
+                const password = document.getElementById('profile-new-password').value.trim();
+                const msgEl = document.getElementById('profile-update-msg');
+
+                if (!email && !password) {
+                    alert('Please provide a new email or password to update.');
+                    return;
+                }
+
+                msgEl.style.display = 'block';
+                msgEl.style.color = 'var(--sw-muted)';
+                msgEl.textContent = 'Updating profile...';
+
+                const res = await api('/api/student/profile/update', {
+                    method: 'POST',
+                    body: JSON.stringify({ email: email || undefined, password: password || undefined })
+                });
+
+                if (!res || !res.ok) {
+                    const data = await res.json();
+                    msgEl.style.color = '#fca5a5'; // Red
+                    msgEl.textContent = data.error || 'Update failed.';
+                    return;
+                }
+
+                msgEl.style.color = '#6ee7b7'; // Green
+                msgEl.textContent = 'Profile updated successfully!';
+                document.getElementById('profile-new-email').value = '';
+                document.getElementById('profile-new-password').value = '';
+
+                // Refresh profile data
+                setTimeout(() => {
+                    loadProfilePage();
+                    msgEl.style.display = 'none';
+                }, 1500);
+            }
+
+            async function loadProfilePage() {
+                const res = await api('/api/student/me', { method: 'GET' });
+                if (!res || !res.ok) return;
+                const me = await res.json();
+
+                document.getElementById('profile-full-name').textContent = me.name || 'Student';
+                document.getElementById('profile-school-name').textContent = me.school_name || 'Individual Learner';
+                document.getElementById('profile-email').textContent = me.email || '—';
+                document.getElementById('profile-id').textContent = '#' + String(me.id || '000000').padStart(6, '0');
+                document.getElementById('profile-avatar-large').textContent = initials(me.name);
+            }
+
+            var PLAN_TASK_DEFAULTS = [
+                { id: 'p1', t: 'Review your weakest topic for 25 minutes', tag: 'daily', est: '25 min' },
+                { id: 'p2', t: 'Complete one practice quiz without distractions', tag: 'weekly', est: '30 min' },
+                { id: 'p3', t: 'Skim tomorrow’s schedule and block focus time', tag: 'daily', est: '15 min' },
+                { id: 'p4', t: 'Message a teacher with one specific question', tag: 'weekly', est: '10 min' },
+                { id: 'p5', t: 'Sleep 7+ hours the night before a big test', tag: 'weekly', est: '—' },
+            ];
+
+            function tagClass(tag) {
+                if (tag === 'daily') return 'daily';
+                if (tag === 'focus') return 'focus';
+                if (tag === 'custom') return 'custom';
+                return 'weekly';
+            }
+
+            function tagLabel(tag) {
+                if (tag === 'daily') return 'Daily';
+                if (tag === 'focus') return 'Focus';
+                if (tag === 'custom') return 'Yours';
+                return 'Weekly';
+            }
+
+            async function loadPlanPage() {
+                migratePlanFromV1();
+                var statsEl = document.getElementById('plan-stats');
+                var ul = document.getElementById('plan-list');
+                if (!ul) return;
+
+                if (statsEl) statsEl.innerHTML = '';
+
+                var state = getPlanState();
+                ensurePlanTasks(state);
+                state = getPlanState();
+
+                var tasks = state.tasks ? state.tasks.slice().filter(function (t) { return t.tag !== 'focus'; }) : [];
+                currentPlanTasks = tasks;
+
+                state = getPlanState();
+                ul.innerHTML = '';
+
+                if (tasks.length === 0) {
+                    var emptyLi = document.createElement('li');
+                    emptyLi.className = 'sw-plan-empty-row';
+                    emptyLi.innerHTML =
+                        '<p class="sw-plan-empty-text">No tasks yet. Add one below to build your weekly list.</p>';
+                    ul.appendChild(emptyLi);
+                } else {
+                    tasks.forEach(function (it, idx) {
+                        var done = !!state.done[it.id];
+                        var li = document.createElement('li');
+                        li.className = 'sw-plan-item' + (done ? ' done' : '');
+                        li.style.animationDelay = 0.06 * idx + 's';
+                        li.innerHTML =
+                            '<button type="button" class="sw-plan-toggle" data-task-id="' +
+                            escapeHtml(String(it.id)) +
+                            '" aria-pressed="' +
+                            (done ? 'true' : 'false') +
+                            '" aria-label="' +
+                            (done ? 'Mark as not done' : 'Mark as done') +
+                            '"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></button>' +
+                            '<div class="sw-plan-body"><div class="sw-plan-row-title">' +
+                            escapeHtml(it.t) +
+                            '</div><div class="sw-plan-meta"><span class="sw-plan-tag ' +
+                            tagClass(it.tag) +
+                            '">' +
+                            tagLabel(it.tag) +
+                            '</span><span>' +
+                            escapeHtml(it.est || '—') +
+                            '</span></div></div>' +
+                            '<button type="button" class="sw-plan-remove" data-task-id="' +
+                            escapeHtml(String(it.id)) +
+                            '" title="Remove task" aria-label="Remove task"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>';
+                        ul.appendChild(li);
+                    });
+                }
+                updatePlanProgressUI();
+            }
+
+            function planAddTask() {
+                var titleEl = document.getElementById('plan-new-title');
+                var tagEl = document.getElementById('plan-new-tag');
+                var estEl = document.getElementById('plan-new-est');
+                if (!titleEl || !tagEl) return;
+                var title = (titleEl.value || '').trim();
+                if (!title) {
+                    titleEl.focus();
+                    return;
+                }
+                var tag = tagEl.value === 'daily' ? 'daily' : 'weekly';
+                var est = (estEl && estEl.value.trim()) || '—';
+                var id = 'u' + Date.now();
+                var state = getPlanState();
+                ensurePlanTasks(state);
+                state = getPlanState();
+                if (!state.tasks) state.tasks = [];
+                state.tasks.push({ id: id, t: title, tag: tag, est: est });
+                setPlanState(state);
+                titleEl.value = '';
+                if (estEl) estEl.value = '';
+                loadPlanPage();
+            }
+
+            function planRemoveTask(taskId) {
+                if (!taskId) return;
+                var state = getPlanState();
+                if (!state.tasks) return;
+                state.tasks = state.tasks.filter(function (x) {
+                    return String(x.id) !== String(taskId);
+                });
+                if (state.done && state.done[taskId]) delete state.done[taskId];
+                setPlanState(state);
+                loadPlanPage();
+            }
+
+            async function openLesson(id) {
+                if (!dashboard) await loadDashboard();
+                const courses = (dashboard && dashboard.courses) || [];
+                const c = courses.find(function (x) {
+                    return x.id === id;
+                });
+                if (!c) {
+                    setHash('courses', null);
+                    return;
+                }
+                currentLessonCourse = enrichCourse(c);
+                currentLessonProgress = await loadCourseProgress(id);
+                lessonVideoUrl = currentLessonCourse._playlistUrl || '';
+                showPage('lesson');
+                document.getElementById('lesson-crumb').innerHTML =
+                    'My courses <span>/</span> ' +
+                    (currentLessonCourse._category === 'mandatory' ? 'Mandatory' : 'Path') +
+                    ' <span>/</span> ' +
+                    escapeHtml(currentLessonCourse.title);
+                document.getElementById('lesson-title').textContent = currentLessonCourse.title;
+                var totalVideosMeta =
+                    currentLessonProgress && currentLessonProgress.totalVideos != null
+                        ? currentLessonProgress.totalVideos
+                        : currentLessonCourse._lessons;
+                var completedVideosMeta =
+                    currentLessonProgress && currentLessonProgress.completedVideos != null
+                        ? currentLessonProgress.completedVideos
+                        : currentLessonCourse._completedVideos || 0;
+                document.getElementById('lesson-meta').innerHTML =
+                    '<span class="sw-meta-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>' +
+                    escapeHtml(String(totalVideosMeta || currentLessonCourse._lessons)) +
+                    ' videos</span>' +
+                    '<span class="sw-meta-pill"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="10 8 16 12 10 16 10 8"/></svg>YouTube playlist' +
+                    '</span>';
+
+                const desc =
+                    escapeHtml(currentLessonCourse.description || '') ||
+                    'This lesson connects ideas from your school course into practical habits — use the overview on the right to move topic by topic. Your teachers can extend this with real assignments anytime.';
+                document.getElementById('lesson-tab-desc').innerHTML = '<p>' + desc + '</p>';
+                var progressTotal = currentLessonProgress && currentLessonProgress.totalVideos != null ? currentLessonProgress.totalVideos : currentLessonCourse._lessons;
+                var progressDone = currentLessonProgress ? currentLessonProgress.completedVideos : (currentLessonCourse._completedVideos || 0);
+                document.getElementById('lesson-tab-mat').innerHTML =
+                    '<p>This course uses a YouTube playlist. Your progress updates automatically when each video ends.</p>';
+                document.getElementById('lesson-tab-test').innerHTML =
+                    '<p>A short knowledge check can be linked from your teacher’s gradebook. Ask in class if there is a quiz tied to this module.</p>';
+                renderLessonProgressPanel(progressDone, progressTotal);
+
+                var videoBox = document.getElementById('lesson-video-box');
+                var playBtn = document.getElementById('lesson-play');
+                stopLessonProgressPoller();
+                lessonLastPlaylistIdx = null;
+                if (lessonPlayer && typeof lessonPlayer.destroy === 'function') {
+                    try {
+                        lessonPlayer.destroy();
+                    } catch (e) { }
+                    lessonPlayer = null;
+                }
+                if (currentLessonCourse.youtube_playlist_id) {
+                    videoBox.innerHTML = '<div id="lesson-youtube-player" style="position:absolute;inset:0;"></div>';
+                    var YT = await ensureYouTubeApi();
+                    lessonPlayer = new YT.Player('lesson-youtube-player', {
+                        width: '100%',
+                        height: '100%',
+                        playerVars: {
+                            listType: 'playlist',
+                            list: currentLessonCourse.youtube_playlist_id,
+                            rel: 0,
+                        },
+                        events: {
+                            onStateChange: async function (event) {
+                                if (!YT || event.data !== YT.PlayerState.ENDED) return;
+                                if (!lessonPlayer || !currentLessonCourse) return;
+                                var idx = -1;
+                                try {
+                                    idx = lessonPlayer.getPlaylistIndex();
+                                } catch (e) { }
+                                await recordPlaylistIndexCompletion(currentLessonCourse.id, idx);
+                            },
+                        },
+                    });
+                    lessonProgressPoller = setInterval(async function () {
+                        if (!lessonPlayer || !currentLessonCourse) return;
+                        var idx = -1;
+                        try {
+                            idx = lessonPlayer.getPlaylistIndex();
+                        } catch (e) {
+                            return;
+                        }
+                        if (idx < 0) return;
+                        if (lessonLastPlaylistIdx == null) {
+                            lessonLastPlaylistIdx = idx;
+                            return;
+                        }
+                        if (idx !== lessonLastPlaylistIdx) {
+                            var completedIdx = lessonLastPlaylistIdx;
+                            lessonLastPlaylistIdx = idx;
+                            await recordPlaylistIndexCompletion(currentLessonCourse.id, completedIdx);
+                        }
+                    }, 1800);
+                } else {
+                    videoBox.innerHTML = '<div class="sw-video-poster"></div>';
+                    if (playBtn) videoBox.appendChild(playBtn);
+                }
+                var resetBtn = document.getElementById('lesson-progress-reset');
+                if (resetBtn) {
+                    resetBtn.addEventListener('click', async function () {
+                        var ok = await swConfirm('Reset Progress?', 'This will clear your video completion history for this course. This action cannot be undone.');
+                        if (!ok) return;
+
+                        var next = await resetCourseProgress(id);
+                        if (!next) return;
+                        clearSeenPlaylistIndexes(id);
+                        lessonLastPlaylistIdx = null;
+                        progressDone = 0;
+                        progressTotal = next.totalVideos == null ? progressTotal : next.totalVideos;
+                        updateLessonProgressPanel(progressDone, progressTotal);
+                        await loadDashboard();
+                    });
+                }
+
+                document.querySelectorAll('.sw-tab[data-ltab]').forEach(function (t) {
+                    t.classList.remove('active');
+                });
+                document.querySelector('.sw-tab[data-ltab="desc"]').classList.add('active');
+                document.getElementById('lesson-tab-desc').style.display = 'block';
+                document.getElementById('lesson-tab-mat').style.display = 'none';
+                document.getElementById('lesson-tab-test').style.display = 'none';
+            }
+
+            document.querySelectorAll('.sw-tab[data-ltab]').forEach(function (t) {
+                t.addEventListener('click', function () {
+                    document.querySelectorAll('.sw-tab[data-ltab]').forEach(function (x) {
+                        x.classList.remove('active');
+                    });
+                    t.classList.add('active');
+                    var k = t.getAttribute('data-ltab');
+                    document.getElementById('lesson-tab-desc').style.display = k === 'desc' ? 'block' : 'none';
+                    document.getElementById('lesson-tab-mat').style.display = k === 'mat' ? 'block' : 'none';
+                    document.getElementById('lesson-tab-test').style.display = k === 'test' ? 'block' : 'none';
+                });
+            });
+
+            document.getElementById('lesson-back').addEventListener('click', function () {
+                setHash('courses', null);
+            });
+
+            document.getElementById('lesson-play').addEventListener('click', function () {
+                if (lessonVideoUrl) window.open(lessonVideoUrl, '_blank', 'noopener');
+                else alert('Your school has not linked a video for this lesson yet.');
+            });
+
+            document.getElementById('lesson-share').addEventListener('click', function () {
+                const url = location.href;
+                if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () {
+                    alert('Lesson link copied to clipboard.');
+                });
+                else alert(url);
+            });
+
+            document.querySelectorAll('.sw-nav button[data-route]').forEach(function (b) {
+                b.addEventListener('click', function () {
+                    setHash(b.getAttribute('data-route'), null);
+                });
+            });
+
+            document.getElementById('sw-brand-link').addEventListener('click', function (e) {
+                e.preventDefault();
+                setHash('home', null);
+            });
+
+            document.getElementById('btn-logout').addEventListener('click', function () {
+                localStorage.removeItem('token');
+                localStorage.removeItem('role');
+                window.location.href = '/auth/index.html';
+            });
+
+            function swConfirm(title, message) {
+                return new Promise(function (resolve) {
+                    var modal = document.getElementById('sw-confirm-modal');
+                    var titleEl = document.getElementById('sw-modal-title');
+                    var msgEl = document.getElementById('sw-modal-msg');
+                    var cancelBtn = document.getElementById('sw-modal-cancel');
+                    var confirmBtn = document.getElementById('sw-modal-confirm');
+
+                    titleEl.textContent = title;
+                    msgEl.textContent = message;
+                    modal.classList.add('active');
+
+                    function cleanup() {
+                        modal.classList.remove('active');
+                        cancelBtn.removeEventListener('click', onCancel);
+                        confirmBtn.removeEventListener('click', onConfirm);
+                    }
+
+                    function onCancel() {
+                        cleanup();
+                        resolve(false);
+                    }
+
+                    function onConfirm() {
+                        cleanup();
+                        resolve(true);
+                    }
+
+                    cancelBtn.addEventListener('click', onCancel);
+                    confirmBtn.addEventListener('click', onConfirm);
+                });
+            }
+
+            function togglePlanTask(id) {
+                if (!id) return;
+                var state = getPlanState();
+                if (!state.done) state.done = {};
+                if (!state.doneAt) state.doneAt = {};
+                state.done[id] = !state.done[id];
+                if (state.done[id]) {
+                    state.doneAt[id] = new Date().toISOString();
+                } else {
+                    delete state.doneAt[id];
+                }
+                setPlanState(state);
+                return !!state.done[id];
+            }
+
+            function escapeHtml(value) {
+                return String(value || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+            }
+
+            function formatCoachText(text) {
+                var safe = escapeHtml(text || '');
+
+                function inlineFormat(s) {
+                    // Render a minimal subset of Markdown for chat readability.
+                    // We escape HTML first (above), so inserting tags here is safe.
+                    return String(s || '')
+                        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/(^|[^*])\*(?!\s)([^*]+?)\*(?!\*)/g, '$1<em>$2</em>');
+                }
+
+                var lines = safe.split(/\r?\n/);
+                var html = [];
+                var inList = false;
+
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i].trim();
+                    if (!line) {
+                        if (inList) {
+                            html.push('</ul>');
+                            inList = false;
+                        }
+                        continue;
+                    }
+
+                    var bulletMatch = line.match(/^[-*]\s+(.*)$/);
+                    var numberedMatch = line.match(/^\d+\.\s+(.*)$/);
+
+                    if (bulletMatch || numberedMatch) {
+                        if (!inList) {
+                            html.push('<ul class="sw-chat-list">');
+                            inList = true;
+                        }
+                        html.push('<li>' + inlineFormat(bulletMatch ? bulletMatch[1] : numberedMatch[1]) + '</li>');
+                        continue;
+                    }
+
+                    if (inList) {
+                        html.push('</ul>');
+                        inList = false;
+                    }
+
+                    html.push('<p class="sw-chat-line">' + inlineFormat(line) + '</p>');
+                }
+
+                if (inList) html.push('</ul>');
+                if (!html.length) return '<p class="sw-chat-line">No response.</p>';
+                return html.join('');
+            }
+
+            async function typeCoachReply(el, text) {
+                var full = String(text || '');
+                var charsPerTick = 8;
+                var tickMs = 18;
+                var i = 0;
+
+                while (i < full.length) {
+                    i = Math.min(full.length, i + charsPerTick);
+                    el.innerHTML = formatCoachText(full.slice(0, i));
+                    await new Promise(function (resolve) {
+                        setTimeout(resolve, tickMs);
+                    });
+                }
+            }
+
+            function enhanceSelect(select) {
+                if (!select || select.dataset.uiSelectEnhanced === '1') return;
+                select.dataset.uiSelectEnhanced = '1';
+
+                var wrap = document.createElement('div');
+                wrap.className = 'cselect sw-cselect';
+                select.parentNode.insertBefore(wrap, select);
+                wrap.appendChild(select);
+                select.classList.add('cselect-native');
+
+                var trigger = document.createElement('button');
+                trigger.type = 'button';
+                trigger.className = 'cselect-trigger';
+                wrap.appendChild(trigger);
+
+                var menu = document.createElement('div');
+                menu.className = 'cselect-menu';
+                wrap.appendChild(menu);
+
+                function render() {
+                    var opts = Array.prototype.slice.call(select.options || []);
+                    var selected = select.options[select.selectedIndex];
+                    trigger.textContent = selected ? selected.text : 'Select';
+                    menu.innerHTML = '';
+                    opts.forEach(function (opt) {
+                        var item = document.createElement('button');
+                        item.type = 'button';
+                        item.className = 'cselect-option' + (opt.value === select.value ? ' active' : '');
+                        item.textContent = opt.text;
+                        item.addEventListener('click', function () {
+                            if (select.value !== opt.value) {
+                                select.value = opt.value;
+                                select.dispatchEvent(new Event('change', { bubbles: true }));
+                            }
+                            render();
+                            wrap.classList.remove('open');
+                        });
+                        menu.appendChild(item);
+                    });
+                }
+
+                trigger.addEventListener('click', function () {
+                    wrap.classList.toggle('open');
+                });
+                select.addEventListener('change', render);
+                document.addEventListener('click', function (e) {
+                    if (!wrap.contains(e.target)) wrap.classList.remove('open');
+                });
+                render();
+            }
+
+            async function sendChat() {
+                var input = document.getElementById('chat-input');
+                var msg = input.value.trim();
+                if (!msg) return;
+                var log = document.getElementById('chat-log');
+                var u = document.createElement('div');
+                u.className = 'sw-bubble user';
+                u.textContent = msg;
+                log.appendChild(u);
+                input.value = '';
+                var btn = document.getElementById('chat-send');
+                btn.disabled = true;
+                var res = await api('/api/chatbot/discuss', {
+                    method: 'POST',
+                    body: JSON.stringify({ message: msg }),
+                });
+                btn.disabled = false;
+                if (!res) return;
+                var data = await res.json().catch(function () {
+                    return {};
+                });
+                var b = document.createElement('div');
+                b.className = 'sw-bubble bot';
+                b.innerHTML = '<p class="sw-chat-line">Thinking...</p>';
+                log.appendChild(b);
+                await typeCoachReply(b, data.reply || data.error || 'No response.');
+                log.scrollTop = log.scrollHeight;
+            }
+
+            document.getElementById('chat-send').addEventListener('click', sendChat);
+            document.getElementById('chat-input').addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendChat();
+                }
+            });
+
+            document.querySelectorAll('#coach-prompts .sw-filter').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var input = document.getElementById('chat-input');
+                    input.value = btn.getAttribute('data-prompt') || '';
+                    input.focus();
+                });
+            });
+
+            document.getElementById('coach-clear').addEventListener('click', function () {
+                var log = document.getElementById('chat-log');
+                log.innerHTML =
+                    '<div class="sw-bubble bot">Hi — I’m your Learning Coach. Ask anything about studying, habits, or planning — what would help you most right now?</div>';
+            });
+
+            document.getElementById('btn-mcq-back').addEventListener('click', function () {
+                showTestsMcqListView();
+            });
+            document.getElementById('btn-mcq-submit').addEventListener('click', function () {
+                submitMcqTest();
+            });
+
+            window.addEventListener('hashchange', route);
+
+            document.getElementById('plan-list').addEventListener('click', function (e) {
+                var rm = e.target.closest('.sw-plan-remove');
+                if (rm) {
+                    e.preventDefault();
+                    planRemoveTask(rm.getAttribute('data-task-id'));
+                    return;
+                }
+                var btn = e.target.closest('.sw-plan-toggle');
+                if (!btn) return;
+                var id = btn.getAttribute('data-task-id');
+                if (!id) return;
+
+                var isDone = togglePlanTask(id);
+
+                var li = btn.closest('.sw-plan-item');
+                if (li) li.classList.toggle('done', isDone);
+                btn.setAttribute('aria-pressed', isDone ? 'true' : 'false');
+                btn.setAttribute('aria-label', isDone ? 'Mark as not done' : 'Mark as done');
+                updatePlanProgressUI();
+            });
+
+            document.getElementById('plan-add-task').addEventListener('click', planAddTask);
+            document.getElementById('btn-update-profile').addEventListener('click', handleProfileUpdate);
+            document.getElementById('plan-new-title').addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    planAddTask();
+                }
+            });
+
+            document.getElementById('plan-goto-coach').addEventListener('click', function () {
+                setHash('coach', null);
+            });
+
+            document.getElementById('todo-dashboard-input').addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    const val = this.value.trim();
+                    if (!val) return;
+                    const state = getPlanState();
+                    const id = 'task_' + Date.now();
+                    if (!state.tasks) state.tasks = [];
+                    state.tasks.push({ id, t: val, tag: 'Daily', est: 'Dashboard' });
+                    setPlanState(state);
+                    this.value = '';
+                    renderDashboardTodo();
+                    if (dashboard && dashboard.attendanceTrend) buildMomentumChart(dashboard.attendanceTrend);
+                }
+            });
+
+            wireFilters(document.getElementById('home-course-filters'), 'home');
+            wireFilters(document.getElementById('page-course-filters'), 'page');
+            document.querySelectorAll('select').forEach(enhanceSelect);
+
+            (function init() {
+                var token = localStorage.getItem('token');
+                var role = localStorage.getItem('role');
+                if (!token || role !== 'STUDENT') {
+                    window.location.href = '/auth/index.html';
+                    return;
+                }
+
+                // Cleanup: Remove any legacy "Extra review" tasks that were added for demonstration
+                var state = getPlanState();
+                if (state && state.tasks) {
+                    var filtered = state.tasks.filter(function (tk) {
+                        var title = String(tk.t || '').toLowerCase();
+                        return !title.includes('extra review') && !title.includes('momentum');
+                    });
+                    if (filtered.length !== state.tasks.length) {
+                        state.tasks = filtered;
+                        setPlanState(state);
+                        renderDashboardTodo();
+                    }
+                }
+                loadProfile();
+                loadDashboard().then(function () {
+                    route();
+                });
+
+                // Notifications & Search Logic
+                var btnNotif = document.getElementById('btn-notifications-toggle');
+                var dropNotif = document.getElementById('notifications-dropdown');
+                var listNotif = document.getElementById('notifications-list');
+                var badgeNotif = document.getElementById('notif-badge');
+
+                var btnSearch = document.getElementById('btn-search-toggle');
+                var dropSearch = document.getElementById('search-dropdown');
+                var inputSearch = document.getElementById('search-input');
+                var resultsSearch = document.getElementById('search-results');
+
+                // Toggle Dropdowns
+                btnNotif.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    dropNotif.classList.toggle('active');
+                    dropSearch.classList.remove('active');
+                    if (dropNotif.classList.contains('active')) loadNotifications();
+                });
+
+                btnSearch.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    dropSearch.classList.toggle('active');
+                    dropNotif.classList.remove('active');
+                    if (dropSearch.classList.contains('active')) inputSearch.focus();
+                });
+
+                document.addEventListener('click', function () {
+                    dropNotif.classList.remove('active');
+                    dropSearch.classList.remove('active');
+                });
+
+                dropNotif.addEventListener('click', function (e) { e.stopPropagation(); });
+                dropSearch.addEventListener('click', function (e) { e.stopPropagation(); });
+
+                async function loadNotifications() {
+                    const res = await api('/api/notifications', { method: 'GET' });
+                    if (!res || !res.ok) return;
+                    const data = await res.json();
+                    renderNotifications(data.notifications);
+                }
+
+                function renderNotifications(notifs) {
+                    if (!notifs.length) {
+                        listNotif.innerHTML = '<p class="sw-notif-empty">No notifications yet.</p>';
+                        badgeNotif.style.display = 'none';
+                        return;
+                    }
+
+                    const unreadCount = notifs.filter(n => !n.is_read).length;
+                    badgeNotif.style.display = unreadCount > 0 ? 'block' : 'none';
+
+                    listNotif.innerHTML = notifs.map(n => `
+                <div class="sw-notif-item ${n.is_read ? '' : 'unread'}" onclick="markAsRead(${n.id})">
+                    <div class="sw-ni-title">${escapeHtml(n.title)}</div>
+                    <div class="sw-ni-msg">${escapeHtml(n.message)}</div>
+                    <div class="sw-ni-time">${new Date(n.created_at).toLocaleString()}</div>
+                </div>
+            `).join('');
+                }
+
+                window.markAsRead = async function (id) {
+                    await api('/api/notifications/' + id + '/read', { method: 'POST' });
+                    loadNotifications();
+                };
+
+                document.getElementById('btn-clear-notifs').addEventListener('click', async function (e) {
+                    e.stopPropagation();
+                    if (!confirm('Clear all notifications?')) return;
+                    await api('/api/notifications/clear-all', { method: 'DELETE' });
+                    loadNotifications();
+                });
+
+                // Search Logic
+                var searchTimeout;
+                inputSearch.addEventListener('input', function () {
+                    clearTimeout(searchTimeout);
+                    var q = inputSearch.value.trim();
+                    if (q.length < 2) {
+                        resultsSearch.innerHTML = '<p class="sw-search-hint">Type at least 2 characters...</p>';
+                        return;
+                    }
+                    searchTimeout = setTimeout(function () { performSearch(q); }, 300);
+                });
+
+                async function performSearch(q) {
+                    resultsSearch.innerHTML = '<p class="sw-search-hint">Searching...</p>';
+                    var res = await api('/api/student/search?q=' + encodeURIComponent(q), { method: 'GET' });
+                    if (!res || !res.ok) return;
+                    var data = await res.json();
+                    renderSearchResults(data);
+                }
+
+                function renderSearchResults(data) {
+                    var html = '';
+
+                    if (data.courses.length) {
+                        html += '<div class="sw-search-section-title" style="padding:10px 20px; font-size:0.75rem; color:var(--sw-accent); font-weight:700; text-transform:uppercase;">Courses</div>';
+                        html += data.courses.map(c => `
+                    <div class="sw-search-item" onclick="setHash('lesson', ${c.id})">
+                        <div class="sw-si-title">${escapeHtml(c.title)}</div>
+                        <div class="sw-si-meta">${escapeHtml(c.description || 'View details')}</div>
+                    </div>
+                `).join('');
+                    }
+
+                    if (data.tests.length) {
+                        html += '<div class="sw-search-section-title" style="padding:10px 20px; font-size:0.75rem; color:var(--sw-accent); font-weight:700; text-transform:uppercase;">MCQ Tests</div>';
+                        html += data.tests.map(t => `
+                    <div class="sw-search-item" onclick="setHash('tests', null)">
+                        <div class="sw-si-title">${escapeHtml(t.title)}</div>
+                        <div class="sw-si-meta">Quiz Paper</div>
+                    </div>
+                `).join('');
+                    }
+
+                    if (!html) {
+                        html = '<p class="sw-search-hint">No results found.</p>';
+                    }
+
+                    resultsSearch.innerHTML = html;
+                }
+
+                // Auto-refresh notifications
+                setInterval(loadNotifications, 60000);
+                loadNotifications();
+            })();
+        })();
+    </script>
+</body>
+
+</html>

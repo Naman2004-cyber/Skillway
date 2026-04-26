@@ -1,0 +1,12 @@
+# Backend
+backend/node_modules/
+backend/dist/
+backend/.env
+
+# Frontend (if they use npm later)
+frontend/node_modules/
+frontend/dist/
+
+# System
+.DS_Store
+Thumbs.db

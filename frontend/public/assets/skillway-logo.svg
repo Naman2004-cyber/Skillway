@@ -1,0 +1,17 @@
+<svg width="408" height="96" viewBox="0 0 408 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="4" y="4" width="88" height="88" rx="24" fill="url(#paint0_linear)"/>
+  <rect x="4" y="4" width="88" height="88" rx="24" stroke="url(#paint1_linear)" stroke-width="2"/>
+  <path d="M27 58L40 44L49 51L69 31" stroke="#0F1216" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M26 68H70" stroke="#0F1216" stroke-width="5" stroke-linecap="round" opacity="0.32"/>
+  <text x="116" y="62" fill="#F7F7FB" font-family="Poppins, Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="0">Skillway</text>
+  <defs>
+    <linearGradient id="paint0_linear" x1="14" y1="12" x2="78" y2="84" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F0E7FF"/>
+      <stop offset="1" stop-color="#DCCFFF"/>
+    </linearGradient>
+    <linearGradient id="paint1_linear" x1="15" y1="7" x2="80" y2="92" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.12"/>
+    </linearGradient>
+  </defs>
+</svg>

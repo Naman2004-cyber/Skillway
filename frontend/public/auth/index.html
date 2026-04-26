@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Skillway</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/skillway-mark.svg">
+    <link rel="stylesheet" href="../index.css">
+</head>
+<body class="auth-page">
+    <div class="auth-ambient" aria-hidden="true">
+        <div class="auth-orb auth-orb--1"></div>
+        <div class="auth-orb auth-orb--2"></div>
+        <div class="auth-orb auth-orb--3"></div>
+    </div>
+
+    <div class="auth-container auth-card">
+        <div class="auth-logo-wrap">
+            <span class="auth-logo-mark">
+                <img src="/assets/skillway-mark.svg" alt="Skillway logo">
+            </span>
+        </div>
+
+        <div class="tab-switcher auth-tab-switcher">
+            <span class="tab active" data-tab="login" onclick="switchTab('login', this)">Login</span>
+            <span class="tab" data-tab="signup" onclick="switchTab('signup', this)">Sign Up</span>
+            <span class="tab" data-tab="school" onclick="switchTab('school', this)">Register School</span>
+        </div>
+
+        <div class="auth-forms">
+            <div id="login-form" class="form-section is-active">
+                <div class="input-group">
+                    <label>Email Address</label>
+                    <input id="email" type="email" placeholder="student@school.edu" autocomplete="username">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input id="password" type="password" placeholder="********" autocomplete="current-password">
+                </div>
+                <button type="button" class="btn-primary" onclick="handleLogin()">Log In</button>
+            </div>
+
+            <div id="signup-form" class="form-section">
+                <div class="input-group">
+                    <label>School Registration Code</label>
+                    <input id="signup-code" type="text" placeholder="SCH-XXXXXX" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input id="signup-name" type="text" placeholder="John Doe" autocomplete="name">
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input id="signup-email" type="email" placeholder="john@school.edu" autocomplete="email">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input id="signup-password" type="password" placeholder="********" autocomplete="new-password">
+                </div>
+                <div class="input-group" style="text-align: left;">
+                    <label>Role</label>
+                    <select id="signup-role" class="auth-select">
+                        <option value="STUDENT">Student</option>
+                        <option value="TEACHER">Teacher</option>
+                    </select>
+                </div>
+                <button type="button" class="btn-primary" onclick="handleSignup()">Sign Up</button>
+            </div>
+
+            <div id="school-form" class="form-section">
+                <div class="input-group">
+                    <label>School Name</label>
+                    <input id="school-name" type="text" placeholder="Springfield High" autocomplete="organization">
+                </div>
+                <div class="input-group">
+                    <label>Admin Full Name</label>
+                    <input id="school-admin" type="text" placeholder="Principal Skinner" autocomplete="name">
+                </div>
+                <div class="input-group">
+                    <label>Admin Email</label>
+                    <input id="school-email" type="email" placeholder="admin@school.edu" autocomplete="email">
+                </div>
+                <div class="input-group">
+                    <label>Admin Password</label>
+                    <input id="school-password" type="password" placeholder="********" autocomplete="new-password">
+                </div>
+                <button type="button" class="btn-primary" onclick="handleSchoolRegistration()">Register School</button>
+            </div>
+            <div id="school-success" class="form-section">
+                <div style="text-align: center; padding: 20px 0;">
+                    <div style="width: 64px; height: 64px; background: rgba(143, 220, 154, 0.1); color: #8FDC9A; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <h2 style="margin-bottom: 8px;">School Registered!</h2>
+                    <p style="color: var(--sw-muted); margin-bottom: 32px;">Your school is now on Skillway. Use the code below to invite your staff and students.</p>
+                    
+                    <div style="background: rgba(255,255,255,0.03); border: 1px dashed var(--sw-border); border-radius: 12px; padding: 24px; margin-bottom: 32px;">
+                        <label style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--sw-muted2); margin-bottom: 8px;">Registration Code</label>
+                        <div id="success-reg-code" style="font-size: 2rem; font-weight: 700; color: var(--sw-accent); letter-spacing: 2px;">SCH-XXXXXX</div>
+                    </div>
+
+                    <button type="button" class="btn-primary" onclick="switchTab('login')">Go to Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function enhanceSelect(select) {
+            if (!select || select.dataset.uiSelectEnhanced === '1') return;
+            select.dataset.uiSelectEnhanced = '1';
+
+            var wrap = document.createElement('div');
+            wrap.className = 'cselect';
+            select.parentNode.insertBefore(wrap, select);
+            wrap.appendChild(select);
+            select.classList.add('cselect-native');
+
+            var trigger = document.createElement('button');
+            trigger.type = 'button';
+            trigger.className = 'cselect-trigger';
+            wrap.appendChild(trigger);
+
+            var menu = document.createElement('div');
+            menu.className = 'cselect-menu';
+            wrap.appendChild(menu);
+
+            function render() {
+                var opts = Array.prototype.slice.call(select.options || []);
+                var selected = select.options[select.selectedIndex];
+                trigger.textContent = selected ? selected.text : 'Select';
+                menu.innerHTML = '';
+                opts.forEach(function (opt) {
+                    var item = document.createElement('button');
+                    item.type = 'button';
+                    item.className = 'cselect-option' + (opt.value === select.value ? ' active' : '');
+                    item.textContent = opt.text;
+                    item.addEventListener('click', function () {
+                        if (select.value !== opt.value) {
+                            select.value = opt.value;
+                            select.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                        render();
+                        wrap.classList.remove('open');
+                    });
+                    menu.appendChild(item);
+                });
+            }
+
+            trigger.addEventListener('click', function () {
+                wrap.classList.toggle('open');
+            });
+
+            select.addEventListener('change', render);
+            document.addEventListener('click', function (e) {
+                if (!wrap.contains(e.target)) wrap.classList.remove('open');
+            });
+
+            render();
+        }
+
+        function initCustomSelects(root) {
+            (root || document).querySelectorAll('select').forEach(enhanceSelect);
+        }
+
+        var AUTH_TAB_ORDER = ['login', 'signup', 'school', 'school-success'];
+        var activeAuthTab = 'login';
+
+        function setButtonLoading(btn, loading, loadingText, normalText) {
+            if (!btn) return;
+            if (loading) {
+                btn.classList.add('is-loading');
+                btn.disabled = true;
+                btn.dataset.prevText = btn.textContent;
+                btn.textContent = loadingText;
+                return;
+            }
+            btn.classList.remove('is-loading');
+            btn.disabled = false;
+            btn.textContent = normalText || btn.dataset.prevText || btn.textContent;
+        }
+
+        function showAuthErrorFeedback() {
+            var card = document.querySelector('.auth-container.auth-card');
+            if (!card) return;
+            card.classList.remove('auth-error-flash');
+            void card.offsetWidth;
+            card.classList.add('auth-error-flash');
+        }
+
+        function switchTab(tabId, tabEl) {
+            var formsWrap = document.querySelector('.auth-forms');
+            var nextForm = document.getElementById(tabId + '-form');
+            if (!formsWrap || !nextForm) return;
+
+            var currentForm = document.getElementById(activeAuthTab + '-form');
+            document.querySelectorAll('.auth-tab-switcher .tab').forEach(function (t) {
+                t.classList.remove('active');
+            });
+
+            var el = tabEl || document.querySelector('.auth-tab-switcher .tab[data-tab="' + tabId + '"]');
+            if (el) el.classList.add('active');
+
+            if (tabId === activeAuthTab) return;
+
+            var fromIndex = AUTH_TAB_ORDER.indexOf(activeAuthTab);
+            var toIndex = AUTH_TAB_ORDER.indexOf(tabId);
+            var movingForward = toIndex >= fromIndex;
+            formsWrap.classList.toggle('dir-forward', movingForward);
+            formsWrap.classList.toggle('dir-backward', !movingForward);
+
+            var startHeight = currentForm ? currentForm.offsetHeight : formsWrap.offsetHeight;
+            formsWrap.style.height = startHeight + 'px';
+
+            if (currentForm) {
+                currentForm.classList.remove('is-active');
+                currentForm.classList.add('is-leaving');
+            }
+
+            nextForm.classList.add('is-entering');
+            nextForm.classList.add('is-active');
+
+            requestAnimationFrame(function () {
+                formsWrap.style.height = nextForm.offsetHeight + 'px';
+                nextForm.classList.remove('is-entering');
+            });
+
+            setTimeout(function () {
+                if (currentForm) currentForm.classList.remove('is-leaving');
+                formsWrap.style.height = '';
+            }, 430);
+
+            activeAuthTab = tabId;
+        }
+
+        async function handleLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.querySelector('#login-form .btn-primary');
+            setButtonLoading(btn, true, 'Logging in...', 'Log In');
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('role', data.role);
+
+                    if (data.role === 'TEACHER' || data.role === 'ADMIN') {
+                        window.location.href = '/teacher/index.html';
+                    } else {
+                        window.location.href = '/student/index.html';
+                    }
+                } else {
+                    showAuthErrorFeedback();
+                    alert(data.error || 'Login failed');
+                }
+            } catch (err) {
+                console.error(err);
+                showAuthErrorFeedback();
+                alert('Connection error');
+            } finally {
+                setButtonLoading(btn, false, 'Logging in...', 'Log In');
+            }
+        }
+
+        async function handleSignup() {
+            const code = document.getElementById('signup-code').value;
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const role = document.getElementById('signup-role').value;
+            const btn = document.querySelector('#signup-form .btn-primary');
+            setButtonLoading(btn, true, 'Creating account...', 'Sign Up');
+
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ registrationCode: code, name, email, password, role })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Signup successful! Please log in.');
+                    switchTab('login');
+                } else {
+                    showAuthErrorFeedback();
+                    alert('Signup failed: ' + data.error);
+                }
+            } catch (err) {
+                showAuthErrorFeedback();
+                alert('Connection error');
+            } finally {
+                setButtonLoading(btn, false, 'Creating account...', 'Sign Up');
+            }
+        }
+
+        async function handleSchoolRegistration() {
+            const name = document.getElementById('school-name').value;
+            const adminName = document.getElementById('school-admin').value;
+            const adminEmail = document.getElementById('school-email').value;
+            const adminPassword = document.getElementById('school-password').value;
+            const btn = document.querySelector('#school-form .btn-primary');
+            setButtonLoading(btn, true, 'Registering school...', 'Register School');
+
+            try {
+                const response = await fetch('/api/auth/register-school', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, adminName, adminEmail, adminPassword })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById('school-name').value = '';
+                    document.getElementById('school-admin').value = '';
+                    document.getElementById('school-email').value = '';
+                    document.getElementById('school-password').value = '';
+                    document.getElementById('success-reg-code').textContent = data.registrationCode;
+                    alert(`Successful registration! School registration code: ${data.registrationCode}`);
+                    switchTab('school-success');
+                } else {
+                    showAuthErrorFeedback();
+                    alert('Registration failed: ' + data.error);
+                }
+            } catch (err) {
+                showAuthErrorFeedback();
+                alert('Connection error');
+            } finally {
+                setButtonLoading(btn, false, 'Registering school...', 'Register School');
+            }
+        }
+
+        initCustomSelects(document);
+    </script>
+</body>
+</html>
