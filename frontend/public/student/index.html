@@ -628,6 +628,7 @@
             }
 
             let dashboard = null;
+            let currentUserId = null;
             let gradesList = [];
             var currentMcqTakeTestId = null;
             let videosList = [];
@@ -643,11 +644,14 @@
             let lessonProgressSyncing = false;
             let selectedScheduleDayKey = null;
             var currentPlanTasks = [];
-            var PLAN_STORAGE_KEY = 'skillway_plan_v2';
+            var PLAN_BASE_KEY = 'skillway_plan_v2';
+            function getPlanKey() {
+                return PLAN_BASE_KEY + (currentUserId ? '_' + currentUserId : '');
+            }
 
             function getPlanState() {
                 try {
-                    var raw = localStorage.getItem(PLAN_STORAGE_KEY);
+                    var raw = localStorage.getItem(getPlanKey());
                     var state = { done: {}, doneAt: {}, tasks: null };
                     if (raw) {
                         var s = JSON.parse(raw);
@@ -678,7 +682,7 @@
                     var old = JSON.parse(legacy);
                     if (!old || typeof old !== 'object') return;
                     var next = { done: old.done || {}, tasks: null };
-                    localStorage.setItem(PLAN_STORAGE_KEY, JSON.stringify(next));
+                    localStorage.setItem(getPlanKey(), JSON.stringify(next));
                 } catch (e) { }
             }
 
@@ -693,7 +697,7 @@
 
             function setPlanState(state) {
                 try {
-                    localStorage.setItem(PLAN_STORAGE_KEY, JSON.stringify(state));
+                    localStorage.setItem(getPlanKey(), JSON.stringify(state));
                 } catch (e) { }
             }
 
@@ -782,6 +786,7 @@
                 const res = await api('/api/student/me', { method: 'GET' });
                 if (!res || !res.ok) return;
                 const me = await res.json();
+                currentUserId = me.id;
                 document.getElementById('sw-profile-name').textContent = me.name || 'Student';
                 document.getElementById('sw-profile-role').textContent = me.school_name || 'Learner';
                 document.getElementById('sw-avatar-initials').textContent = initials(me.name);
@@ -1225,7 +1230,8 @@
 
             function getLessonSeenState(courseId) {
                 try {
-                    var raw = localStorage.getItem('skillway_seen_playlist_idx_v1');
+                    var storeKey = 'skillway_seen_v1' + (currentUserId ? '_' + currentUserId : '');
+                    var raw = localStorage.getItem(storeKey);
                     var parsed = raw ? JSON.parse(raw) : {};
                     var key = String(courseId);
                     if (!parsed[key] || !Array.isArray(parsed[key])) parsed[key] = [];
@@ -1244,7 +1250,8 @@
                 var state = getLessonSeenState(courseId);
                 if (state.all[state.key].indexOf(idx) < 0) state.all[state.key].push(idx);
                 try {
-                    localStorage.setItem('skillway_seen_playlist_idx_v1', JSON.stringify(state.all));
+                    var storeKey = 'skillway_seen_v1' + (currentUserId ? '_' + currentUserId : '');
+                    localStorage.setItem(storeKey, JSON.stringify(state.all));
                 } catch (e) { }
             }
 
@@ -1252,7 +1259,8 @@
                 var state = getLessonSeenState(courseId);
                 state.all[state.key] = [];
                 try {
-                    localStorage.setItem('skillway_seen_playlist_idx_v1', JSON.stringify(state.all));
+                    var storeKey = 'skillway_seen_v1' + (currentUserId ? '_' + currentUserId : '');
+                    localStorage.setItem(storeKey, JSON.stringify(state.all));
                 } catch (e) { }
             }
 
@@ -2302,9 +2310,10 @@
                         renderDashboardTodo();
                     }
                 }
-                loadProfile();
-                loadDashboard().then(function () {
-                    route();
+                loadProfile().then(function () {
+                    loadDashboard().then(function () {
+                        route();
+                    });
                 });
 
                 // Notifications & Search Logic
