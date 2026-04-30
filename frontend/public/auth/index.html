@@ -31,11 +31,11 @@
             <div id="login-form" class="form-section is-active">
                 <div class="input-group">
                     <label>Email Address</label>
-                    <input id="email" type="email" placeholder="student@school.edu" autocomplete="username">
+                    <input id="email" type="email" placeholder="student@school.edu" autocomplete="username" required>
                 </div>
                 <div class="input-group">
                     <label>Password</label>
-                    <input id="password" type="password" placeholder="********" autocomplete="current-password">
+                    <input id="password" type="password" placeholder="********" autocomplete="current-password" required>
                 </div>
                 <button type="button" class="btn-primary" onclick="handleLogin()">Log In</button>
             </div>
@@ -43,23 +43,23 @@
             <div id="signup-form" class="form-section">
                 <div class="input-group">
                     <label>School Registration Code</label>
-                    <input id="signup-code" type="text" placeholder="SCH-XXXXXX" autocomplete="off">
+                    <input id="signup-code" type="text" placeholder="SCH-XXXXXX" autocomplete="off" required pattern="SCH-[A-Z0-9]+">
                 </div>
                 <div class="input-group">
                     <label>Full Name</label>
-                    <input id="signup-name" type="text" placeholder="John Doe" autocomplete="name">
+                    <input id="signup-name" type="text" placeholder="John Doe" autocomplete="name" required minlength="2">
                 </div>
                 <div class="input-group">
                     <label>Email</label>
-                    <input id="signup-email" type="email" placeholder="john@school.edu" autocomplete="email">
+                    <input id="signup-email" type="email" placeholder="john@school.edu" autocomplete="email" required>
                 </div>
                 <div class="input-group">
                     <label>Password</label>
-                    <input id="signup-password" type="password" placeholder="********" autocomplete="new-password">
+                    <input id="signup-password" type="password" placeholder="********" autocomplete="new-password" required minlength="6">
                 </div>
                 <div class="input-group" style="text-align: left;">
                     <label>Role</label>
-                    <select id="signup-role" class="auth-select">
+                    <select id="signup-role" class="auth-select" required>
                         <option value="STUDENT">Student</option>
                         <option value="TEACHER">Teacher</option>
                     </select>
@@ -70,19 +70,19 @@
             <div id="school-form" class="form-section">
                 <div class="input-group">
                     <label>School Name</label>
-                    <input id="school-name" type="text" placeholder="Springfield High" autocomplete="organization">
+                    <input id="school-name" type="text" placeholder="Springfield High" autocomplete="organization" required minlength="3">
                 </div>
                 <div class="input-group">
                     <label>Admin Full Name</label>
-                    <input id="school-admin" type="text" placeholder="Principal Skinner" autocomplete="name">
+                    <input id="school-admin" type="text" placeholder="Principal Skinner" autocomplete="name" required minlength="2">
                 </div>
                 <div class="input-group">
                     <label>Admin Email</label>
-                    <input id="school-email" type="email" placeholder="admin@school.edu" autocomplete="email">
+                    <input id="school-email" type="email" placeholder="admin@school.edu" autocomplete="email" required>
                 </div>
                 <div class="input-group">
                     <label>Admin Password</label>
-                    <input id="school-password" type="password" placeholder="********" autocomplete="new-password">
+                    <input id="school-password" type="password" placeholder="********" autocomplete="new-password" required minlength="6">
                 </div>
                 <button type="button" class="btn-primary" onclick="handleSchoolRegistration()">Register School</button>
             </div>
@@ -234,9 +234,22 @@
         }
 
         async function handleLogin() {
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const btn = document.querySelector('#login-form .btn-primary');
+
+            // Validation
+            if (!email || !validateEmail(email)) {
+                showAuthErrorFeedback();
+                alert('Please enter a valid email address.');
+                return;
+            }
+            if (!password) {
+                showAuthErrorFeedback();
+                alert('Please enter your password.');
+                return;
+            }
+
             setButtonLoading(btn, true, 'Logging in...', 'Log In');
 
             try {
@@ -270,12 +283,35 @@
         }
 
         async function handleSignup() {
-            const code = document.getElementById('signup-code').value;
-            const name = document.getElementById('signup-name').value;
-            const email = document.getElementById('signup-email').value;
+            const code = document.getElementById('signup-code').value.trim();
+            const name = document.getElementById('signup-name').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
             const password = document.getElementById('signup-password').value;
             const role = document.getElementById('signup-role').value;
             const btn = document.querySelector('#signup-form .btn-primary');
+
+            // Validation
+            if (!code.startsWith('SCH-')) {
+                showAuthErrorFeedback();
+                alert('Invalid registration code format. Should be SCH-XXXXXX');
+                return;
+            }
+            if (name.length < 2) {
+                showAuthErrorFeedback();
+                alert('Please enter your full name.');
+                return;
+            }
+            if (!validateEmail(email)) {
+                showAuthErrorFeedback();
+                alert('Please enter a valid email address.');
+                return;
+            }
+            if (password.length < 6) {
+                showAuthErrorFeedback();
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
+
             setButtonLoading(btn, true, 'Creating account...', 'Sign Up');
 
             try {
@@ -302,11 +338,34 @@
         }
 
         async function handleSchoolRegistration() {
-            const name = document.getElementById('school-name').value;
-            const adminName = document.getElementById('school-admin').value;
-            const adminEmail = document.getElementById('school-email').value;
+            const name = document.getElementById('school-name').value.trim();
+            const adminName = document.getElementById('school-admin').value.trim();
+            const adminEmail = document.getElementById('school-email').value.trim();
             const adminPassword = document.getElementById('school-password').value;
             const btn = document.querySelector('#school-form .btn-primary');
+
+            // Validation
+            if (name.length < 3) {
+                showAuthErrorFeedback();
+                alert('Please enter a valid school name.');
+                return;
+            }
+            if (adminName.length < 2) {
+                showAuthErrorFeedback();
+                alert('Please enter the administrator\'s full name.');
+                return;
+            }
+            if (!validateEmail(adminEmail)) {
+                showAuthErrorFeedback();
+                alert('Please enter a valid admin email address.');
+                return;
+            }
+            if (adminPassword.length < 6) {
+                showAuthErrorFeedback();
+                alert('Admin password must be at least 6 characters long.');
+                return;
+            }
+
             setButtonLoading(btn, true, 'Registering school...', 'Register School');
 
             try {
@@ -335,6 +394,10 @@
             } finally {
                 setButtonLoading(btn, false, 'Registering school...', 'Register School');
             }
+        }
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
         initCustomSelects(document);
