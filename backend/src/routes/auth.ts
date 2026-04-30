@@ -17,11 +17,14 @@ router.post('/register-school', async (req: Request, res: Response) => {
     const adminEmail = normalizeEmail(req.body.adminEmail);
 
     // Validation
-    if (!name || name.trim().length < 3) {
-        return res.status(400).json({ error: 'School name must be at least 3 characters long.' });
+    const nameRegex = /^[a-zA-Z\s.-]+$/;
+    const hasLetter = /[a-zA-Z]/;
+
+    if (!name || name.trim().length < 3 || !hasLetter.test(name)) {
+        return res.status(400).json({ error: 'School name must be at least 3 characters and contain letters.' });
     }
-    if (!adminName || adminName.trim().length < 2) {
-        return res.status(400).json({ error: 'Admin name is required.' });
+    if (!adminName || adminName.trim().split(/\s+/).length < 2 || !nameRegex.test(adminName)) {
+        return res.status(400).json({ error: 'Admin full name (First and Last) is required and should only contain letters.' });
     }
     if (!adminEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(adminEmail)) {
         return res.status(400).json({ error: 'A valid admin email is required.' });
@@ -71,8 +74,9 @@ router.post('/signup', async (req: Request, res: Response) => {
         .toUpperCase();
 
     // Validation
-    if (!name || name.trim().length < 2) {
-        return res.status(400).json({ error: 'Name is required.' });
+    const nameRegex = /^[a-zA-Z\s.-]+$/;
+    if (!name || name.trim().split(/\s+/).length < 2 || !nameRegex.test(name)) {
+        return res.status(400).json({ error: 'Full name (First and Last) is required and should only contain letters.' });
     }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         return res.status(400).json({ error: 'Valid email is required.' });

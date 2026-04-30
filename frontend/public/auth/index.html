@@ -296,9 +296,9 @@
                 alert('Invalid registration code format. Should be SCH-XXXXXX');
                 return;
             }
-            if (name.length < 2) {
+            if (!validateFullName(name)) {
                 showAuthErrorFeedback();
-                alert('Please enter your full name.');
+                alert('Please enter your full name (First and Last name).');
                 return;
             }
             if (!validateEmail(email)) {
@@ -345,14 +345,14 @@
             const btn = document.querySelector('#school-form .btn-primary');
 
             // Validation
-            if (name.length < 3) {
+            if (!validateSchoolName(name)) {
                 showAuthErrorFeedback();
-                alert('Please enter a valid school name.');
+                alert('Please enter a valid school name (at least 3 characters with letters).');
                 return;
             }
-            if (adminName.length < 2) {
+            if (!validateFullName(adminName)) {
                 showAuthErrorFeedback();
-                alert('Please enter the administrator\'s full name.');
+                alert('Please enter the administrator\'s full name (First and Last name).');
                 return;
             }
             if (!validateEmail(adminEmail)) {
@@ -398,6 +398,17 @@
 
         function validateEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validateFullName(name) {
+            const parts = name.trim().split(/\s+/);
+            const nameRegex = /^[a-zA-Z\s.-]+$/;
+            return parts.length >= 2 && nameRegex.test(name);
+        }
+
+        function validateSchoolName(name) {
+            const schoolRegex = /[a-zA-Z]/; // Must contain at least one letter
+            return name.trim().length >= 3 && schoolRegex.test(name);
         }
 
         initCustomSelects(document);
