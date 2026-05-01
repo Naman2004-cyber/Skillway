@@ -615,6 +615,165 @@ router.post('/profile/update', verifyStudent, async (req: StudentRequest, res: R
     }
 });
 
+/** Quiz review — question-by-question answers + AI analysis */
+router.get('/mcq-tests/:testId/review', verifyStudent, async (req: StudentRequest, res: Response) => {
+    const studentId = req.user!.id;
+    const schoolId = req.user!.schoolId;
+    const testId = parseInt(String(req.params.testId), 10);
+    if (Number.isNaN(testId)) return res.status(400).json({ error: 'Invalid test id.' });
+
+    try {
+        // Verify test belongs to school
+        const t = await pgPool.query(
+            `SELECT t.id, t.title, t.question_count, t.created_at
+             FROM mcq_tests t WHERE t.id = $1 AND t.school_id = $2`,
+            [testId, schoolId]
+        );
+        if (t.rows.length === 0) return res.status(404).json({ error: 'Test not found.' });
+
+        // Verify student has submitted
+        const att = await pgPool.query(
+            `SELECT score_earned, max_score, answers, created_at
+             FROM mcq_attempts WHERE test_id = $1 AND student_id = $2`,
+            [testId, studentId]
+        );
+        if (att.rows.length === 0) {
+            return res.status(400).json({ error: 'You have not submitted this test yet.' });
+        }
+
+        const attempt = att.rows[0];
+        const studentAnswers: Record<string, number> = typeof attempt.answers === 'string'
+            ? JSON.parse(attempt.answers)
+            : attempt.answers;
+
+        // Get all questions with correct answers
+        const q = await pgPool.query(
+            `SELECT id, position, prompt, options, correct_index, marks
+             FROM mcq_questions WHERE test_id = $1 ORDER BY position ASC`,
+            [testId]
+        );
+
+        const letters = ['A', 'B', 'C', 'D'];
+        let correctCount = 0;
+        let wrongCount = 0;
+        const wrongTopics: string[] = [];
+        const correctTopics: string[] = [];
+
+        const questions = q.rows.map((row) => {
+            const qid = String(row.id);
+            const studentAnswer = studentAnswers[qid] ?? -1;
+            const correctIndex = Number(row.correct_index);
+            const isCorrect = studentAnswer === correctIndex;
+            const opts = Array.isArray(row.options) ? row.options : [];
+
+            if (isCorrect) {
+                correctCount++;
+                correctTopics.push(String(row.prompt).slice(0, 80));
+            } else {
+                wrongCount++;
+                wrongTopics.push(String(row.prompt).slice(0, 80));
+            }
+
+            return {
+                id: row.id,
+                position: row.position,
+                prompt: row.prompt,
+                options: opts,
+                marks: parseFloat(String(row.marks)),
+                correctIndex,
+                correctLetter: letters[correctIndex] || '?',
+                studentAnswer,
+                studentLetter: studentAnswer >= 0 && studentAnswer <= 3 ? letters[studentAnswer] : '—',
+                isCorrect,
+            };
+        });
+
+        const earned = parseFloat(String(attempt.score_earned));
+        const maxScore = parseFloat(String(attempt.max_score));
+        const percent = maxScore > 0 ? Math.round((earned / maxScore) * 1000) / 10 : 0;
+
+        // Build AI analysis
+        let aiAnalysis = null;
+        const groqKey = process.env.GROQ_API_KEY?.trim();
+        if (groqKey) {
+            try {
+                const model = process.env.GROQ_MODEL?.trim() || 'llama-3.1-8b-instant';
+                const analysisPrompt = `You are an educational performance analyst. A student completed a quiz titled "${t.rows[0].title}".
+
+Results: ${correctCount} correct out of ${questions.length} questions (${percent}%).
+
+Questions they got WRONG:
+${wrongTopics.length > 0 ? wrongTopics.map((t, i) => `${i + 1}. ${t}`).join('\n') : 'None — perfect score!'}
+
+Questions they got RIGHT:
+${correctTopics.length > 0 ? correctTopics.map((t, i) => `${i + 1}. ${t}`).join('\n') : 'None.'}
+
+Based on this data, provide a JSON object with these exact keys:
+{
+  "strengths": ["strength 1", "strength 2", "strength 3"],
+  "weaknesses": ["weakness 1", "weakness 2"],
+  "suggestions": ["suggestion 1", "suggestion 2", "suggestion 3"],
+  "overallRemark": "A brief 1-2 sentence motivational remark about their performance"
+}
+
+Rules:
+- strengths: 2-3 specific areas where the student did well based on correct answers
+- weaknesses: 1-3 specific areas to improve based on wrong answers (empty array if perfect score)
+- suggestions: 2-3 actionable study tips specific to their weak areas
+- overallRemark: encouraging, specific to their score range
+- Return ONLY the raw JSON object, no markdown, no explanation`;
+
+                const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${groqKey}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model,
+                        messages: [
+                            { role: 'system', content: 'You are an educational analyst. Return only valid JSON.' },
+                            { role: 'user', content: analysisPrompt },
+                        ],
+                        temperature: 0.5,
+                        max_tokens: 512,
+                    }),
+                });
+
+                const groqData = await groqRes.json().catch(() => ({})) as any;
+                if (groqRes.ok && groqData.choices?.[0]?.message?.content) {
+                    let raw = groqData.choices[0].message.content.trim();
+                    if (raw.startsWith('```')) {
+                        raw = raw.replace(/^```json\n?/, '').replace(/```$/, '').trim();
+                    }
+                    aiAnalysis = JSON.parse(raw);
+                }
+            } catch (aiErr) {
+                console.error('AI analysis error (non-fatal):', aiErr);
+            }
+        }
+
+        res.json({
+            test: t.rows[0],
+            attempt: {
+                scoreEarned: earned,
+                maxScore,
+                percent,
+                submittedAt: attempt.created_at,
+            },
+            summary: {
+                totalQuestions: questions.length,
+                correctCount,
+                wrongCount,
+            },
+            questions,
+            aiAnalysis,
+        });
+    } catch (err: any) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 router.get('/search', verifyStudent, async (req: StudentRequest, res: Response) => {
     const { schoolId } = req.user!;
     const q = String(req.query.q || '').trim();

@@ -562,6 +562,16 @@
         </main>
     </div>
 
+    <!-- Quiz Review Overlay -->
+    <div id="sw-review-overlay" class="sw-review-overlay">
+        <div class="sw-review-container" id="sw-review-content">
+            <div class="sw-review-loading">
+                <div class="sw-review-spinner"></div>
+                <span class="sw-review-loading-text">Loading quiz review...</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Custom Modal -->
     <div id="sw-confirm-modal" class="sw-modal-overlay">
         <div class="sw-modal-box">
@@ -1499,6 +1509,163 @@
                 loadTestsPage();
             }
 
+            async function openQuizReview(testId) {
+                var overlay = document.getElementById('sw-review-overlay');
+                var content = document.getElementById('sw-review-content');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                content.innerHTML = '<div class="sw-review-loading"><div class="sw-review-spinner"></div><span class="sw-review-loading-text">Analyzing your quiz performance...</span></div>';
+
+                var res = await api('/api/student/mcq-tests/' + testId + '/review', { method: 'GET' });
+                if (!res || !res.ok) {
+                    var errBody = res ? await res.json().catch(function() { return {}; }) : {};
+                    content.innerHTML = '<div class="sw-review-loading"><p style="color:var(--sw-muted);">' + escapeHtml(errBody.error || 'Could not load review.') + '</p><button class="sw-review-close" onclick="document.getElementById(\'sw-review-overlay\').classList.remove(\'active\'); document.body.style.overflow=\'\';">Close</button></div>';
+                    return;
+                }
+                var data = await res.json();
+                var test = data.test || {};
+                var attempt = data.attempt || {};
+                var summary = data.summary || {};
+                var questions = data.questions || [];
+                var ai = data.aiAnalysis || null;
+                var letters = ['A', 'B', 'C', 'D'];
+
+                var pct = attempt.percent || 0;
+                var circumference = 339.292;
+                var offset = circumference - (pct / 100) * circumference;
+
+                var html = '';
+                // Top bar
+                html += '<div class="sw-review-top-bar">';
+                html += '<span class="sw-review-badge">Quiz Review</span>';
+                html += '<button class="sw-review-close" id="btn-review-close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg> Close</button>';
+                html += '</div>';
+
+                // Hero card with score ring
+                html += '<div class="sw-review-hero">';
+                html += '<div class="sw-review-hero-grid">';
+                html += '<div class="sw-review-ring-wrap">';
+                html += '<svg viewBox="0 0 120 120"><defs><linearGradient id="sw-ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#b9a3e8"/><stop offset="100%" stop-color="#d4c4f7"/></linearGradient></defs>';
+                html += '<circle cx="60" cy="60" r="54" class="sw-review-ring-bg"/>';
+                html += '<circle cx="60" cy="60" r="54" class="sw-review-ring-fill" id="review-ring-fill" style="stroke-dashoffset:' + circumference + ';"/></svg>';
+                html += '<div class="sw-review-ring-pct"><span class="sw-review-ring-num">' + pct + '</span><span class="sw-review-ring-label">Score %</span></div>';
+                html += '</div>';
+                html += '<div class="sw-review-hero-info">';
+                html += '<h2>' + escapeHtml(test.title || 'Quiz') + '</h2>';
+                html += '<p style="margin:0;font-size:0.88rem;color:var(--sw-muted);">Submitted ' + escapeHtml(attempt.submittedAt ? new Date(attempt.submittedAt).toLocaleString() : '—') + '</p>';
+                html += '<div class="sw-review-hero-stats">';
+                html += '<div class="sw-review-hero-stat"><span class="sw-review-hero-stat-val correct">' + (summary.correctCount || 0) + '</span><span class="sw-review-hero-stat-label">Correct</span></div>';
+                html += '<div class="sw-review-hero-stat"><span class="sw-review-hero-stat-val wrong">' + (summary.wrongCount || 0) + '</span><span class="sw-review-hero-stat-label">Wrong</span></div>';
+                html += '<div class="sw-review-hero-stat"><span class="sw-review-hero-stat-val marks">' + (attempt.scoreEarned || 0) + '/' + (attempt.maxScore || 0) + '</span><span class="sw-review-hero-stat-label">Marks</span></div>';
+                html += '</div></div></div></div>';
+
+                // AI Analysis
+                if (ai) {
+                    if (ai.overallRemark) {
+                        html += '<div class="sw-review-remark">';
+                        html += '<div class="sw-review-remark-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg></div>';
+                        html += '<div>' + escapeHtml(ai.overallRemark) + '</div></div>';
+                    }
+
+                    html += '<div class="sw-review-ai">';
+
+                    // Strengths
+                    if (ai.strengths && ai.strengths.length > 0) {
+                        html += '<div class="sw-review-ai-card strengths">';
+                        html += '<div class="sw-review-ai-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>';
+                        html += '<p class="sw-review-ai-title">Strengths</p><ul class="sw-review-ai-list">';
+                        ai.strengths.forEach(function(s) { html += '<li>' + escapeHtml(s) + '</li>'; });
+                        html += '</ul></div>';
+                    }
+
+                    // Weaknesses
+                    if (ai.weaknesses && ai.weaknesses.length > 0) {
+                        html += '<div class="sw-review-ai-card weaknesses">';
+                        html += '<div class="sw-review-ai-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>';
+                        html += '<p class="sw-review-ai-title">Areas to Improve</p><ul class="sw-review-ai-list">';
+                        ai.weaknesses.forEach(function(w) { html += '<li>' + escapeHtml(w) + '</li>'; });
+                        html += '</ul></div>';
+                    }
+
+                    // Suggestions
+                    if (ai.suggestions && ai.suggestions.length > 0) {
+                        html += '<div class="sw-review-ai-card suggestions">';
+                        html += '<div class="sw-review-ai-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg></div>';
+                        html += '<p class="sw-review-ai-title">Study Suggestions</p><ul class="sw-review-ai-list">';
+                        ai.suggestions.forEach(function(s) { html += '<li>' + escapeHtml(s) + '</li>'; });
+                        html += '</ul></div>';
+                    }
+
+                    html += '</div>';
+                }
+
+                // Question-by-question review
+                html += '<h3 class="sw-review-section-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--sw-accent)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Question-by-Question Review</h3>';
+                html += '<div class="sw-review-q-list">';
+
+                questions.forEach(function(q) {
+                    var cls = q.isCorrect ? 'correct' : 'wrong';
+                    html += '<div class="sw-review-q ' + cls + '">';
+                    html += '<div class="sw-review-q-head">';
+                    html += '<span class="sw-review-q-num">Q' + q.position + ' · ' + q.marks + ' mark(s)</span>';
+                    if (q.isCorrect) {
+                        html += '<span class="sw-review-q-status correct"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg> Correct</span>';
+                    } else {
+                        html += '<span class="sw-review-q-status wrong"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg> Wrong</span>';
+                    }
+                    html += '</div>';
+                    html += '<p class="sw-review-q-prompt">' + escapeHtml(q.prompt) + '</p>';
+                    html += '<div class="sw-review-q-opts">';
+
+                    var opts = Array.isArray(q.options) ? q.options : [];
+                    for (var j = 0; j < opts.length; j++) {
+                        var isThisCorrect = (j === q.correctIndex);
+                        var isThisStudentPick = (j === q.studentAnswer);
+                        var optClass = '';
+                        var tags = '';
+
+                        if (isThisCorrect) {
+                            optClass = 'is-correct';
+                            tags += '<span class="sw-review-q-opt-tag correct-tag">✓ Correct</span>';
+                        }
+                        if (isThisStudentPick && !isThisCorrect) {
+                            optClass = 'is-wrong-pick';
+                            tags += '<span class="sw-review-q-opt-tag your-tag">Your pick</span>';
+                        }
+                        if (isThisStudentPick && isThisCorrect) {
+                            tags += '<span class="sw-review-q-opt-tag correct-tag">Your pick ✓</span>';
+                        }
+
+                        html += '<div class="sw-review-q-opt ' + optClass + '">';
+                        html += '<span class="sw-review-q-opt-letter">' + letters[j] + '</span>';
+                        html += '<span class="sw-review-q-opt-text">' + escapeHtml(String(opts[j] || '')) + '</span>';
+                        html += tags;
+                        html += '</div>';
+                    }
+
+                    html += '</div></div>';
+                });
+
+                html += '</div>';
+
+                content.innerHTML = html;
+
+                // Animate ring
+                setTimeout(function() {
+                    var ring = document.getElementById('review-ring-fill');
+                    if (ring) ring.style.strokeDashoffset = offset;
+                }, 100);
+
+                // Close button
+                var closeBtn = document.getElementById('btn-review-close');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', function() {
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                }
+            }
+
             async function loadTestsPage() {
                 showTestsMcqListView();
                 var mcqRes = await api('/api/student/mcq-tests', { method: 'GET' });
@@ -1507,6 +1674,7 @@
                     var gd = await gRes.json();
                     gradesList = gd.grades || [];
                 }
+                var tests = [];
                 var mcqGrid = document.getElementById('mcq-tests-student-grid');
                 var mcqEmpty = document.getElementById('mcq-tests-student-empty');
                 if (mcqGrid) {
@@ -1515,7 +1683,7 @@
                         mcqEmpty.style.display = 'block';
                     } else {
                         var md = await mcqRes.json();
-                        var tests = md.tests || [];
+                        tests = md.tests || [];
                         if (tests.length === 0) {
                             mcqEmpty.style.display = 'block';
                         } else {
@@ -1584,8 +1752,25 @@
                                 let statusClass = 'ontrack';
                                 if (avg >= 90) { statusText = 'Mastery'; statusClass = 'mastery'; }
                                 else if (avg >= 75) { statusText = 'Excellence'; statusClass = 'excellence'; }
+
+                                const matchedTest = tests.find(function (t) {
+                                    return t.submitted_at != null && (
+                                        s.subject === 'MCQ: ' + t.title || 
+                                        s.subject === t.title || 
+                                        s.subject.includes(t.title) || 
+                                        t.title.includes(s.subject) ||
+                                        ('MCQ: ' + t.title).includes(s.subject)
+                                    );
+                                }) || tests.find(function (t) { return t.submitted_at != null; });
+
                                 const card = document.createElement('div');
                                 card.className = 'sw-result-card';
+                                if (matchedTest) {
+                                    card.style.cursor = 'pointer';
+                                    card.addEventListener('click', function () {
+                                        openQuizReview(matchedTest.id);
+                                    });
+                                }
                                 card.innerHTML = `
                             <div class="sw-result-subject">${escapeHtml(s.subject)}</div>
                             <div class="sw-result-score-block">
@@ -2229,6 +2414,23 @@
 
             document.getElementById('btn-mcq-back').addEventListener('click', function () {
                 showTestsMcqListView();
+            });
+            // Close review overlay on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    var overlay = document.getElementById('sw-review-overlay');
+                    if (overlay && overlay.classList.contains('active')) {
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                }
+            });
+            // Close review overlay on backdrop click
+            document.getElementById('sw-review-overlay').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
             });
             document.getElementById('btn-mcq-submit').addEventListener('click', function () {
                 submitMcqTest();
