@@ -13,6 +13,7 @@
 ## ✨ Key Features
 
 ### 👨‍🏫 Teacher Portal
+- **Real-Time Communication**: Integrated chat system to communicate instantly with students, complete with file sharing and granular message deletion.
 - **AI Test Generator**: Build comprehensive MCQ tests in seconds using the integrated AI engine.
 - **Activity Logging**: Record and manage student extracurricular activities, sports, and achievements.
 - **Smart Gradebook**: Seamlessly track student performance across subjects with automated "falling behind" alerts.
@@ -20,6 +21,7 @@
 - **Course Publishing**: Share learning materials and YouTube playlists directly with your classes.
 
 ### 🎓 Student Portal
+- **Real-Time Chat**: Stay connected with teachers, receive documents, and access historical conversations seamlessly.
 - **Interactive Dashboard**: Get a 7-day momentum chart tracking your study habits and progress.
 - **Learning Coach**: A private AI-powered chat partner for study tips, goal setting, and stress management.
 - **Quiz Hub**: Take teacher-assigned tests and review performance results instantly.
@@ -32,9 +34,10 @@
 
 | Layer | Technologies |
 | :--- | :--- |
-| **Frontend** | HTML5, Vanilla CSS (Glassmorphism UI), JavaScript (ES6+), YouTube API |
-| **Backend** | Node.js, Express.js, TypeScript |
-| **Databases** | PostgreSQL (Relational Data), MongoDB (Unstructured Analytics) |
+| **Frontend** | HTML5, Vanilla CSS (Glassmorphism UI), JavaScript (ES6+), Socket.io Client |
+| **Backend** | Node.js, Express.js, TypeScript, Socket.io |
+| **Databases** | PostgreSQL (Relational Data), MongoDB (Unstructured Analytics & Chat Logs) |
+| **Cloud Storage** | Cloudinary (Media CDN & File Hosting), Multer |
 | **AI/ML** | Groq AI (Llama 3.1) for Test Generation & Coaching |
 | **Auth** | JWT (JSON Web Tokens) with Bcrypt Hashing |
 
@@ -66,6 +69,7 @@
 - Node.js (v18+)
 - PostgreSQL & MongoDB instances
 - A [Groq API Key](https://console.groq.com/) (for AI features)
+- A [Cloudinary Account](https://cloudinary.com/) (for chat file attachments)
 
 ### Installation
 
