@@ -660,6 +660,7 @@
         (function () {
             const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+            // Pull out the token from local storage and build standard headers for my API calls
             function authHeaders() {
                 const token = localStorage.getItem('token');
                 return {
@@ -668,6 +669,7 @@
                 };
             }
 
+            // My master fetch wrapper that attaches my token and redirects me if my session expires
             async function api(path, opts) {
                 const res = await fetch(path, { ...opts, headers: { ...authHeaders(), ...((opts && opts.headers) || {}) } });
                 if (res.status === 401 || res.status === 403) {
@@ -677,12 +679,14 @@
                 return res;
             }
 
+            // A quick helper to sanitize my strings by putting them inside a temp div to escape HTML
             function escapeHtml(s) {
                 const d = document.createElement('div');
                 d.textContent = s == null ? '' : String(s);
                 return d.innerHTML;
             }
 
+            // Simple string hashing function I use to randomize some things or generate unique keys
             function hashInt(seed) {
                 let h = 0;
                 const str = String(seed);
@@ -690,6 +694,7 @@
                 return Math.abs(h);
             }
 
+            // Formats course data from the server, maps progress, and classifies it (mandatory, recommended, etc.)
             function enrichCourse(c) {
                 const id = c.id;
                 const h = hashInt('c' + id);
@@ -727,10 +732,13 @@
             let selectedScheduleDayKey = null;
             var currentPlanTasks = [];
             var PLAN_BASE_KEY = 'skillway_plan_v2';
+            
+            // Gets the unique storage key for my planner based on my user ID
             function getPlanKey() {
                 return PLAN_BASE_KEY + (currentUserId ? '_' + currentUserId : '');
             }
 
+            // Grabs the planner state from my localStorage and filters out any legacy junk
             function getPlanState() {
                 try {
                     var raw = localStorage.getItem(getPlanKey());
@@ -757,6 +765,7 @@
                 }
             }
 
+            // Migrates old planner tasks from V1 storage so I don't lose any of my items
             function migratePlanFromV1() {
                 try {
                     var legacy = localStorage.getItem('skillway_plan_v1');
@@ -768,6 +777,7 @@
                 } catch (e) { }
             }
 
+            // Ensures I have my default plan tasks initialized in case my planner is completely empty
             function ensurePlanTasks(state) {
                 if (state.tasks === null || state.tasks === undefined) {
                     state.tasks = PLAN_TASK_DEFAULTS.map(function (x) {
@@ -777,12 +787,14 @@
                 }
             }
 
+            // Saves the given planner state back to my localStorage
             function setPlanState(state) {
                 try {
                     localStorage.setItem(getPlanKey(), JSON.stringify(state));
                 } catch (e) { }
             }
 
+            // Recalculates my progress and updates the planner UI bars and labels
             function updatePlanProgressUI() {
                 var state = getPlanState();
                 var tasks = currentPlanTasks;
@@ -798,6 +810,7 @@
                 if (bar) bar.style.width = pct + '%';
             }
 
+            // Translates the URL hash string into the actual route page I need to load
             function parseHash() {
                 const h = (location.hash || '#home').slice(1);
                 if (h.startsWith('lesson/')) {
@@ -810,17 +823,20 @@
                 return { name: 'home' };
             }
 
+            // Simple setter to update my URL hash and navigate the user
             function setHash(route, lessonId) {
                 if (route === 'lesson' && lessonId != null) location.hash = 'lesson/' + lessonId;
                 else location.hash = route;
             }
 
+            // Synchronizes the primary navigation bar buttons so the current route is marked as active
             function navSync(route) {
                 document.querySelectorAll('.sw-nav button[data-route]').forEach(function (b) {
                     b.classList.toggle('active', b.getAttribute('data-route') === route);
                 });
             }
 
+            // Hides all pages and activates the correct page container matching the hash name
             function showPage(name) {
                 document.querySelectorAll('.sw-page').forEach(function (p) {
                     p.classList.remove('active');
@@ -845,6 +861,7 @@
                 navSync(name === 'lesson' ? 'courses' : name);
             }
 
+            // Central router function invoked whenever the hash changes to trigger page logic
             function route() {
                 const r = parseHash();
                 if (r.name === 'lesson' && r.lessonId != null) {
@@ -860,12 +877,14 @@
                 if (r.name === 'chat' && window.loadChatPage) window.loadChatPage();
             }
 
+            // Converts a name into uppercase initials (e.g., "John Doe" -> "JD")
             function initials(name) {
                 if (!name) return 'S';
                 const p = name.trim().split(/\s+/);
                 return (p[0][0] + (p[1] ? p[1][0] : '')).toUpperCase();
             }
 
+            // Fetches my profile data from the API and populates the top profile bar
             async function loadProfile() {
                 const res = await api('/api/student/me', { method: 'GET' });
                 if (!res || !res.ok) return;
@@ -876,6 +895,7 @@
                 document.getElementById('sw-avatar-initials').textContent = initials(me.name);
             }
 
+            // Pulls up my mini todo/dashboard goals and binds complete/delete events
             function renderDashboardTodo() {
                 const state = getPlanState();
                 const list = document.getElementById('todo-dashboard-list');
@@ -926,6 +946,7 @@
                 });
             }
 
+            // Simple helper to format raw activity dates into localized strings
             function formatActivityDate(value) {
                 if (!value) return '-';
                 var d = new Date(value);
@@ -933,6 +954,7 @@
                 return d.toLocaleDateString();
             }
 
+            // Returns appropriate SVG icons matching the type of activity
             function getActivityIcon(type) {
                 const t = String(type || '').toLowerCase();
                 if (t.includes('sport')) return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17M14 14.66V17M18 10V4M6 10V4M12 14.66v-3.33M12 7.33V4M12 14.66c-3.31 0-6-2.69-6-6V10h12V8.66c0 3.31-2.69 6-6 6z"/></svg>';
@@ -941,6 +963,7 @@
                 return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
             }
 
+            // Builds and dumps the activity history cards directly into the DOM
             function renderActivities(containerId, emptyId, activities, limit) {
                 var list = document.getElementById(containerId);
                 var empty = document.getElementById(emptyId);
@@ -981,6 +1004,7 @@
                 });
             }
 
+            // Loads the list of activities recorded for me by the school
             async function loadActivitiesPage() {
                 var res = await api('/api/student/activities', { method: 'GET' });
                 if (!res || !res.ok) return;
@@ -988,6 +1012,7 @@
                 renderActivities('page-activities-list', 'page-activities-empty', data.activities || [], 100);
             }
 
+            // Calculates and displays the 7-day activity momentum chart
             function buildMomentumChart(trendRows) {
                 const wrap = document.getElementById('sw-momentum-chart');
                 if (!wrap) return;
@@ -1059,6 +1084,7 @@
                 });
             }
 
+            // Builds the calendar day strip to let me pick a specific day's schedule
             function buildCalStrip(timetableEntries) {
                 const strip = document.getElementById('sw-cal-strip');
                 strip.innerHTML = '';
@@ -1089,6 +1115,7 @@
                 }
             }
 
+            // Displays my scheduled timetable classes for the selected day in the strip
             function buildSchedule(coursesEnriched, timetableEntries) {
                 const ul = document.getElementById('sw-schedule-list');
                 ul.innerHTML = '';
@@ -1136,6 +1163,7 @@
                 });
             }
 
+            // Determines the color category based on my raw numerical score
             function scorePillClass(score) {
                 const n = parseFloat(score);
                 if (n >= 80) return 'high';
@@ -1143,6 +1171,7 @@
                 return 'low';
             }
 
+            // Populates a list of course cards inside a container with filtering capabilities
             function renderCourseGrid(containerId, emptyId, courses, filter) {
                 const grid = document.getElementById(containerId);
                 const empty = document.getElementById(emptyId);
@@ -1195,6 +1224,7 @@
                 });
             }
 
+            // Attaches a click listener to all filters in a specific toolbar
             function wireFilters(container, key) {
                 container.querySelectorAll('.sw-filter').forEach(function (b) {
                     b.addEventListener('click', function () {
@@ -1214,6 +1244,7 @@
                 });
             }
 
+            // Toggles modern skeleton loading placeholders for any list of DOM element IDs
             function toggleSkeletons(containerIds, active) {
                 containerIds.forEach(id => {
                     const el = document.getElementById(id);
@@ -1228,6 +1259,7 @@
                 });
             }
 
+            // Refreshes all elements in my dashboard by fetching updated stats, metrics, and schedules
             async function loadDashboard() {
                 const stats = ['stat-courses', 'stat-avg', 'stat-attendance-rate', 'stat-tests'];
                 toggleSkeletons(stats, true);
@@ -1271,6 +1303,7 @@
                 renderCourseGrid('page-courses-grid', 'page-courses-empty', courses, pageCourseFilter);
             }
 
+            // Caches grades fetched from the server into a local variable so I avoid re-fetching them
             async function loadGradesIfNeeded() {
                 if (gradesList.length) return;
                 const res = await api('/api/student/grades', { method: 'GET' });
@@ -1279,6 +1312,7 @@
                 gradesList = d.grades || [];
             }
 
+            // Caches course video details into a local array when called
             async function loadVideosIfNeeded() {
                 if (videosList.length) return;
                 const res = await api('/api/student/videos', { method: 'GET' });
@@ -1286,12 +1320,14 @@
                 videosList = await res.json();
             }
 
+            // Fetches current progress metrics for a specific course
             async function loadCourseProgress(courseId) {
                 const res = await api('/api/student/courses/' + courseId + '/progress', { method: 'GET' });
                 if (!res || !res.ok) return null;
                 return res.json();
             }
 
+            // Saves progress on the backend to mark a single course video lesson as complete
             async function markCourseVideoComplete(courseId) {
                 const res = await api('/api/student/courses/' + courseId + '/progress/complete', { method: 'POST' });
                 if (!res || !res.ok) {
@@ -1302,6 +1338,7 @@
                 return res.json();
             }
 
+            // Resets all my video course progress on the backend so I can start learning again from zero
             async function resetCourseProgress(courseId) {
                 const res = await api('/api/student/courses/' + courseId + '/progress/reset', { method: 'POST' });
                 if (!res || !res.ok) {
@@ -1312,6 +1349,7 @@
                 return res.json();
             }
 
+            // Retrieves the locally stored list of seen video playlist indexes for a given course
             function getLessonSeenState(courseId) {
                 try {
                     var storeKey = 'skillway_seen_v1' + (currentUserId ? '_' + currentUserId : '');
@@ -1325,11 +1363,13 @@
                 }
             }
 
+            // Checks whether I've already watched a particular video in the lesson's playlist
             function hasSeenPlaylistIndex(courseId, idx) {
                 var state = getLessonSeenState(courseId);
                 return state.all[state.key].indexOf(idx) >= 0;
             }
 
+            // Marks a specific playlist video index as watched in my localStorage
             function setSeenPlaylistIndex(courseId, idx) {
                 var state = getLessonSeenState(courseId);
                 if (state.all[state.key].indexOf(idx) < 0) state.all[state.key].push(idx);
@@ -1339,6 +1379,7 @@
                 } catch (e) { }
             }
 
+            // Empties out my saved watched video markers for a specific course from local storage
             function clearSeenPlaylistIndexes(courseId) {
                 var state = getLessonSeenState(courseId);
                 state.all[state.key] = [];
@@ -1348,6 +1389,7 @@
                 } catch (e) { }
             }
 
+            // Stops my lesson video polling timer if it is active
             function stopLessonProgressPoller() {
                 if (lessonProgressPoller) {
                     clearInterval(lessonProgressPoller);
@@ -1355,6 +1397,7 @@
                 }
             }
 
+            // Syncs the completion of a specific video index to my database and updates my seen cache
             async function recordPlaylistIndexCompletion(courseId, idx) {
                 if (idx == null || idx < 0) return;
                 if (hasSeenPlaylistIndex(courseId, idx)) return;
@@ -1373,6 +1416,7 @@
                 }
             }
 
+            // Constructs and outputs the dynamic lesson video progress panel into the DOM
             function renderLessonProgressPanel(progressDone, progressTotal) {
                 var rightTitle = document.querySelector('.sw-sidebar-title');
                 if (rightTitle) rightTitle.textContent = 'Progress';
@@ -1401,6 +1445,7 @@
                     '</div>';
             }
 
+            // Updates progress fills, labels, and text colors inside the lesson sidebar panel
             function updateLessonProgressPanel(progressDone, progressTotal) {
                 var pct = progressTotal && progressTotal > 0 ? Math.min(100, Math.round((progressDone / progressTotal) * 100)) : 0;
                 var completed = progressTotal && progressTotal > 0 && progressDone >= progressTotal;
@@ -1415,6 +1460,7 @@
                 }
             }
 
+            // Checks whether the YouTube Player API script has already loaded and loads it if needed
             function ensureYouTubeApi() {
                 if (window.YT && window.YT.Player) return Promise.resolve(window.YT);
                 if (youtubeApiPromise) return youtubeApiPromise;
@@ -1431,6 +1477,7 @@
                 return youtubeApiPromise;
             }
 
+            // Switches the UI view to display the full list of available MCQ tests
             function showTestsMcqListView() {
                 var land = document.getElementById('tests-landing');
                 var take = document.getElementById('tests-mcq-take');
@@ -1442,6 +1489,7 @@
                 currentMcqTakeTestId = null;
             }
 
+            // Switches the UI view to open up the specific MCQ test question form
             function showTestsMcqTakeView() {
                 var land = document.getElementById('tests-landing');
                 var take = document.getElementById('tests-mcq-take');
@@ -1452,6 +1500,7 @@
                 }
             }
 
+            // Normalizes or extracts the list of multiple choice options for any question item
             function mcqOptionsArray(q) {
                 var o = q.options;
                 if (Array.isArray(o)) return o;
@@ -1459,6 +1508,7 @@
                 return [];
             }
 
+            // Fetches full quiz data from my API and renders the questions form or the previous test attempt score
             async function openMcqTest(testId) {
                 var res = await api('/api/student/mcq-tests/' + testId, { method: 'GET' });
                 if (!res || !res.ok) return;
@@ -1540,6 +1590,7 @@
                 });
             }
 
+            // Validates all test inputs, constructs the submission payload, and sends answers to the backend
             async function submitMcqTest() {
                 if (currentMcqTakeTestId == null) return;
                 var form = document.getElementById('mcq-take-form');
@@ -1580,9 +1631,9 @@
                     '%).'
                 );
                 showTestsMcqListView();
-                loadTestsPage();
             }
 
+            // Opens up my detailed quiz review overlay showing AI analysis, strengths, weaknesses, and a full question review
             async function openQuizReview(testId) {
                 var overlay = document.getElementById('sw-review-overlay');
                 var content = document.getElementById('sw-review-content');
@@ -1740,6 +1791,7 @@
                 }
             }
 
+            // Populates my MCQ tests page by loading available tests, previous grades, and subject averages
             async function loadTestsPage() {
                 showTestsMcqListView();
                 var mcqRes = await api('/api/student/mcq-tests', { method: 'GET' });
@@ -1874,8 +1926,7 @@
                 }
             }
 
-
-
+            // Gathers my personal attendance rates and renders the attendance history table rows
             async function loadAttendancePage() {
                 const dRes = await api('/api/student/dashboard', { method: 'GET' });
                 if (dRes && dRes.ok) {
@@ -1924,6 +1975,7 @@
                 });
             }
 
+            // Handles updating my profile email and/or password with the server
             async function handleProfileUpdate() {
                 const email = document.getElementById('profile-new-email').value.trim();
                 const password = document.getElementById('profile-new-password').value.trim();
@@ -1962,6 +2014,7 @@
                 }, 1500);
             }
 
+            // Populates my student profile information like name, school, email, and avatar initials
             async function loadProfilePage() {
                 const res = await api('/api/student/me', { method: 'GET' });
                 if (!res || !res.ok) return;
@@ -1982,6 +2035,7 @@
                 { id: 'p5', t: 'Sleep 7+ hours the night before a big test', tag: 'weekly', est: '—' },
             ];
 
+            // Translates a plan task's tag name into a specific CSS class
             function tagClass(tag) {
                 if (tag === 'daily') return 'daily';
                 if (tag === 'focus') return 'focus';
@@ -1989,6 +2043,7 @@
                 return 'weekly';
             }
 
+            // Maps a plan task's tag name into a human-readable display label
             function tagLabel(tag) {
                 if (tag === 'daily') return 'Daily';
                 if (tag === 'focus') return 'Focus';
@@ -1996,6 +2051,7 @@
                 return 'Weekly';
             }
 
+            // Loads my customized goals and to-do plan into the DOM and initializes my goal tracker
             async function loadPlanPage() {
                 migratePlanFromV1();
                 var statsEl = document.getElementById('plan-stats');
@@ -2052,6 +2108,7 @@
                 updatePlanProgressUI();
             }
 
+            // Appends a new customized task into my local goal tracker plan
             function planAddTask() {
                 var titleEl = document.getElementById('plan-new-title');
                 var tagEl = document.getElementById('plan-new-tag');
@@ -2076,6 +2133,7 @@
                 loadPlanPage();
             }
 
+            // Excludes a task from my localized goals and to-do list
             function planRemoveTask(taskId) {
                 if (!taskId) return;
                 var state = getPlanState();
@@ -2088,6 +2146,7 @@
                 loadPlanPage();
             }
 
+            // Pulls up a specific lesson view by displaying the YouTube Player or poster and fetching progress
             async function openLesson(id) {
                 if (!dashboard) await loadDashboard();
                 const courses = (dashboard && dashboard.courses) || [];
@@ -2264,6 +2323,7 @@
                 window.location.href = '/auth/index.html';
             });
 
+            // Shows a pretty modal box to confirm an action from me
             function swConfirm(title, message) {
                 return new Promise(function (resolve) {
                     var modal = document.getElementById('sw-confirm-modal');
@@ -2297,6 +2357,7 @@
                 });
             }
 
+            // Flips the completion status of a specific plan/goal task and updates local storage
             function togglePlanTask(id) {
                 if (!id) return;
                 var state = getPlanState();
@@ -2312,6 +2373,7 @@
                 return !!state.done[id];
             }
 
+            // Strips unsafe HTML special characters to prevent cross-site scripting vulnerabilities
             function escapeHtml(value) {
                 return String(value || '')
                     .replace(/&/g, '&amp;')
@@ -2319,6 +2381,7 @@
                     .replace(/>/g, '&gt;');
             }
 
+            // Sanitizes and formats bold and italic Markdown markdown strings for message bubbles
             function formatCoachText(text) {
                 var safe = escapeHtml(text || '');
 
@@ -2369,6 +2432,7 @@
                 return html.join('');
             }
 
+            // Creates a typing typewriter animation effect inside a specific coach response container
             async function typeCoachReply(el, text) {
                 var full = String(text || '');
                 var charsPerTick = 8;
@@ -2384,6 +2448,7 @@
                 }
             }
 
+            // Converts browser default select elements into ultra-modern customizable dropdown menus
             function enhanceSelect(select) {
                 if (!select || select.dataset.uiSelectEnhanced === '1') return;
                 select.dataset.uiSelectEnhanced = '1';
@@ -2435,6 +2500,7 @@
                 render();
             }
 
+            // Submits a message to the coach chatbot API and outputs the formatted bot response bubble
             async function sendChat() {
                 var input = document.getElementById('chat-input');
                 var msg = input.value.trim();
@@ -2626,6 +2692,7 @@
                 dropNotif.addEventListener('click', function (e) { e.stopPropagation(); });
                 dropSearch.addEventListener('click', function (e) { e.stopPropagation(); });
 
+                // Retrives real-time notifications about upcoming courses and updates
                 async function loadNotifications() {
                     const res = await api('/api/notifications', { method: 'GET' });
                     if (!res || !res.ok) return;
@@ -2633,6 +2700,7 @@
                     renderNotifications(data.notifications);
                 }
 
+                // Generates individual notification items inside the dropdown panel
                 function renderNotifications(notifs) {
                     if (!notifs.length) {
                         listNotif.innerHTML = '<p class="sw-notif-empty">No notifications yet.</p>';
@@ -2676,6 +2744,7 @@
                     searchTimeout = setTimeout(function () { performSearch(q); }, 300);
                 });
 
+                // Queries available courses, goals, or quizzes and returns matching results
                 async function performSearch(q) {
                     resultsSearch.innerHTML = '<p class="sw-search-hint">Searching...</p>';
                     var res = await api('/api/student/search?q=' + encodeURIComponent(q), { method: 'GET' });
@@ -2684,6 +2753,7 @@
                     renderSearchResults(data);
                 }
 
+                // Appends search results matching my query to the dropdown view
                 function renderSearchResults(data) {
                     var html = '';
 
@@ -2739,6 +2809,7 @@
         var chatTypingTimer = null;
         var chatPartnerIdMap = {};
 
+        // Establishes a real-time web socket connection for my chat module
         function connectChatSocket() {
             if (chatSocket && chatSocket.connected) return;
             var token = getChatToken();
@@ -2801,6 +2872,7 @@
             });
         }
 
+        // Toggles my partner's status label between Online and Offline in real time
         function updatePartnerStatus() {
             if (!chatCurrentConvId) return;
             var pid = chatPartnerIdMap[chatCurrentConvId];
@@ -2812,6 +2884,7 @@
             }
         }
 
+        // Retrieves a list of my ongoing chat conversations from the API
         async function loadConversationList() {
             var token = getChatToken();
             if (!token) return;
@@ -2822,6 +2895,7 @@
             refreshConvListUI();
         }
 
+        // Helper that extracts my chat partner's unique user ID from participants
         function getPartnerId(conv) {
             var myId = currentUserId;
             for (var i = 0; i < conv.participants.length; i++) {
@@ -2830,6 +2904,7 @@
             return conv.participants[0];
         }
 
+        // Draws the conversation items inside my left-hand sidebar conversation list
         function refreshConvListUI() {
             var list = document.getElementById('chat-conv-list');
             if (!list) return;
@@ -2865,6 +2940,7 @@
             });
         }
 
+        // Switches my active window context to show a selected direct chat conversation
         async function openConversation(convId) {
             try {
                 chatCurrentConvId = convId;
@@ -2900,6 +2976,7 @@
             }
         }
 
+        // Inserts a new chat message bubble (mine or theirs) into the message box
         function appendMessage(msg) {
             var container = document.getElementById('chat-messages');
             if (!container) return;
@@ -2980,11 +3057,13 @@
             });
         };
 
+        // Smoothly scrolls my direct chat box down to the most recent message
         function scrollChatBottom() {
             var c = document.getElementById('chat-messages');
             if (c) setTimeout(function() { c.scrollTop = c.scrollHeight; }, 50);
         }
 
+        // Broadcasts my new direct text message to my partner via web sockets
         async function sendChatMessage() {
             var input = document.getElementById('rt-chat-input');
             var text = input.value.trim();
@@ -2996,6 +3075,7 @@
             chatSocket.emit('stop-typing', chatCurrentConvId);
         }
 
+        // Uploads a media attachment file to my server and emits it into the active direct conversation
         async function uploadAndSend(file) {
             if (!chatCurrentConvId || !chatSocket) return;
             var token = getChatToken();
@@ -3013,6 +3093,7 @@
             });
         }
 
+        // Activates my full direct chat module by connecting the web socket and loading ongoing conversations
         async function loadChatPage() {
             connectChatSocket();
             await loadConversationList();

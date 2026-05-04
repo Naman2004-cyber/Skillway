@@ -562,6 +562,8 @@
 
     <script>
         // —— Design System Helper: Custom Selects ——
+        
+        // Enhance native dropdown/select element with custom UI for design consistency
         function enhanceSelect(select) {
             if (!select || select.dataset.uiSelectEnhanced === '1') return;
             select.dataset.uiSelectEnhanced = '1';
@@ -615,6 +617,7 @@
             render();
         }
 
+        // Initialize all dropdown/select elements found under a specific root element
         function initCustomSelects(root) {
             (root || document).querySelectorAll('select').forEach(enhanceSelect);
         }
@@ -642,6 +645,7 @@
             profile: ['My Profile', 'Manage your account details and preferences.'],
         };
 
+        // Generate authentication headers including the Bearer token from local storage
         function authHeaders() {
             const token = localStorage.getItem('token');
             return {
@@ -650,6 +654,7 @@
             };
         }
 
+        // Utility wrapper for fetch to automatically handle authorization and 401/403 redirects
         async function api(path, opts) {
             const res = await fetch(path, { ...opts, headers: { ...authHeaders(), ...((opts && opts.headers) || {}) } });
             if (res.status === 401 || res.status === 403) {
@@ -659,6 +664,7 @@
             return res;
         }
 
+        // Returns the relevant CSS class string for a specific attendance status
         function badgeClass(status) {
             if (status === 'PRESENT') return 'present';
             if (status === 'ABSENT') return 'absent';
@@ -666,11 +672,13 @@
             return 'unmarked';
         }
 
+        // Returns a formatted display text label for the given attendance status
         function badgeLabel(status) {
             if (!status) return 'Not marked';
             return status.charAt(0) + status.slice(1).toLowerCase();
         }
 
+        // Handles SPA navigation by updating active classes, title text, and triggering data load functions
         function navTo(view) {
             document.querySelectorAll('.sw-nav button[data-view]').forEach((b) => {
                 b.classList.toggle('active', b.getAttribute('data-view') === view);
@@ -696,6 +704,7 @@
             if (view === 'profile') loadProfilePage();
         }
 
+        // Fetches the profile data of the logged in teacher and updates the header UI elements
         async function loadMe() {
             const res = await api('/api/teacher/me', { method: 'GET' });
             if (!res || !res.ok) return;
@@ -705,6 +714,7 @@
             document.getElementById('sw-avatar-initials').textContent = (me.name || 'T').charAt(0).toUpperCase();
         }
 
+        // Fetches today's attendance summary and quick alerts to populate the dashboard metrics and quick mark table
         async function loadDashboard() {
             const res = await api('/api/teacher/dashboard-data', { method: 'GET' });
             if (!res || !res.ok) return;
@@ -751,6 +761,7 @@
             });
         }
 
+        // Submits a student's attendance record (status and date) to the server
         async function postAttendance(studentId, status, dateStr) {
             const body = { studentId, status };
             if (dateStr) body.date = dateStr;
@@ -766,6 +777,7 @@
             }
         }
 
+        // Retrieves the list of available/existing classes and renders them on the activities view
         async function loadClasses() {
             const res = await api('/api/teacher/classes', { method: 'GET' });
             if (!res || !res.ok) return;
@@ -830,6 +842,7 @@
             loadClasses();
         });
 
+        // Fetches the list of all students under this school to populate the student activity modal dropdown
         async function loadActivityStudents() {
             const res = await api('/api/teacher/activities/students', { method: 'GET' });
             if (!res || !res.ok) return;
@@ -851,6 +864,7 @@
             enhanceSelect(select);
         }
 
+        // Converts a ISO date string or timestamp into a local locale date string
         function formatActivityDate(value) {
             if (!value) return '-';
             const d = new Date(value);
@@ -858,6 +872,7 @@
             return d.toLocaleDateString();
         }
 
+        // Displays the log student activity modal and locks body scroll
         function openActivityModal() {
             const overlay = document.getElementById('activity-modal-overlay');
             const modal = document.getElementById('activity-modal');
@@ -871,6 +886,7 @@
             }
         }
 
+        // Closes the log student activity modal and restores body scroll
         function closeActivityModal() {
             const overlay = document.getElementById('activity-modal-overlay');
             const modal = document.getElementById('activity-modal');
@@ -880,6 +896,7 @@
             document.body.style.overflow = '';
         }
 
+        // Fetches historical activity logs for display in the activity logs section
         async function loadActivityLogs() {
             const res = await api('/api/teacher/activities', { method: 'GET' });
             if (!res || !res.ok) return;
@@ -927,6 +944,7 @@
             await loadActivityStudents();
         }
 
+        // Removes a logged activity record by its ID
         async function deleteActivity(id) {
             if (!confirm('Are you sure you want to remove this activity log?')) return;
             const res = await api('/api/teacher/activities/' + id, { method: 'DELETE' });
@@ -938,6 +956,7 @@
             }
         }
 
+        // Submits a new logged activity record using input from the activity modal
         async function saveActivity() {
             const studentId = document.getElementById('activity-student').value;
             const activityName = document.getElementById('activity-name').value.trim();
@@ -987,12 +1006,14 @@
             }
         }
 
+        // Prepares and loads the attendance data for the currently selected date
         async function loadAttendancePage() {
             const dateInput = document.getElementById('att-date');
             if (!dateInput.value) dateInput.value = new Date().toISOString().slice(0, 10);
             await loadAttendanceForDate(dateInput.value);
         }
 
+        // Fetches and displays student attendance records on a specific date
         async function loadAttendanceForDate(dateStr) {
             const res = await api('/api/teacher/students?date=' + encodeURIComponent(dateStr), { method: 'GET' });
             if (!res) return;
@@ -1044,6 +1065,7 @@
             loadAttendanceForDate(document.getElementById('att-date').value);
         });
 
+        // Fetches student grades and populates the gradebook overview table
         async function loadGradebook() {
             const [gres, sres] = await Promise.all([
                 api('/api/teacher/grades?limit=150', { method: 'GET' }),
@@ -1117,6 +1139,7 @@
             }
         });
 
+        // Retrieves school courses and populates the course management table
         async function loadCourses() {
             const res = await api('/api/teacher/courses', { method: 'GET' });
             if (!res || !res.ok) return;
@@ -1146,6 +1169,7 @@
             });
         }
 
+        // Removes a specific course from the school courses by its ID
         window.deleteCourse = async (id) => {
             if (!confirm('Remove this course?')) return;
             const r = await api('/api/teacher/courses/' + id, { method: 'DELETE' });
@@ -1173,6 +1197,7 @@
             }
         });
 
+        // Retrieves the timetable entries for this school and displays them in the table
         async function loadTimetableEntries() {
             const tbody = document.getElementById('tt-body');
             const empty = document.getElementById('tt-empty');
@@ -1227,6 +1252,7 @@
 
         // Logic moved inline to loadTimetableEntries for robustness
 
+        // Triggers loading and updating of the timetable section UI
         async function loadTimetablePage() { loadTimetableEntries(); }
 
         document.getElementById('btn-add-timetable').addEventListener('click', async () => {
@@ -1248,6 +1274,7 @@
             }
         });
 
+        // Builds DOM blocks for entering or adjusting the MCQ questions (manually or AI generated)
         function buildMcqQuestionBlocks(n, dataArray) {
             const area = document.getElementById('mcq-build-area');
             area.innerHTML = '';
@@ -1345,6 +1372,7 @@
             }
         });
 
+        // Fetches the list of all published tests and renders them in the MCQ tests panel
         async function loadMcqTestsPage() {
             const res = await api('/api/teacher/mcq-tests', { method: 'GET' });
             if (!res || !res.ok) return;
@@ -1370,12 +1398,14 @@
             });
         }
 
+        // Deletes a specific MCQ test and all associated student test results
         window.deleteTest = async (id) => {
             if (!confirm('Delete test and all student results?')) return;
             const r = await api('/api/teacher/mcq-tests/' + id, { method: 'DELETE' });
             if (r && r.ok) loadMcqTestsPage();
         };
 
+        // Safely escapes characters in strings to prevent cross-site scripting (XSS)
         function escapeHtml(s) {
             const d = document.createElement('div');
             d.textContent = s == null ? '' : String(s);
@@ -1392,6 +1422,7 @@
             window.location.href = '/auth/index.html';
         });
 
+        // Fetches teacher's account details to populate the profile view
         async function loadProfilePage() {
             const res = await api('/api/teacher/me', { method: 'GET' });
             if (!res || !res.ok) return;
@@ -1410,6 +1441,7 @@
             }
         }
 
+        // Copies the school's registration code to the clipboard for sharing
         window.copyRegCode = () => {
             const code = document.getElementById('profile-reg-code').textContent;
             navigator.clipboard.writeText(code).then(() => {
@@ -1506,6 +1538,7 @@
             dropNotif.addEventListener('click', (e) => e.stopPropagation());
             dropSearch.addEventListener('click', (e) => e.stopPropagation());
 
+            // Fetches any notifications for the current logged-in user
             async function loadNotifications() {
                 const res = await api('/api/notifications', { method: 'GET' });
                 if (!res || !res.ok) return;
@@ -1513,6 +1546,7 @@
                 renderNotifications(data.notifications);
             }
 
+            // Takes the notifications list and renders individual notification items in the dropdown
             function renderNotifications(notifs) {
                 if (!notifs.length) {
                     listNotif.innerHTML = '<p class="sw-notif-empty">No notifications yet.</p>';
@@ -1532,6 +1566,7 @@
                 `).join('');
             }
 
+            // Marks a notification as read and refreshes the notification dropdown
             window.markAsRead = async (id) => {
                 await api(`/api/notifications/${id}/read`, { method: 'POST' });
                 loadNotifications();
@@ -1556,6 +1591,7 @@
                 searchTimeout = setTimeout(() => performSearch(q), 300);
             });
 
+            // Performs a quick lookup of students, classes, and tests based on query string 'q'
             async function performSearch(q) {
                 resultsSearch.innerHTML = '<p class="sw-search-hint">Searching...</p>';
                 const res = await api(`/api/teacher/search?q=${encodeURIComponent(q)}`, { method: 'GET' });
@@ -1564,6 +1600,7 @@
                 renderSearchResults(data);
             }
 
+            // Renders sections for matched students, classes, and tests in the search results popup
             function renderSearchResults(data) {
                 let html = '';
                 
@@ -1612,14 +1649,20 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
     (function() {
+        // Retrieves the authentication token stored in local storage
         function getChatToken() { return localStorage.getItem('token'); }
+
+        // Decodes the JWT from local storage and extracts the user ID
         function getChatUserId() {
             var t = getChatToken(); if (!t) return null;
             try { var p = JSON.parse(atob(t.split('.')[1])); return p.id || null; } catch(e) { return null; }
         }
+
+        // Safely escapes characters in strings to prevent cross-site scripting (XSS)
         function escapeHtml(unsafe) {
             return (unsafe || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
+
         var currentUserId = getChatUserId();
         var chatSocket = null;
         var chatConversations = [];
@@ -1628,6 +1671,7 @@
         var chatTypingTimer = null;
         var chatPartnerIdMap = {};
 
+        // Initializes the socket.io connection and registers all real-time message/presence event listeners
         function connectChatSocket() {
             if (chatSocket && chatSocket.connected) return;
             var token = getChatToken();
@@ -1688,6 +1732,7 @@
             });
         }
 
+        // Checks and updates whether the current chat partner is online or offline in the UI
         function updatePartnerStatus() {
             if (!chatCurrentConvId) return;
             var pid = chatPartnerIdMap[chatCurrentConvId];
@@ -1699,6 +1744,7 @@
             }
         }
 
+        // Fetches all active conversations for the logged in user
         async function loadConversationList() {
             var token = getChatToken();
             if (!token) return;
@@ -1709,6 +1755,7 @@
             refreshConvListUI();
         }
 
+        // Extracts the other participant's ID from the conversation object
         function getPartnerId(conv) {
             for (var i = 0; i < conv.participants.length; i++) {
                 if (conv.participants[i] !== currentUserId) return conv.participants[i];
@@ -1716,6 +1763,7 @@
             return conv.participants[0];
         }
 
+        // Re-renders the entire conversation list panel with unread badges and current active statuses
         function refreshConvListUI() {
             var list = document.getElementById('chat-conv-list');
             if (!list) return;
@@ -1751,6 +1799,7 @@
             });
         }
 
+        // Opens a specific conversation, loads messages, switches the active view, and marks messages as read
         async function openConversation(convId) {
             chatCurrentConvId = convId;
             if (chatSocket) chatSocket.emit('join-conversation', convId);
@@ -1779,6 +1828,7 @@
             loadConversationList();
         }
 
+        // Appends a single message to the messages container UI, generating popups/links for attachments
         function appendMessage(msg) {
             var container = document.getElementById('chat-messages');
             if (!container) return;
@@ -1833,6 +1883,7 @@
             popups.forEach(function(p) { p.style.display = 'none'; });
         });
 
+        // Deletes a chat message for either just the logged in user or for everyone
         window.deleteChatMessage = function(msgId, type) {
             if (!chatSocket) return;
             if (!confirm('Are you sure you want to delete this message?')) return;
@@ -1845,6 +1896,7 @@
             });
         };
 
+        // Removes an entire conversation either for the user or everyone
         window.deleteConversation = function(type) {
             if (!chatSocket || !chatCurrentConvId) return;
             if (!confirm('Are you sure you want to delete this conversation?')) return;
@@ -1859,11 +1911,13 @@
             });
         };
 
+        // Automatically scrolls the messages container to the bottom
         function scrollChatBottom() {
             var c = document.getElementById('chat-messages');
             if (c) setTimeout(function() { c.scrollTop = c.scrollHeight; }, 50);
         }
 
+        // Takes the current input value and sends it as a new chat message via Socket.io
         async function sendChatMessage() {
             var input = document.getElementById('chat-input');
             var text = input.value.trim();
@@ -1873,6 +1927,7 @@
             chatSocket.emit('stop-typing', chatCurrentConvId);
         }
 
+        // Uploads a file attachment to the server first, then broadcasts the file link as a chat message
         async function uploadAndSend(file) {
             if (!chatCurrentConvId || !chatSocket) return;
             var token = getChatToken();
@@ -1884,6 +1939,7 @@
             chatSocket.emit('send-message', { conversationId: chatCurrentConvId, content: '', attachments: [att] }, function() {});
         }
 
+        // Triggers the Socket.io connection and conversation list initialization when the chat view opens
         function loadChatPage() {
             connectChatSocket();
             loadConversationList();
@@ -1932,6 +1988,8 @@
                     var list = document.getElementById('chat-user-list');
                     var searchInput = document.getElementById('chat-user-search');
                     var users = data.users || [];
+                    
+                    // Filters the users list by name and dynamically populates the contacts row
                     function renderUsers(filter) {
                         list.innerHTML = '';
                         var filtered = filter ? users.filter(function(u) { return u.name.toLowerCase().indexOf(filter.toLowerCase()) >= 0; }) : users;
